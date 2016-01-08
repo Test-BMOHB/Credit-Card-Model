@@ -1,14 +1,15 @@
 #Developer    : Ivana Donevska
 #Date         : 2015-12-10
-#Program Name : Credit Card Transactions Scenario - Overpayment
-#Version#     :1
+#Program Name : Credit Card Transactions Generator
+#Version#     : 5
 #Description  : Code that generates debit and credit transactions with refunds
 #-----------------------------------------------------------------------------
 # History  | ddmmyyyy  |  User     |                Changes       
 #          | 11122015  | Ivana D.  | Intial Coding Steps 
-#          | 12232015  | Ivana D.  | Added date for refund to be +90 days of                                                                            
+#          | 12232015  | Ivana D.  | Added date for refund to be +90 days of      
+#          | 01032015  | Ivana D.  | Added balances  
 #-----------------------------------------------------------------------------*/
-
+#Reference data for python_account_ID, python_merchant_cat, python_CC is located on the test-bmohb console gs://credit_card_transactions
 import python_account_ID
 import python_merchant_cat
 import python_CC
