@@ -30,6 +30,10 @@ fake = Faker()
 #3)Define Country_Green Codes list
 #4)Define a dictionary with all merchants
 
+#Transactions' Risk is defined by Merchant Category, Transaction Types and Country_Red.
+#Merchant Category is divided into three risk categories per senor Kamin's best judgement. - % to be updated
+#As a reference is used MCC (Merchant Category Codes)
+#Transaction Types were divided by risk and their frequencies were distributed accordingly. 
 #Tran Type Percentage Distribution Table:
 #Transaction Type	Green	Yellow	Red
 #Cash Advance	        5	15      20
@@ -243,28 +247,18 @@ with open('CC.Transactions.csv','w') as f1:
 	generate_cc_data(Merchant_Category_Green,Country_Green,4,-2,500,count)
 
 	#Yellow Transactions are defined by Merchant Category, Transaction Types and Country_Yellow.
-	#Merchant Category is divided into three risk categories
-	#As a reference was used MCC (Merchant Category Codes)
-	#Just like MCC - Transaction Types were divided by risk and their frequencies were distributed accordingly. 
-	#Country_Yellow Risk is distrubuted in three categories from the US AML Risk Guide Table
 	#generate amount for current transaction with 50%-50% distribution on credits and debits
 	generate_cc_data(Merchant_Category_Yellow,Country_Yellow,3,-1,2500,count)
 	
 	#Green Transactions are defined by Merchant Category, Transaction Types and Country_Green.
-	#Merchant Category is divided into three risk categories As a reference we used MCC (Merchant Category Codes)
-	#Just like MCC - Transaction Types were divided by risk and their frequencies were distributed accordingly. 
-	#Country_Green Risk is distrubuted in three categories from the US AML Risk Guide Table 
 	#generate amount for current transaction with 50%-50% distribution on credits and debits
 	generate_cc_data(Merchant_Category_Green,Country_Green,3,-1,40000,count)
 	
-	#Red Transactions are defined by Merchant Category, Transaction Types and Country_Red.
-	#Merchant Category is divided into three risk categories per senor Kamin's best judgement. - % to be updated
-	#As a reference was used MCC (Merchant Category Codes)
-	#Just like MCC - Transaction Types were divided by risk and their frequencies were distributed accordingly. 
 	#Country_Red Risk is distrubuted in three categories from the US AML Risk Guide Table 
 	#generate amount for current transaction with 50%-50% distribution on credits and debits
 	generate_cc_data(Merchant_Category_Red,Country_Red,3,-1,500,count)
 	
+	#generate ML activity that consists of merchant credits without matching payments
 	generate_cc_credits(Merchant_Category_Green,500,count)
 	
 	#Red Transactions with payments from non BMO entities 
