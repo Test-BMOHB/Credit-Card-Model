@@ -144,7 +144,7 @@ def generate_cc_credits(merchant,no_trans,count):
 		for j in range(NoTrans):
 			dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 			#generate amount for current transaction with 50%-50% distribution on credits and debits
-			tmpAmt = max((randrange(1,3,1)-1),0)* randrange(1,limit,100)*(-1)
+			tmpAmt = randrange(1,limit,100)
 			#if not credit then generate debit
 			#if tmpAmt == 0:
 			#tmpAmt = randrange(1,limit,100)
@@ -237,29 +237,29 @@ def gen_cc_external(merchant,no_trans,count):
 			writer.writerow(row)
 			
 #5)Open CSV file for writing
-with open('CC.Transactions.csv','w') as f1:
+with open('CC.Transactions_500M.csv','w') as f1:
 	writer=csv.writer(f1, delimiter=',',lineterminator='\n',)
 	writer.writerow(['rownum']+['Account_Number']+['Merchant_Name']+['Merchant_Category_Over_Code']+['Merchant_Category_Over_Desc']+\
 	['Post_Date'] +	['Transaction_Date'] + ['Transaction_Type'] +['Merchant_Country_Over']+['Credit_Limit']+['Amount']+['Balance']+\
 	['CC_NO']+['CC_TYPE'])
 	# Overpayments with green transactions - green activity that doesn't trigger red flags
 	#generate amount for current transaction with 33%-66% distribution on credits and debits
-	generate_cc_data(Merchant_Category_Green,Country_Green,4,-2,500,count)
+	generate_cc_data(Merchant_Category_Green,Country_Green,4,-2,200000,count)
 
 	#Yellow Transactions are defined by Merchant Category, Transaction Types and Country_Yellow.
 	#generate amount for current transaction with 50%-50% distribution on credits and debits
-	generate_cc_data(Merchant_Category_Yellow,Country_Yellow,3,-1,2500,count)
+	generate_cc_data(Merchant_Category_Yellow,Country_Yellow,3,-1,1000000,count)
 	
 	#Green Transactions are defined by Merchant Category, Transaction Types and Country_Green.
 	#generate amount for current transaction with 50%-50% distribution on credits and debits
-	generate_cc_data(Merchant_Category_Green,Country_Green,3,-1,40000,count)
+	generate_cc_data(Merchant_Category_Green,Country_Green,3,-1,8500000,count)
 	
 	#Country_Red Risk is distrubuted in three categories from the US AML Risk Guide Table 
 	#generate amount for current transaction with 50%-50% distribution on credits and debits
-	generate_cc_data(Merchant_Category_Red,Country_Red,3,-1,500,count)
+	generate_cc_data(Merchant_Category_Red,Country_Red,3,-1,100000,count)
 	
 	#generate ML activity that consists of merchant credits without matching payments
-	generate_cc_credits(Merchant_Category_Green,500,count)
+	generate_cc_credits(Merchant_Category_Green,100000,count)
 	
 	#Red Transactions with payments from non BMO entities 
-	gen_cc_external(Merchant_Category_Red,500,count)
+	gen_cc_external(Merchant_Category_Red,100000,count)
