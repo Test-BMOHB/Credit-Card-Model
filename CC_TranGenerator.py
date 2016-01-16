@@ -85,7 +85,7 @@ def generate_cc_data(merchant,country,upper,delta,no_trans,count):
 		usedAmt = 0
 		tmpAmt = 0
 		maxDate= datetime(0001,01,01) 
-		NoTrans = randrange(30,50,1)
+		NoTrans = randrange(100,150,1)
 		#loop to generate NoTrans transactions per customer, we can add logic for probabilities of # transactions if neccessary random number generator to avoid the constant value
 		for j in range(NoTrans):
 			dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -139,7 +139,7 @@ def generate_cc_credits(merchant,no_trans,count):
 		#local Amt variable to calculate customer total usage
 		usedAmt = 0
 		maxDate= datetime(0001,01,01) 
-		NoTrans = randrange(30,50,1)
+		NoTrans = randrange(100,150,1)
 		#loop to generate NoTrans transactions per customer, we can add logic for probabilities of # transactions if neccessary random number generator to avoid the constant value
 		for j in range(NoTrans):
 			dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -189,7 +189,7 @@ def gen_cc_external(merchant,no_trans,count):
 		#local Amt variable to calculate customer total usage
 		usedAmt = 0
 		maxDate= datetime(0001,01,01) 
-		NoTrans = randrange(30,50,1)
+		NoTrans = randrange(100,150,1)
 		#loop to generate NoTrans transactions per customer, we can add logic for probabilities of # transactions if neccessary random number generator to avoid the constant value
 		for j in range(NoTrans):
 			dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -237,29 +237,29 @@ def gen_cc_external(merchant,no_trans,count):
 			writer.writerow(row)
 			
 #5)Open CSV file for writing
-with open('CC.Transactions_500M.csv','w') as f1:
+with open('CC.Transactions_1B.csv','w') as f1:
 	writer=csv.writer(f1, delimiter=',',lineterminator='\n',)
-	writer.writerow(['rownum']+['Account_Number']+['Merchant_Name']+['Merchant_Category_Over_Code']+['Merchant_Category_Over_Desc']+\
-	['Post_Date'] +	['Transaction_Date'] + ['Transaction_Type'] +['Merchant_Country_Over']+['Credit_Limit']+['Amount']+['Balance']+\
+	writer.writerow(['rownum']+['Account_Number']+['Merchant_Name']+['Merchant_Category_Code']+['Merchant_Category_Desc']+\
+	['Post_Date'] +	['Transaction_Date'] + ['Transaction_Type'] +['Merchant_Country']+['Credit_Limit']+['Amount']+['Balance']+\
 	['CC_NO']+['CC_TYPE'])
 	# Overpayments with green transactions - green activity that doesn't trigger red flags
 	#generate amount for current transaction with 33%-66% distribution on credits and debits
-	generate_cc_data(Merchant_Category_Green,Country_Green,4,-2,200000,count)
+	generate_cc_data(Merchant_Category_Green,Country_Green,4,-2,160000,count)
 
 	#Yellow Transactions are defined by Merchant Category, Transaction Types and Country_Yellow.
 	#generate amount for current transaction with 50%-50% distribution on credits and debits
-	generate_cc_data(Merchant_Category_Yellow,Country_Yellow,3,-1,1000000,count)
+	generate_cc_data(Merchant_Category_Yellow,Country_Yellow,3,-1,800000,count)
 	
 	#Green Transactions are defined by Merchant Category, Transaction Types and Country_Green.
 	#generate amount for current transaction with 50%-50% distribution on credits and debits
-	generate_cc_data(Merchant_Category_Green,Country_Green,3,-1,8500000,count)
+	generate_cc_data(Merchant_Category_Green,Country_Green,3,-1,6800000,count)
 	
 	#Country_Red Risk is distrubuted in three categories from the US AML Risk Guide Table 
 	#generate amount for current transaction with 50%-50% distribution on credits and debits
-	generate_cc_data(Merchant_Category_Red,Country_Red,3,-1,100000,count)
+	generate_cc_data(Merchant_Category_Red,Country_Red,3,-1,80000,count)
 	
 	#generate ML activity that consists of merchant credits without matching payments
-	generate_cc_credits(Merchant_Category_Green,100000,count)
+	generate_cc_credits(Merchant_Category_Green,80000,count)
 	
 	#Red Transactions with payments from non BMO entities 
-	gen_cc_external(Merchant_Category_Red,100000,count)
+	gen_cc_external(Merchant_Category_Red,80000,count)
