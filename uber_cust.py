@@ -154,11 +154,11 @@ fake = Faker()
 
 with open('uber_cust.csv','w') as f1:
 	writer=csv.writer(f1, delimiter=',',lineterminator='\n',)
-	writer.writerow(['RowNum']+['AccountID']+['Acct_Type']+['Num_CCs']+['Name']+['SSN']+['Authoized_Name2']+['SSN2']+\
-	['Authoized_Name3']+['SSN3']+['Authoized_Name4']+['SSN4']+['CreditCardNumber']+['CreditCardType']+['Employer']+['CustEmail']+\
-	['Occupation']+['City']+['State']+['Zip']+['Country']+['Previous_City']+['Previous_State']+\
-	['Previous_Zip']+['Previous_Country']+['DOB']+['PEP']+['SAR']+['ClosedAccount']+['High_Risk']+\
-	['Risk_Rating']+['RELATED_ACCT']+['RELATED_TYPE']+['PARTY_TYPE']+['PARTY_RELATION']+['PARTY_STARTDATE']+['PARTY_ENDDATE']+\
+	writer.writerow(['ROWNUM']+['ACCOUNTID']+['ACCT_TYPE']+['NUM_CCS']+['NAME']+['SSN']+['AUTHOIZED_NAME2']+['SSN2']+\
+	['AUTHOIZED_NAME3']+['SSN3']+['AUTHOIZED_NAME4']+['SSN4']+['CREDITCARDNUMBER']+['CREDITCARDTYPE']+['EMPLOYER']+['CUSTEMAIL']+\
+	['OCCUPATION']+['CITY']+['STATE']+['ZIP']+['COUNTRY']+['PREVIOUS_CITY']+['PREVIOUS_STATE']+\
+	['PREVIOUS_ZIP']+['PREVIOUS_COUNTRY']+['DOB']+['PEP']+['SAR']+['CLOSEDACCOUNT']+['HIGH_RISK']+\
+	['RISK_RATING']+['RELATED_ACCT']+['RELATED_TYPE']+['PARTY_TYPE']+['PARTY_RELATION']+['PARTY_STARTDATE']+['PARTY_ENDDATE']+\
 	['LARGE_CASH_EXEMPT']+['DEMARKET_FLAG']+['DEMARKET_DATE']+['PROB_DEFAULT_RISKR']+['OFFICIAL_LANG_PREF']+['CONSENT_SHARING']+\
 	['PREFERRED_CHANNEL']+['PRIMARY_BRANCH_NO']+['CUSTOMER_STATUS']+['DEPENDANTS_COUNT']+['SEG_MODEL_ID']+['SEG_MODEL_TYPE']+\
 	['SEG_MODEL_NAME']+['SEG_MODEL_GROUP']+['SEG_M_GRP_DESC']+['SEG_MODEL_SCORE']+['ARMS_MANUFACTURER']+['AUCTION']+\
@@ -168,7 +168,7 @@ with open('uber_cust.csv','w') as f1:
 	['MEDICAL_MARIJUANA_DISPENSARY']+['MONEY_SERVICE_BUSINESS']+['NAICS_CODE']+['NONREGULATED_FINANCIAL_INSTITUTION']+\
 	['NOT_PROFIT']+['OCCUPATION']+['PRIVATELY_ATM_OPERATOR']+['PRODUCTS']+['SALES_USED_VEHICLES']+['SERVICES']+\
 	['SIC_CODE']+['STOCK_MARKET_LISTING']+['THIRD_PARTY_PAYMENT_PROCESSOR']+['TRANSACTING_PROVIDER']+['ADDITIONAL_NAME']+\
-	['HIGH_NET_WORTH']+['Use_Case_Scenario'])
+	['HIGH_NET_WORTH']+['USE_CASE_SCENARIO'])
 	for i in range(100):
 		acct = randrange(100000,100000000,1)
 		No_CCs =random.choice(Number_CC) 
