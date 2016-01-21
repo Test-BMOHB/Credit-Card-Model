@@ -230,7 +230,7 @@ with open('uber_cust_1M.csv','w') as f1:
 	['NOT_PROFIT']+['PRIVATELY_ATM_OPERATOR']+['PRODUCTS']+['SALES_USED_VEHICLES']+['SERVICES']+\
 	['SIC_CODE']+['STOCK_MARKET_LISTING']+['THIRD_PARTY_PAYMENT_PROCESSOR']+['TRANSACTING_PROVIDER']+['HIGH_NET_WORTH']+['HIGH_RISK']+['RISK_RATING']+['USE_CASE_SCENARIO'])
 	#Loop for number of accounts to generate
-	for i in range(1000):
+	for i in range(18500000):
 		#Initiate High Risk Flags
 		#Politically Exposed Person 
 		PEP='No'
