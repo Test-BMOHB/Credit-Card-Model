@@ -212,7 +212,7 @@ Use_Case = [1,1,1,1,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
 fake = Faker()
 
 #Creates CSV
-with open('uber_cust_1M.csv','w') as f1:
+with open('uber_cust.csv','w') as f1:
 	#Writer for CSV...Comma delimited...Return for a new line
 	writer=csv.writer(f1, delimiter=',',lineterminator='\n',)
 	#Header Row
