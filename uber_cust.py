@@ -5,8 +5,8 @@
 #Description  : Code that generates customer data
 #-----------------------------------------------------------------------------
 # History  | ddmmyyyy  |  User     |                Changes       
-#          | 01192016  | Ivana D.  | Intial Coding Steps, logic, lists, etc...
-#			 01202016  | Jeff K.   | Added comments
+#          | 01192016  | Ivana D.  | Intial Coding Steps, logic, ref lists, etc...
+#			 01202016  | Jeff K.   | Added comments, ref lists
 #-----------------------------------------------------------------------------*/
 #Reference data is located on the test-bmohb console gs://creditcardtransactionsv2
 
