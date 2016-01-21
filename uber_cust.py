@@ -16,9 +16,10 @@ from random import shuffle
 from faker import Faker
 from barnum import gen_data
 import csv
-import Branch_Zip
 import NAICS 
 import random 
+import geo_data
+import zips
 
 #Dictionary for client whose net worth is over $500K
 HighNetWorth = ['Yes','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No']
@@ -212,7 +213,7 @@ Use_Case = [1,1,1,1,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
 fake = Faker()
 
 #Creates CSV
-with open('uber_cust.csv','w') as f1:
+with open('uber_cust_1M.csv','w') as f1:
 	#Writer for CSV...Comma delimited...Return for a new line
 	writer=csv.writer(f1, delimiter=',',lineterminator='\n',)
 	#Header Row
@@ -230,7 +231,7 @@ with open('uber_cust.csv','w') as f1:
 	['NOT_PROFIT']+['PRIVATELY_ATM_OPERATOR']+['PRODUCTS']+['SALES_USED_VEHICLES']+['SERVICES']+\
 	['SIC_CODE']+['STOCK_MARKET_LISTING']+['THIRD_PARTY_PAYMENT_PROCESSOR']+['TRANSACTING_PROVIDER']+['HIGH_NET_WORTH']+['HIGH_RISK']+['RISK_RATING']+['USE_CASE_SCENARIO'])
 	#Loop for number of accounts to generate
-	for i in range(18500000):
+	for i in range(1000):
 		#Initiate High Risk Flags
 		#Politically Exposed Person 
 		PEP='No'
@@ -271,8 +272,8 @@ with open('uber_cust.csv','w') as f1:
 		mdl=[]
 		for j in range(No_CCs-1):		
 			names.insert(j,fake.name())
-			tmp=gen_data.create_name()
-			mdl.insert(j,tmp[0])
+			tmp2=gen_data.create_name()
+			mdl.insert(j,tmp2[0])
 			ssn.insert(j,(str(randrange(101,1000,1))+str(randrange(10,100,1))+str(randrange(1000,10000,1))))
 						
 		#Name and SSN is set to blank if less than 4 customers on an account
@@ -291,13 +292,15 @@ with open('uber_cust.csv','w') as f1:
 		#Add CC_Number to control list to prevent duplicates
 		CC_list.extend(CC_NO[1][0])
 		#Add data elements to current csv row
-		row.extend([names[0],mdl[0],ssn[0],names[1],mdl[1],ssn[1],names[2],mdl[2],ssn[2],CC_NO[1][0],CC_NO[0],gen_data.create_company_name(),\
+		row.extend([names[0],mdl[0],ssn[0],names[1],mdl[1],ssn[1],names[2],mdl[2],ssn[2],CC_NO[1][0],CC_NO[0],gen_data.create_company_name()+' '+tmp[1],\
 		gen_data.create_email(),gen_data.create_job_title()])
                                 
 		#Creates Current Address
-		addr=gen_data.create_city_state_zip()
+		zip=random.choice(zips.zip)
+		addr=geo_data.create_city_state_zip[zip]
 		#Creates Previous address
-		addr2=gen_data.create_city_state_zip()
+		zip2=random.choice(zips.zip)
+		addr2=geo_data.create_city_state_zip[zip2]
                                                                 
 		#Add additional data elements to current csv row
 		lrg_cash_ex=random.choice(Yes_No)
@@ -319,7 +322,7 @@ with open('uber_cust.csv','w') as f1:
 		if (max((randrange(0,101,1)-99),0)==1):
 			PEP='Yes'
 
-		row.extend([addr[1],addr[2],addr[0],'US',addr2[1],addr2[2],addr2[0],'US',gen_data.create_birthday(min_age=2, max_age=85),PEP,SAR,Clsd])                            
+		row.extend([addr[0],addr[1],zip,'US',addr2[0],addr2[1],zip2,'US',gen_data.create_birthday(min_age=2, max_age=85),PEP,SAR,Clsd])                            
 		#Start Generating related accounts from account list once 10,000 accounts are generated
 		if i > 10000: 
 			rel = random.choice(acct_list)*max((randrange(0,10000,1)-9999),0)
@@ -349,7 +352,7 @@ with open('uber_cust.csv','w') as f1:
 		else: 
 			row.extend(['No',''])                                             
 		#Add additional data elements to current csv row
-		row.extend([random.choice(Branch_Zip.Branch_Zip),random.choice(Customer_Status),randrange(0,5,1)])
+		row.extend([zip,random.choice(Customer_Status),randrange(0,5,1)])
                                 
 		#Generates Segment ID then adds additional Segment data based on the selection to the current csv row
 		Segment_ID = randrange(0,5,1)%5
