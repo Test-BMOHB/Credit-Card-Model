@@ -6,7 +6,7 @@
 #-----------------------------------------------------------------------------
 # History  | ddmmyyyy  |  User     |                Changes       
 #          | 01192016  | Ivana D.  | Intial Coding Steps, logic, ref lists, etc...
-#			 01202016  | Jeff K.   | Added comments, ref lists
+#			 01202016  | Jeff K.   | Added comments, ref lists, etc...
 #-----------------------------------------------------------------------------*/
 #Reference data is located on the test-bmohb console gs://creditcardtransactionsv2
 
@@ -213,7 +213,7 @@ Use_Case = [1,1,1,1,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
 fake = Faker()
 
 #Creates CSV
-with open('uber_cust_1M.csv','w') as f1:
+with open('uber_cust.csv','w') as f1:
 	#Writer for CSV...Comma delimited...Return for a new line
 	writer=csv.writer(f1, delimiter=',',lineterminator='\n',)
 	#Header Row
@@ -231,7 +231,7 @@ with open('uber_cust_1M.csv','w') as f1:
 	['NOT_PROFIT']+['PRIVATELY_ATM_OPERATOR']+['PRODUCTS']+['SALES_USED_VEHICLES']+['SERVICES']+\
 	['SIC_CODE']+['STOCK_MARKET_LISTING']+['THIRD_PARTY_PAYMENT_PROCESSOR']+['TRANSACTING_PROVIDER']+['HIGH_NET_WORTH']+['HIGH_RISK']+['RISK_RATING']+['USE_CASE_SCENARIO'])
 	#Loop for number of accounts to generate
-	for i in range(1000):
+	for i in range(18500000):
 		#Initiate High Risk Flags
 		#Politically Exposed Person 
 		PEP='No'
