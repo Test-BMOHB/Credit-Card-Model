@@ -6,7 +6,7 @@
 #-----------------------------------------------------------------------------
 # History  | ddmmyyyy  |  User     |                Changes       
 #          | 01192016  | Ivana D.  | Intial Coding Steps, logic, lists, etc...
-#			 01202016  | Jeff K.   | Added comments/reference lists/etc...
+#			 01202016  | Jeff K.   | Added comments
 #-----------------------------------------------------------------------------*/
 #Reference data is located on the test-bmohb console gs://creditcardtransactionsv2
 
@@ -29,7 +29,7 @@ Party_Type = ['Person','Non-Person']
 #Dictionary for a BMO customer
 Party_Relation = ['Customer','Non-Customer']
 #Dictionary for random Yes/No Flag
-Yes_No = ['Yes','No','No','No','No','No','No','No','No','No','No'] 
+Yes_No = ['Yes','No','No','No','No','No','No','No','No','No','No','No','No'] 
 #Dictionary for random Yes/No Consent
 Yes_No_Consent = ['Yes','No','No','No','No']
 #Dictionary for equal Yes/No Flag
@@ -212,160 +212,237 @@ Use_Case = [1,1,1,1,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
 fake = Faker()
 
 #Creates CSV
-with open('new_uber_cust.csv','w') as f1:
-                #Writer for CSV...Comma delimited...Return for a new line
-				writer=csv.writer(f1, delimiter=',',lineterminator='\n',)
-                #Header Row
-				writer.writerow(['ROWNUM']+['ACCOUNTID']+['ACCT_TYPE']+['NUM_CCS']+['NAME']+['SSN']+['AUTHORIZED_NAME2']+['SSN2']+\
-                ['AUTHORIZED_NAME3']+['SSN3']+['AUTHORIZED_NAME4']+['SSN4']+['CREDITCARDNUMBER']+['CREDITCARDTYPE']+['EMPLOYER']+['CUSTEMAIL']+\
-                ['OCCUPATION']+['CITY']+['STATE']+['ZIP']+['COUNTRY']+['PREVIOUS_CITY']+['PREVIOUS_STATE']+\
-                ['PREVIOUS_ZIP']+['PREVIOUS_COUNTRY']+['DOB']+['PEP']+['SAR']+['CLOSEDACCOUNT']+['HIGH_RISK']+\
-                ['RISK_RATING']+['RELATED_ACCT']+['RELATED_TYPE']+['PARTY_TYPE']+['PARTY_RELATION']+['PARTY_STARTDATE']+['PARTY_ENDDATE']+\
-                ['LARGE_CASH_EXEMPT']+['DEMARKET_FLAG']+['DEMARKET_DATE']+['PROB_DEFAULT_RISKR']+['OFFICIAL_LANG_PREF']+['CONSENT_SHARING']+\
-                ['PREFERRED_CHANNEL']+['PRIMARY_BRANCH_NO']+['CUSTOMER_STATUS']+['DEPENDANTS_COUNT']+['SEG_MODEL_ID']+['SEG_MODEL_TYPE']+\
-                ['SEG_MODEL_NAME']+['SEG_MODEL_GROUP']+['SEG_M_GRP_DESC']+['SEG_MODEL_SCORE']+['ARMS_MANUFACTURER']+['AUCTION']+\
-                ['CASHINTENSIVE_BUSINESS']+['CASINO_GAMBLING']+['CHANNEL_ONBOARDING']+['CHANNEL_ONGOING_TRANSACTIONS']+['CLIENT_NET_WORTH']+\
-                ['COMPLEX_HI_VEHICLE']+['DEALER_PRECIOUS_METAL']+['DIGITAL_PM_OPERATOR']+['EMBASSY_CONSULATE']+['EXCHANGE_CURRENCY']+\
-                ['FOREIGN_FINANCIAL_INSTITUTION']+['FOREIGN_GOVERNMENT']+['FOREIGN_NONBANK_FINANCIAL_INSTITUTION']+['INTERNET_GAMBLING']+\
-                ['MEDICAL_MARIJUANA_DISPENSARY']+['MONEY_SERVICE_BUSINESS']+['NAICS_CODE']+['NONREGULATED_FINANCIAL_INSTITUTION']+\
-                ['NOT_PROFIT']+['OCCUPATION']+['PRIVATELY_ATM_OPERATOR']+['PRODUCTS']+['SALES_USED_VEHICLES']+['SERVICES']+\
-                ['SIC_CODE']+['STOCK_MARKET_LISTING']+['THIRD_PARTY_PAYMENT_PROCESSOR']+['TRANSACTING_PROVIDER']+['ADDITIONAL_NAME']+\
-                ['HIGH_NET_WORTH']+['USE_CASE_SCENARIO'])
-                #Loop for number of accounts to generate
-				for i in range(18500000):
-                        			#Random number generator for account number
-						acct = randrange(100000,100000000,1)
-                        			#Random choice for number of credit cards per account number
-						No_CCs = random.choice(Number_CC) 
-                        
-						while acct_list.count(acct) > 0: 
-								acct = randrange(100000,100000000,1)
+with open('uber_cust_1M.csv','w') as f1:
+	#Writer for CSV...Comma delimited...Return for a new line
+	writer=csv.writer(f1, delimiter=',',lineterminator='\n',)
+	#Header Row
+	writer.writerow(['ROWNUM']+['ACCOUNTID']+['ACCT_TYPE']+['NUM_CCS']+['NAME']+['M_NAME']+['SSN']+['AUTHORIZED_NAME2']+['M_NAME2']+['SSN2']+\
+	['AUTHORIZED_NAME3']+['M_NAME3']+['SSN3']+['AUTHORIZED_NAME4']+['M_NAME4']+['SSN4']+['CREDITCARDNUMBER']+['CREDITCARDTYPE']+['EMPLOYER']+['CUSTEMAIL']+\
+	['OCCUPATION']+['CITY']+['STATE']+['ZIP']+['COUNTRY']+['PREVIOUS_CITY']+['PREVIOUS_STATE']+\
+	['PREVIOUS_ZIP']+['PREVIOUS_COUNTRY']+['DOB']+['PEP']+['SAR']+['CLOSEDACCOUNT']+['RELATED_ACCT']+['RELATED_TYPE']+['PARTY_TYPE']+['PARTY_RELATION']+['PARTY_STARTDATE']+['PARTY_ENDDATE']+\
+	['LARGE_CASH_EXEMPT']+['DEMARKET_FLAG']+['DEMARKET_DATE']+['PROB_DEFAULT_RISKR']+['OFFICIAL_LANG_PREF']+['CONSENT_SHARING']+\
+	['PREFERRED_CHANNEL']+['PRIMARY_BRANCH_NO']+['CUSTOMER_STATUS']+['DEPENDANTS_COUNT']+['SEG_MODEL_ID']+['SEG_MODEL_TYPE']+\
+	['SEG_MODEL_NAME']+['SEG_MODEL_GROUP']+['SEG_M_GRP_DESC']+['SEG_MODEL_SCORE']+['ARMS_MANUFACTURER']+['AUCTION']+\
+	['CASHINTENSIVE_BUSINESS']+['CASINO_GAMBLING']+['CHANNEL_ONBOARDING']+['CHANNEL_ONGOING_TRANSACTIONS']+['CLIENT_NET_WORTH']+\
+	['COMPLEX_HI_VEHICLE']+['DEALER_PRECIOUS_METAL']+['DIGITAL_PM_OPERATOR']+['EMBASSY_CONSULATE']+['EXCHANGE_CURRENCY']+\
+	['FOREIGN_FINANCIAL_INSTITUTION']+['FOREIGN_GOVERNMENT']+['FOREIGN_NONBANK_FINANCIAL_INSTITUTION']+['INTERNET_GAMBLING']+\
+	['MEDICAL_MARIJUANA_DISPENSARY']+['MONEY_SERVICE_BUSINESS']+['NAICS_CODE']+['NONREGULATED_FINANCIAL_INSTITUTION']+\
+	['NOT_PROFIT']+['PRIVATELY_ATM_OPERATOR']+['PRODUCTS']+['SALES_USED_VEHICLES']+['SERVICES']+\
+	['SIC_CODE']+['STOCK_MARKET_LISTING']+['THIRD_PARTY_PAYMENT_PROCESSOR']+['TRANSACTING_PROVIDER']+['HIGH_NET_WORTH']+['HIGH_RISK']+['RISK_RATING']+['USE_CASE_SCENARIO'])
+	#Loop for number of accounts to generate
+	for i in range(1000):
+		#Initiate High Risk Flags
+		#Politically Exposed Person 
+		PEP='No'
+		#Customer with a Suspicous Activity Report
+		SAR='No'
+		#Customer with a closed account
+		Clsd='No'
+		#High risk customer flag
+		high_risk='No'
+		#High Risk Rating
+		hr_rating=''
+		#Customer that was demarketed by the bank
+		demarket='No'
+		dem_date=''
+		#generate closed acct flag
+		if (max((randrange(0,98,1)-96),0)==1):
+			Clsd='Yes'
 
-						#Randomly generates customer name
-						name = gen_data.create_name()
-						#Adds account number to account dictionary
-						acct_list.extend([acct])
-						#Creates a new row and adds data elements
-						row = [i] + [acct] + [random.choice(Acct_Type)]+[No_CCs]+[name[0]+" "+name[1]]+\
-                        			[(str(randrange(101,1000,1))+str(randrange(10,100,1))+str(randrange(1000,10000,1)))]
-						#Dictionary for names list set to blank
-						names=[]
-                        			#Dictionary for Social Security Number list set to blank
-						ssn=[]
-						#Generates Name and SSN for Credit Users
-                        
-						for j in range(No_CCs-1):
+		#Random number generator for account number
+		acct = randrange(100000,100000000,1)
+		#Random choice for number of credit cards per account number
+		No_CCs = random.choice(Number_CC)			
+		while acct_list.count(acct) > 0: 
+			acct = randrange(100000,100000000,1)
+		#Randomly generates customer name
+		name = fake.name() 
+		tmp=gen_data.create_name()
+		#Adds account number to account dictionary
+		acct_list.extend([acct])
+		#Creates a new row and adds data elements
+		row = [i]+[acct]+[random.choice(Acct_Type)]+[No_CCs]+[name]+[tmp[0]]+[(str(randrange(101,1000,1))+str(randrange(10,100,1))+str(randrange(1000,10000,1)))]
+		#Dictionary for names list set to blank
+		names=[]
+		#Dictionary for Social Security Number list set to blank
+		ssn=[]
+		#Generates Name and SSN for Credit Users
+        #Middle Name to reduce name dups
+		mdl=[]
+		for j in range(No_CCs-1):		
+			names.insert(j,fake.name())
+			tmp=gen_data.create_name()
+			mdl.insert(j,tmp[0])
+			ssn.insert(j,(str(randrange(101,1000,1))+str(randrange(10,100,1))+str(randrange(1000,10000,1))))
 						
-								names.insert(j,fake.name())
-								ssn.insert(j,(str(randrange(101,1000,1))+str(randrange(10,100,1))+str(randrange(1000,10000,1))))
+		#Name and SSN is set to blank if less than 4 customers on an account
 						
-						#Name and SSN is sent to blank if less thans 4
-						
-                        			for k in range(4-No_CCs):
-						
-								names.insert(No_CCs+k,'')
-								ssn.insert(No_CCs+k,'')
+		for k in range(4-No_CCs):			
+			names.insert(No_CCs+k,'')
+			ssn.insert(No_CCs+k,'')
+			mdl.insert(No_CCs,'')
+		#Sets CC_NO to a random credit card number
+		CC_NO=gen_data.cc_number()
                                 
-						#Sets CC_NO to a random credit card number
-						CC_NO=gen_data.cc_number()
-                                
-						#Extract CC_Number from the tuple returned by CC_Number...Tuple contains CC Number and Type
-                        			while CC_list.count(CC_NO[1][0]) > 0: 
-                                				CC_NO=gen_data.cc_number()
+		#Extract CC_Number from the tuple returned by CC_Number...Tuple contains CC Number and Type
+		while CC_list.count(CC_NO[1][0]) > 0: 
+			CC_NO=gen_data.cc_number()
 								
-                        			#Add CC_Number to control list to prevent duplicates
-						CC_list.extend(CC_NO[1][0])
-			                        #Add data elements to current csv row
-						row.extend([names[0],ssn[0],names[1],ssn[1],names[2],ssn[2],CC_NO[1][0],CC_NO[0],gen_data.create_company_name(),\
-			                        gen_data.create_email(),gen_data.create_job_title()])
+		#Add CC_Number to control list to prevent duplicates
+		CC_list.extend(CC_NO[1][0])
+		#Add data elements to current csv row
+		row.extend([names[0],mdl[0],ssn[0],names[1],mdl[1],ssn[1],names[2],mdl[2],ssn[2],CC_NO[1][0],CC_NO[0],gen_data.create_company_name(),\
+		gen_data.create_email(),gen_data.create_job_title()])
                                 
-						#Creates Current Address
-			                        addr=gen_data.create_city_state_zip()
-			                        #Creates Previous address
-						addr2=gen_data.create_city_state_zip()
+		#Creates Current Address
+		addr=gen_data.create_city_state_zip()
+		#Creates Previous address
+		addr2=gen_data.create_city_state_zip()
                                                                 
-			                        #Add additional data elements to current csv row
-						row.extend([addr[1],addr[2],addr[0],'US',addr2[1],addr2[2],addr2[0],'US',gen_data.create_birthday(min_age=2, max_age=85),\
-			                        max((randrange(0,101,1)-99),0),max((randrange(0,101,1)-99),0),max((randrange(0,101,1)-99),0),\
-                        			max((randrange(0,101,1)-99),0),max((randrange(0,101,1)-99),0)])
-                                
-						#Start Generating related accounts from account list once 10,000 accounts are generated
-                        			if i > 10000: 
-                        					rel = random.choice(acct_list)*max((randrange(0,10000,1)-9999),0)
-                                				if rel <> 0: 
-                                        					row.append(rel[0])
-					                                        row.append(random.choice(Related_Type))
-                                				else:
-                                					        row.append('')
-                                        					row.append('')
-                        			else:
-                                				row.append('')
-				                                row.append('')
-                                                                
-                        			#Randomly generates account start date
-						party_start=gen_data.create_date(past=True)
-                        			#Randomly selects consent option for sharing info
-						Consent_Share = random.choice(Yes_No_Consent)
-                                
-						#Add additional data elements to current csv row
-                        			row.extend([random.choice(Party_Type),random.choice(Party_Relation),party_start,gen_data.create_date(past=True),\
-			                        random.choice(Yes_No),random.choice(Yes_No),gen_data.create_date(),randrange(0,100,1),random.choice(Official_Lang)])
+		#Add additional data elements to current csv row
+		lrg_cash_ex=random.choice(Yes_No)
+		
+		#Condition for SARs and Demarketed Clients 
+		if(Clsd=='Yes'):
+			#1% of closed accounts are demarketed but never had a SAR filed
+			if (max((randrange(0,101,1)-99),0)==1 and SAR=='No'):
+				demarket='Yes'
+				dem_date=gen_data.create_date(past=True)
+			if (max((randrange(0,11,1)-9),0)==1 and demarket=='No'):
+				#10% of closed accounts have SARs 
+				SAR='Yes'
+				#90% of closed accounts with SARs are demarketed
+				if(max((randrange(0,11,1)-9),0)==0):
+					demarket='Yes'
+					dem_date=gen_data.create_date(past=True)
 
-						#Add data element preferred methond of contact for yes to share info...if not then blank to current row
-                        			if Consent_Share == 'Yes':
-                        					row.extend(['Yes',random.choice(Preffered_Channel)])
-                        			else: 
-                                				row.extend(['No',''])
-                                                
-                        			#Add additional data elements to current csv row
-						row.extend([random.choice(Branch_Zip.Branch_Zip),random.choice(Customer_Status),randrange(0,5,1)])
+		if (max((randrange(0,101,1)-99),0)==1):
+			PEP='Yes'
+
+		row.extend([addr[1],addr[2],addr[0],'US',addr2[1],addr2[2],addr2[0],'US',gen_data.create_birthday(min_age=2, max_age=85),PEP,SAR,Clsd])                            
+		#Start Generating related accounts from account list once 10,000 accounts are generated
+		if i > 10000: 
+			rel = random.choice(acct_list)*max((randrange(0,10000,1)-9999),0)
+			if rel <> 0: 
+				row.append(rel[0])
+				row.append(random.choice(Related_Type))
+			else:
+				row.append('')
+				row.append('')
+		else:
+			row.append('')
+			row.append('')
+                                                                
+		#Randomly generates account start date
+		party_start=gen_data.create_date(past=True)
+		#Randomly selects consent option for sharing info
+		Consent_Share = random.choice(Yes_No_Consent)  
+		
+		#Add additional data elements to current csv row
+		
+		
+		row.extend([random.choice(Party_Type),random.choice(Party_Relation),party_start,gen_data.create_date(past=True),\
+		lrg_cash_ex,demarket,dem_date,randrange(0,100,1),random.choice(Official_Lang)])
+		#Add data element preferred methond of contact for yes to share info...if not then blank to current row
+		if Consent_Share == 'Yes':
+			row.extend(['Yes',random.choice(Preffered_Channel)])
+		else: 
+			row.extend(['No',''])                                             
+		#Add additional data elements to current csv row
+		row.extend([random.choice(Branch_Zip.Branch_Zip),random.choice(Customer_Status),randrange(0,5,1)])
                                 
-						#Generates Segment ID then adds additional Segment data based on the selection to the current csv row
-                        			Segment_ID = randrange(0,5,1)%5
+		#Generates Segment ID then adds additional Segment data based on the selection to the current csv row
+		Segment_ID = randrange(0,5,1)%5
                                                 
-                        			if Segment_ID == 0:
-                        				        row.extend([Model_ID[0],Seg_Model_Type[0],Seg_Model_Name[0],Seg_Model_Group[0],Seg_Model_Description[0],Seg_Model_Score[0]])
+		if Segment_ID == 0:
+			row.extend([Model_ID[0],Seg_Model_Type[0],Seg_Model_Name[0],Seg_Model_Group[0],Seg_Model_Description[0],Seg_Model_Score[0]])
                                                 
-                        			if Segment_ID == 1:
-                        				        row.extend([Model_ID[1],Seg_Model_Type[1],Seg_Model_Name[1],Seg_Model_Group[1],Seg_Model_Description[1],Seg_Model_Score[1]])
+		if Segment_ID == 1:
+			row.extend([Model_ID[1],Seg_Model_Type[1],Seg_Model_Name[1],Seg_Model_Group[1],Seg_Model_Description[1],Seg_Model_Score[1]])
+															
+		if Segment_ID == 2:
+			row.extend([Model_ID[2],Seg_Model_Type[2],Seg_Model_Name[2],Seg_Model_Group[2],Seg_Model_Description[2],Seg_Model_Score[2]])
                                                                 
-                        			if Segment_ID == 2:
-                        				        row.extend([Model_ID[2],Seg_Model_Type[2],Seg_Model_Name[2],Seg_Model_Group[2],Seg_Model_Description[2],Seg_Model_Score[2]])
-                                                                
-                        			if Segment_ID == 3:
-                        				        row.extend([Model_ID[3],Seg_Model_Type[3],Seg_Model_Name[3],Seg_Model_Group[3],Seg_Model_Description[3],Seg_Model_Score[3]])
+		if Segment_ID == 3:
+			row.extend([Model_ID[3],Seg_Model_Type[3],Seg_Model_Name[3],Seg_Model_Group[3],Seg_Model_Description[3],Seg_Model_Score[3]])
                         	                                        
-                        			if Segment_ID == 4:
-                        				        row.extend([Model_ID[4],Seg_Model_Type[4],Seg_Model_Name[4],Seg_Model_Group[4],Seg_Model_Description[4],Seg_Model_Score[4]])
+		if Segment_ID == 4:
+			row.extend([Model_ID[4],Seg_Model_Type[4],Seg_Model_Name[4],Seg_Model_Group[4],Seg_Model_Description[4],Seg_Model_Score[4]])
                                                                                 
-                        			#Add additional data elements to current csv row
-						row.extend([random.choice(Arms_Manufacturer),random.choice(Auction),random.choice(CashIntensive_Business),
-			                        random.choice(Casino_Gambling),random.choice(Channel_Onboarding),random.choice(Channel_Ongoing_Transactions)])
+		#Add additional data elements to current csv row
+		hr0=random.choice(Arms_Manufacturer)
+		hr01=random.choice(Auction)
+		hr02=random.choice(CashIntensive_Business)
+		hr03=random.choice(Casino_Gambling)
+		hr04=random.choice(Channel_Onboarding)
+		hr05=random.choice(Channel_Ongoing_Transactions)
+		
+		row.extend([hr0,hr01,hr02,hr03,hr04,hr05])
                                 
-						#Randomly select whther customer has a High Net Worth
-			                        HighNetWorthFlag = random.choice(HighNetWorth)
+		#Randomly select whther customer has a High Net Worth
+		HighNetWorthFlag = random.choice(HighNetWorth)
                                 
-						#Randomly Generates customer net worth based on the above flag
-			                        if HighNetWorthFlag == 'Yes': 
-				                                row.append(max(max((randrange(0,100,1)-99),0)*randrange(1000000,25000000,1),randrange(1000000,5000000,1)))
-			                        else: 
-				                                flag=random.choice(LowNet)
-				                                if flag==0:
-					                                        row.append(randrange(-250000,600000,1))
-				                                else: 
-															if flag==1:
-																		row.append(randrange(149000,151000,1))
-															else:
-																		row.append(randrange(40000,50000,1))
-                                                                
-			                        #Add data elements to current csv row
-						row.extend([random.choice(Complex_HI_Vehicle),random.choice(Dealer_Precious_Metal),random.choice(Digital_PM_Operator),
-			                        random.choice(Embassy_Consulate),random.choice(Exchange_Currency),random.choice(Foreign_Financial_Institution),
-                        			random.choice(Foreign_Government),random.choice(Foreign_NonBank_Financial_Institution),random.choice(Internet_Gambling),
-			                        random.choice(Medical_Marijuana_Dispensary),random.choice(Money_Service_Business),random.choice(NAICS.NAICS_Code),
-                        			random.choice(NonRegulated_Financial_Institution),random.choice(Not_Profit),random.choice(Occupation),random.choice(Privately_ATM_Operator),
-			                        random.choice(Products),random.choice(Sales_Used_Vehicles),random.choice(Services),random.choice(SIC_Code),
-                        			random.choice(Stock_Market_Listing),random.choice(Third_Party_Payment_Processor),random.choice(Transacting_Provider),
-			                        gen_data.create_name(),HighNetWorthFlag,random.choice(Use_Case)])                  
-                        			#End the current row
-						writer.writerow(row)
+		#Randomly Generates customer net worth based on the above flag
+		if HighNetWorthFlag == 'Yes': 
+			row.append(max(max((randrange(0,100,1)-99),0)*randrange(1000000,25000000,1),randrange(1000000,5000000,1)))
+		else: 
+			flag=random.choice(LowNet)
+			if flag==0:
+				row.append(randrange(-250000,600000,1))
+			else: 
+				if flag==1:
+					row.append(randrange(149000,151000,1))
+				else:
+					row.append(randrange(40000,50000,1))                           
+		#Add data elements to current csv row
+		hr1=random.choice(Complex_HI_Vehicle)
+		hr2=random.choice(Dealer_Precious_Metal)
+		hr3=random.choice(Digital_PM_Operator)
+		hr4=random.choice(Embassy_Consulate)
+		hr5=random.choice(Exchange_Currency)
+		hr6=random.choice(Foreign_Financial_Institution)
+		hr7=random.choice(Foreign_Government)
+		hr8=random.choice(Foreign_NonBank_Financial_Institution)
+		hr9=random.choice(Internet_Gambling)
+		hr10=random.choice(Medical_Marijuana_Dispensary)
+		hr11=random.choice(Money_Service_Business)
+		hr12=random.choice(NAICS.NAICS_Code)
+		hr13=random.choice(NonRegulated_Financial_Institution)
+		hr14=random.choice(Not_Profit)
+		#hr15=random.choice(Occupation)
+		hr16=random.choice(Privately_ATM_Operator)
+		hr17=random.choice(Products)
+		hr18=random.choice(Sales_Used_Vehicles)
+		hr19=random.choice(Services)
+		hr20=random.choice(SIC_Code)
+		hr21=random.choice(Stock_Market_Listing)
+		hr22=random.choice(Third_Party_Payment_Processor)
+		hr23=random.choice(Transacting_Provider)
+		
+		
+		refrating=['1','1','1','2','3','4','2','4','5','5','5','5','5','5','5','5','5','5','5','5']
+		if(PEP=='Yes' or SAR=='Yes' or lrg_cash_ex=='Yes' or demarket=='Yes' or hr0=='Yes'
+		or hr01=='Yes' or hr02=='Yes' or hr03=='Yes' or hr1=='Yes' or hr2=='Yes' or hr3=='Yes' or hr4=='Yes' or
+		hr5=='Yes' or hr6=='Yes' or hr7=='Yes' or hr8=='Yes' or hr9=='Yes' or hr10=='Yes' or hr11=='Yes' or hr13=='Yes' or hr14=='Yes' or
+		hr16=='Yes' or hr17=='Yes' or hr18=='Yes' or hr22=='Yes' or hr23=='Yes' or HighNetWorthFlag=='Yes'):
+			high_risk='Yes'
+			hr_rating=random.choice(refrating)
+			
+		if(SAR=='No' and high_risk=='No'):
+			if(max((randrange(0,101,1)-99),0)==1):
+				high_risk='Yes'
+				hr_rating=random.choice(refrating)
+		if(PEP=='No' and high_risk=='No'):
+			if(max((randrange(0,101,1)-99),0)==1):
+				high_risk='Yes'
+				hr_rating=random.choice(refrating)
+		
+		if(high_risk=='No'):
+			if(max((randrange(0,101,1)-99),0)==1):
+				high_risk='Yes'
+				hr_rating=random.choice(refrating)
+				
+		row.extend([hr1,hr2,hr3,hr4,hr5,hr6,hr7,hr8,hr9,hr10,hr11,hr12,hr13,hr14,hr16,hr17,hr18,hr19,hr20,hr21,hr22,hr23,
+		HighNetWorthFlag,high_risk,hr_rating,random.choice(Use_Case)])
+		#End the current row
+		writer.writerow(row)
