@@ -351,7 +351,7 @@ with open('uber_cust.csv','w') as f1:
 			row.extend(['Yes',random.choice(Preffered_Channel)])
 		else: 
 			row.extend(['No',''])                                             
-		#Add additional data elements to current csv row
+		#DO NOT USE CUST STATUS BELOW - NOT INTEGRATED WITH CLOSED STATUS! Add additional data elements to current csv row
 		row.extend([zip,random.choice(Customer_Status),randrange(0,5,1)])
                                 
 		#Generates Segment ID then adds additional Segment data based on the selection to the current csv row
