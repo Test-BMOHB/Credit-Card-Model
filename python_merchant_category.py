@@ -1,4 +1,4 @@
-All_Merchant_Cat = {'742':'Veterinary Services','0000':'Refund to Customer from Bank','1111':'Customer Payment',
+All_Merchant_Cat = {'742':'Veterinary Services','0000':'Refund to Customer from Bank','1111':'Customer Payment','2222':'Non Customer Payment',
 '763':'Agricultural Cooperative',
 '780':'Landscaping Services',
 '1520':'General Contractors',
