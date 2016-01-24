@@ -172,6 +172,8 @@ def gen_tran(MCC_credits,MCC_debits,Tran_Country_Credits,Tran_Country_Debits,Tra
 				cr_dbt='C'
 				cat = random.choice(MCC_credits)
 				merch = 'Payment'
+				if(tranType=='Merchant Credit'):
+					cat=random.choice(Merchant_Category_Green)
 				row.append(merch)
 				row.append(cat)
 				row.append(python_merchant_cat.All_Merchant_Cat[cat])
@@ -297,20 +299,48 @@ with open('uber_trans.csv','w') as f1:
 			#Use Case 6: Usual ATM withdrawals for cash advance 
 			
 			if(UseCase[i]=='19'):
-				gen_tran(['1111'],Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_ATM_Red,Transaction_Type_Debit_ATM_Red,3,-1,count,i,'Use Case 6 - Red')
+				gen_tran(Account_Holder_Type_Green,Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_ATM_Red,Transaction_Type_Debit_ATM_Red,3,-1,count,i,'Use Case 6 - Red')
 			#Yellow Risk
 			if(UseCase[i]=='20'):
-				gen_tran(['1111'],Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_ATM_Yellow,Transaction_Type_Debit_ATM_Yellow,3,-1,count,i,'Use Case 6 - Yellow')
+				gen_tran(Account_Holder_Type_Green,Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_ATM_Yellow,Transaction_Type_Debit_ATM_Yellow,3,-1,count,i,'Use Case 6 - Yellow')
 			#Green Risk
 			if(UseCase[i]=='21'):
-				gen_tran(['1111'],Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_ATM_Green,Transaction_Type_Debit_ATM_Green,3,-1,count,i,'Use Case 6 - Green')
+				gen_tran(Account_Holder_Type_Green,Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_ATM_Green,Transaction_Type_Debit_ATM_Green,3,-1,count,i,'Use Case 6 - Green')
+			
 			
 			#Use Case 7: Frequent Credit Card transactions at locations "materially distant" from the account address 
-			
+			if(UseCase[i]=='22'):
+				gen_tran(Account_Holder_Type_Green,Merchant_Category_Green,Transaction_DistLoc_Red,Transaction_DistLoc_Red,Transaction_Type_Payments,Transaction_Type_Debit,3,-1,count,i,'Use Case 7 - Red')
+			#Yellow Risk
+			if(UseCase[i]=='23'):
+				gen_tran(Account_Holder_Type_Green,Merchant_Category_Green,Transaction_DistLoc_Yellow,Transaction_DistLoc_Yellow,Transaction_Type_Payments,Transaction_Type_Debit,3,-1,count,i,'Use Case 7 - Yellow')
+			#Green Risk
+			if(UseCase[i]=='24'):
+				gen_tran(Account_Holder_Type_Green,Merchant_Category_Green,Transaction_DistLoc_Green,Transaction_DistLoc_Green,Transaction_Type_Payments,Transaction_Type_Debit,3,-1,count,i,'Use Case 7 - Green')
+						
 			#Use Case 8: Merchant credits without offseting merchant transactions
+			
+			if(UseCase[i]=='25'):
+				gen_tran(Account_Holder_Type_Green,Merchant_Category_Green,['US'],['US'],Transaction_Type_Merchant_Credits_Red,Transaction_Type_Merchant_Debit_Red,3,-1,count,i,'Use Case 8 - Red')
+			#Yellow Risk
+			if(UseCase[i]=='26'):
+				gen_tran(Account_Holder_Type_Green,Merchant_Category_Green,['US'],['US'],Transaction_Type_Merchant_Credits_Yellow,Transaction_Type_Merchant_Debit_Yellow,3,-1,count,i,'Use Case 8 - Yellow')
+			#Green Risk
+			if(UseCase[i]=='27'):
+				gen_tran(Account_Holder_Type_Green,Merchant_Category_Green,['US'],['US'],Transaction_Type_Merchant_Credits_Green,Transaction_Type_Merchant_Debit_Green,3,-1,count,i,'Use Case 8 - Green')
+						
 			
 			#Use Case 9: Hotel room rentals at different hotels over the same time period 
 			
+			if(UseCase[i]=='25'):
+				gen_tran(Account_Holder_Type_Green,Merchant_Category_Green,['US'],['US'],Transaction_Type_Merchant_Credits_Red,Transaction_Type_Merchant_Debit_Red,3,-1,count,i,'Use Case 8 - Red')
+			#Yellow Risk
+			if(UseCase[i]=='26'):
+				gen_tran(Account_Holder_Type_Green,Merchant_Category_Green,['US'],['US'],Transaction_Type_Merchant_Credits_Yellow,Transaction_Type_Merchant_Debit_Yellow,3,-1,count,i,'Use Case 8 - Yellow')
+			#Green Risk
+			if(UseCase[i]=='27'):
+				gen_tran(Account_Holder_Type_Green,Merchant_Category_Green,['US'],['US'],Transaction_Type_Merchant_Credits_Green,Transaction_Type_Merchant_Debit_Green,3,-1,count,i,'Use Case 8 - Green')
+						
 			#Use Case 10: Multiple airline tickets for non-account holders
 			
 			#Use Case 11: Unusually large payments for accumulated balances
