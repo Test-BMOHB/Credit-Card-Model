@@ -230,64 +230,80 @@ with open('uber_trans.csv','w') as f1:
 			#Use Case 1: Threshold for overpayments
 			#Red Risk
 			if(UseCase[i]=='1'):
-				gen_tran(['1111'],Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_Ovpmt_Red,Transaction_Type_Debit_Ovpmt_Red,5,-3,count,i,'Use Case 1 - Red')
+				gen_tran(['1111'],Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_Ovpmt_Red,Transaction_Type_Debit_Ovpmt_Red,5,-3,count,i,'Use Case 1.0 - Red')
 			#Yellow Risk
 			if(UseCase[i]=='2'):
-				gen_tran(['1111'],Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_Ovpmt_Yellow,Transaction_Type_Debit_Ovpmt_Yellow,4,-2,count,i,'Use Case 1 - Yellow')
+				gen_tran(['1111'],Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_Ovpmt_Yellow,Transaction_Type_Debit_Ovpmt_Yellow,4,-2,count,i,'Use Case 1.0 - Yellow')
 			#Green Risk
 			if(UseCase[i]=='3'):
-				gen_tran(['1111'],Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_Ovpmt_Green,Transaction_Type_Debit_Ovpmt_Green,3,-1,count,i,'Use Case 1 - Green')
+				gen_tran(['1111'],Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_Ovpmt_Green,Transaction_Type_Debit_Ovpmt_Green,3,-1,count,i,'Use Case 1.0 - Green')
 			
-			
-			#Use Case 2: Threshold for refunds
+			#Use Case 1: Threshold for refunds
 			#Red Risk
 			if(UseCase[i]=='4'):
-				gen_tran(['1111'],Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_Refund_Red,Transaction_Type_Debit_Refund_Red,5,-3,count,i,'Use Case 2 - Red')
+				gen_tran(['1111'],Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_Refund_Red,Transaction_Type_Debit_Refund_Red,5,-3,count,i,'Use Case 1.1 - Red')
 			#Yellow Risk
 			if(UseCase[i]=='5'):
-				gen_tran(['1111'],Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_Refund_Yellow,Transaction_Type_Debit_Refund_Yellow,4,-2,count,i,'Use Case 2 - Yellow')
+				gen_tran(['1111'],Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_Refund_Yellow,Transaction_Type_Debit_Refund_Yellow,4,-2,count,i,'Use Case 1.1 - Yellow')
 			#Green Risk
 			if(UseCase[i]=='6'):
-				gen_tran(['1111'],Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_Refund_Green,Transaction_Type_Debit_Refund_Green,3,-1,count,i,'Use Case 2 - Green')
+				gen_tran(['1111'],Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_Refund_Green,Transaction_Type_Debit_Refund_Green,3,-1,count,i,'Use Case 1.1 - Green')
 				
-			#Use Case 3: Method of payment to card balances 
+			#Use Case 2: Method of payment to card balances 
 			#Red Risk
 			if(UseCase[i]=='7'):
-				gen_tran(['1111'],Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_Payments_Red,Transaction_Type_Debit_Payments_Red,3,-1,count,i,'Use Case 3 - Red')
+				gen_tran(['1111'],Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_Payments_Red,Transaction_Type_Debit_Payments_Red,3,-1,count,i,'Use Case 2 - Red')
 			#Yellow Risk
 			if(UseCase[i]=='8'):
-				gen_tran(['1111'],Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_Payments_Yellow,Transaction_Type_Debit_Payments_Yellow,3,-1,count,i,'Use Case 3 - Yellow')
+				gen_tran(['1111'],Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_Payments_Yellow,Transaction_Type_Debit_Payments_Yellow,3,-1,count,i,'Use Case 2 - Yellow')
 			#Green Risk
 			if(UseCase[i]=='9'):
-				gen_tran(['1111'],Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_Payments_Green,Transaction_Type_Debit_Payments_Green,3,-1,count,i,'Use Case 3 - Green')
+				gen_tran(['1111'],Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_Payments_Green,Transaction_Type_Debit_Payments_Green,3,-1,count,i,'Use Case 2 - Green')
 							
 							
-			#Use Case 4: Payment source is owned by non-account holder
+			#Use Case 3: Payment source is owned by non-account holder
 			#Red Risk
 			if(UseCase[i]=='10'):
-				gen_tran(Account_Holder_Type_Red,Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_10_41No19_21No25_27,Transaction_Type_Debit_10_41No19_21No25_27,4,-2,count,i,'Use Case 4 - Red')
+				gen_tran(Account_Holder_Type_Red,Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_10_41No19_21No25_27,Transaction_Type_Debit_10_41No19_21No25_27,4,-2,count,i,'Use Case 3 - Red')
 			#Yellow Risk
 			if(UseCase[i]=='11'):
-				gen_tran(Account_Holder_Type_Yellow,Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_10_41No19_21No25_27,Transaction_Type_Debit_10_41No19_21No25_27,4,-2,count,i,'Use Case 4 - Yellow')
+				gen_tran(Account_Holder_Type_Yellow,Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_10_41No19_21No25_27,Transaction_Type_Debit_10_41No19_21No25_27,4,-2,count,i,'Use Case 3 - Yellow')
 			#Green Risk
 			if(UseCase[i]=='12'):
-				gen_tran(Account_Holder_Type_Green,Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_10_41No19_21No25_27,Transaction_Type_Debit_10_41No19_21No25_27,3,-1,count,i,'Use Case 4 - Green')
+				gen_tran(Account_Holder_Type_Green,Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_10_41No19_21No25_27,Transaction_Type_Debit_10_41No19_21No25_27,3,-1,count,i,'Use Case 3 - Green')
 
 
-			#Use Case 5: Payment is frequently made at a location that is materially distant from the account address 
+			#Use Case 4: Payment is frequently made at a location that is materially distant from the account address 
 			#Red Risk
 			if(UseCase[i]=='13'):
-				gen_tran(['1111'],Merchant_Category_Green,Payment_DistLoc_Red,['US'],Transaction_Type_Credits_10_41No19_21No25_27,Transaction_Type_Debit_10_41No19_21No25_27,3,-1,count,i,'Use Case 5 - Red')
+				gen_tran(['1111'],Merchant_Category_Green,Payment_DistLoc_Red,['US'],Transaction_Type_Payments,Transaction_Type_Debit,3,-1,count,i,'Use Case 4 - Red')
 			#Yellow Risk
 			if(UseCase[i]=='14'):
-				gen_tran(['1111'],Merchant_Category_Green,Payment_DistLoc_Yellow,['US'],Transaction_Type_Credits_10_41No19_21No25_27,Transaction_Type_Debit_10_41No19_21No25_27,3,-1,count,i,'Use Case 5 - Yellow')
+				gen_tran(['1111'],Merchant_Category_Green,Payment_DistLoc_Yellow,['US'],Transaction_Type_Payments,Transaction_Type_Debit,3,-1,count,i,'Use Case 4 - Yellow')
 			#Green Risk
 			if(UseCase[i]=='15'):
-				gen_tran(['1111'],Merchant_Category_Green,Payment_DistLoc_Green,['US'],Transaction_Type_Credits_10_41No19_21No25_27,Transaction_Type_Debit_10_41No19_21No25_27,3,-1,count,i,'Use Case 5 - Green')
+				gen_tran(['1111'],Merchant_Category_Green,Payment_DistLoc_Green,['US'],Transaction_Type_Payments,Transaction_Type_Debit,3,-1,count,i,'Use Case 4 - Green')
 
 			#Use Case 5: Frequent or large transactions at high-risk countries 
+			if(UseCase[i]=='16'):
+				gen_tran(['1111'],Merchant_Category_Green,['US'],High_Risk_Countries_Red,Transaction_Type_Payments,Transaction_Type_Debit,3,-1,count,i,'Use Case 5 - Red')
+			#Yellow Risk
+			if(UseCase[i]=='17'):
+				gen_tran(['1111'],Merchant_Category_Green,['US'],High_Risk_Countries_Yellow,Transaction_Type_Payments,Transaction_Type_Debit,3,-1,count,i,'Use Case 5 - Yellow')
+			#Green Risk
+			if(UseCase[i]=='18'):
+				gen_tran(['1111'],Merchant_Category_Green,['US'],High_Risk_Countries_Green,Transaction_Type_Payments,Transaction_Type_Debit,3,-1,count,i,'Use Case 5 - Green')
 			
 			#Use Case 6: Usual ATM withdrawals for cash advance 
+			
+			if(UseCase[i]=='19'):
+				gen_tran(['1111'],Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_ATM_Red,Transaction_Type_Debit_ATM_Red,3,-1,count,i,'Use Case 6 - Red')
+			#Yellow Risk
+			if(UseCase[i]=='20'):
+				gen_tran(['1111'],Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_ATM_Yellow,Transaction_Type_Debit_ATM_Yellow,3,-1,count,i,'Use Case 6 - Yellow')
+			#Green Risk
+			if(UseCase[i]=='21'):
+				gen_tran(['1111'],Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_ATM_Green,Transaction_Type_Debit_ATM_Green,3,-1,count,i,'Use Case 6 - Green')
 			
 			#Use Case 7: Frequent Credit Card transactions at locations "materially distant" from the account address 
 			
