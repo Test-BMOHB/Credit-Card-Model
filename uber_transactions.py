@@ -137,7 +137,7 @@ Countries=columns['COUNTRY']
 UseCase=columns['USE_CASE_SCENARIO']
 ClsdFlags=columns['CLOSEDACCOUNT']
 	
-def gen_tran(MCC_credits,MCC_debits,Tran_Country_Credits,Tran_Country_Debits,Tran_Type_Credits_Ovpmt,Tran_Type_Debits_Ovpmt,Upper_Limit,Delta,count,j,desc):
+def gen_tran(MCC_credits,MCC_debits,Tran_Country_Credits,Tran_Country_Debits,Tran_Type_C,Tran_Type_D,Upper_Limit,Delta,count,j,desc):
 		#6)Create a loop for each account and generate account from the customer account_id file 
 		startDate=date(2015,01,01)
 		acct=ACCTs[j]
@@ -157,7 +157,7 @@ def gen_tran(MCC_credits,MCC_debits,Tran_Country_Credits,Tran_Country_Debits,Tra
 			tdelta = timedelta(days=randrange(1,4,1))
 			row = [str(count)] + [acct] 
 			if tmpAmt > 0:
-				tranType = random.choice(Tran_Type_Debits_Ovpmt)
+				tranType = random.choice(Tran_Type_D)
 				cat = random.choice(MCC_debits)
 				merch=gen_data.create_company_name() 
 				row.append(merch)
@@ -168,7 +168,7 @@ def gen_tran(MCC_credits,MCC_debits,Tran_Country_Credits,Tran_Country_Debits,Tra
 			else: 
 				tmpAmt=random.randrange(1,limit,1)
 				tmpAmt=tmpAmt*(-1)
-				tranType=random.choice(Tran_Type_Credits_Ovpmt)
+				tranType=random.choice(Tran_Type_C)
 				cr_dbt='C'
 				cat = random.choice(MCC_credits)
 				merch = 'Payment'
@@ -210,7 +210,7 @@ def gen_tran(MCC_credits,MCC_debits,Tran_Country_Credits,Tran_Country_Debits,Tra
 			#date of transaction a day later
 			date2 = date1-timedelta(days=1)
 			row = [str(count)]+ [acct]+['Customer Payment']+['1111']+['Customer Payment']+[random.choice(Tran_Country_Credits)]
-			row.extend([date1, date2, Tran_Type_Credits_Ovpmt,'C',limit,abs(limit-abs(usedAmt))*(-1),0,CCs[j],CCTypes[j],desc,
+			row.extend([date1, date2, random.choice(Tran_Type_C),'C',limit,abs(limit-abs(usedAmt))*(-1),0,CCs[j],CCTypes[j],desc,
 			Holders[j],CCsCount[j],Cities[j],States[j],ZIPs[j],Countries[j]])
 			count = count + 1
 			usedAmt = 0
