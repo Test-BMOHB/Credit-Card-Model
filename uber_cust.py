@@ -5,8 +5,8 @@
 #Description  : Code that generates customer data
 #-----------------------------------------------------------------------------
 # History  | ddmmyyyy  |  User     |                Changes       
-#          | 01192016  | Ivana D.  | Intial Coding Steps, logic, ref lists, etc...
-#			 01202016  | Jeff K.   | Added comments, ref lists, etc...
+#          | 01192016  | Ivana D.  | Credit Card model,code, ref lists, etc...
+#			 01202016  | Jeff K.   | Comments, ref lists, etc...
 #-----------------------------------------------------------------------------*/
 #Reference data is located on the test-bmohb console gs://creditcardtransactionsv2
 
@@ -20,6 +20,8 @@ import NAICS
 import random 
 import geo_data
 import zips
+from datetime import datetime
+import re
 
 #Dictionary for client whose net worth is over $500K
 HighNetWorth = ['Yes','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No']
@@ -40,7 +42,7 @@ Official_Lang = ['English','English','English','French']
 #Dictionary for method of communication
 Preffered_Channel = ['Direct Mail','Telemarketing','Email','SMS']
 #Dictionary for status of customer
-Customer_Status = ['Prospect','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Inactive Customer','Past Customer']
+#Customer_Status = ['Prospect','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Active Customer','Inactive Customer','Past Customer']
 #Dictionary for LOB Segment Type
 Seg_Model_Type = ['LOB Specific','Profitability','Geographical','Behavioral','Risk Tolerance']
 #Dictionary for Model ID
@@ -172,19 +174,19 @@ Services=['Benefit Payment Services',\
 'Online / Mobile Banking',\
 'Payroll',\
 'Retirement Plans','Retirement Plans','Retirement Plans','Retirement Plans','Retirement Plans','Retirement Plans','Retirement Plans','Retirement Plans','Retirement Plans','Retirement Plans','Retirement Plans','Retirement Plans','Retirement Plans','Retirement Plans','Retirement Plans','Retirement Plans','Retirement Plans','Retirement Plans','Retirement Plans',\
-'Short?Term Cash Management',\
+'Short Term Cash Management',\
 'Trust Services',\
 'Trustee Services',\
 'Vault Cash Services',\
 ]
 #Dictionary for random SIC_Code
 SIC_Code=['6021 National Commercial Banks',\
-'6211 Security Brokers, Dealers, and Flotation Companies',\
+'6211 Security Brokers Dealers and Flotation Companies',\
 '6282 Investment Advice',\
 '6311 Life Insurance',\
-'6722 Management Investment Offices, Open-End','6722 Management Investment Offices, Open-End','6722 Management Investment Offices, Open-End','6722 Management Investment Offices, Open-End','6722 Management Investment Offices, Open-End','6722 Management Investment Offices, Open-End','6722 Management Investment Offices, Open-End','6722 Management Investment Offices, Open-End','6722 Management Investment Offices, Open-End','6722 Management Investment Offices, Open-End','6722 Management Investment Offices, Open-End','6722 Management Investment Offices, Open-End',\
-'6733 Trusts, Except Educational, Religious, and Charitable',\
-'8999 Services, NEC',\
+'6722 Management Investment Offices Open-End','6722 Management Investment Offices Open-End','6722 Management Investment Offices Open-End','6722 Management Investment Offices Open-End','6722 Management Investment Offices Open-End','6722 Management Investment Offices Open-End','6722 Management Investment Offices Open-End','6722 Management Investment Offices Open-End','6722 Management Investment Offices Open-End','6722 Management Investment Offices Open-End','6722 Management Investment Offices Open-End','6722 Management Investment Offices Open-End',\
+'6733 Trusts Except Educational Religious and Charitable',\
+'8999 Services NEC',\
 ]
 #Dictionary for random Market Listing
 Stock_Market_Listing=['Australian Stock Exchange',\
@@ -213,16 +215,16 @@ Use_Case = [1,1,1,1,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
 fake = Faker()
 
 #Creates CSV
-with open('uber_cust.csv','w') as f1:
+with open('uber_cust185.csv','w') as f1:
 	#Writer for CSV...Comma delimited...Return for a new line
-	writer=csv.writer(f1, delimiter=',',lineterminator='\n',)
+	writer=csv.writer(f1, delimiter='|',lineterminator='\n',)
 	#Header Row
 	writer.writerow(['ROWNUM']+['ACCOUNTID']+['ACCT_TYPE']+['NUM_CCS']+['NAME']+['M_NAME']+['SSN']+['AUTHORIZED_NAME2']+['M_NAME2']+['SSN2']+\
 	['AUTHORIZED_NAME3']+['M_NAME3']+['SSN3']+['AUTHORIZED_NAME4']+['M_NAME4']+['SSN4']+['CREDITCARDNUMBER']+['CREDITCARDTYPE']+['EMPLOYER']+['CUSTEMAIL']+\
 	['OCCUPATION']+['CITY']+['STATE']+['ZIP']+['COUNTRY']+['PREVIOUS_CITY']+['PREVIOUS_STATE']+\
 	['PREVIOUS_ZIP']+['PREVIOUS_COUNTRY']+['DOB']+['PEP']+['SAR']+['CLOSEDACCOUNT']+['RELATED_ACCT']+['RELATED_TYPE']+['PARTY_TYPE']+['PARTY_RELATION']+['PARTY_STARTDATE']+['PARTY_ENDDATE']+\
 	['LARGE_CASH_EXEMPT']+['DEMARKET_FLAG']+['DEMARKET_DATE']+['PROB_DEFAULT_RISKR']+['OFFICIAL_LANG_PREF']+['CONSENT_SHARING']+\
-	['PREFERRED_CHANNEL']+['PRIMARY_BRANCH_NO']+['CUSTOMER_STATUS']+['DEPENDANTS_COUNT']+['SEG_MODEL_ID']+['SEG_MODEL_TYPE']+\
+	['PREFERRED_CHANNEL']+['PRIMARY_BRANCH_NO']+['DEPENDANTS_COUNT']+['SEG_MODEL_ID']+['SEG_MODEL_TYPE']+\
 	['SEG_MODEL_NAME']+['SEG_MODEL_GROUP']+['SEG_M_GRP_DESC']+['SEG_MODEL_SCORE']+['ARMS_MANUFACTURER']+['AUCTION']+\
 	['CASHINTENSIVE_BUSINESS']+['CASINO_GAMBLING']+['CHANNEL_ONBOARDING']+['CHANNEL_ONGOING_TRANSACTIONS']+['CLIENT_NET_WORTH']+\
 	['COMPLEX_HI_VEHICLE']+['DEALER_PRECIOUS_METAL']+['DIGITAL_PM_OPERATOR']+['EMBASSY_CONSULATE']+['EXCHANGE_CURRENCY']+\
@@ -231,7 +233,9 @@ with open('uber_cust.csv','w') as f1:
 	['NOT_PROFIT']+['PRIVATELY_ATM_OPERATOR']+['PRODUCTS']+['SALES_USED_VEHICLES']+['SERVICES']+\
 	['SIC_CODE']+['STOCK_MARKET_LISTING']+['THIRD_PARTY_PAYMENT_PROCESSOR']+['TRANSACTING_PROVIDER']+['HIGH_NET_WORTH']+['HIGH_RISK']+['RISK_RATING']+['USE_CASE_SCENARIO'])
 	#Loop for number of accounts to generate
-	for i in range(18500000):
+	start=10786147
+	acct_list=[]
+	for i in range(100):
 		#Initiate High Risk Flags
 		#Politically Exposed Person 
 		PEP='No'
@@ -251,11 +255,15 @@ with open('uber_cust.csv','w') as f1:
 			Clsd='Yes'
 
 		#Random number generator for account number
-		acct = randrange(100000,100000000,1)
+		#acct = randrange(100000,100000000,1)
 		#Random choice for number of credit cards per account number
 		No_CCs = random.choice(Number_CC)			
-		while acct_list.count(acct) > 0: 
-			acct = randrange(100000,100000000,1)
+		#while acct_list.count(acct) > 0: 
+		#	acct = randrange(100000,100000000,1)
+		#dt = str(datetime.now())
+		#acct=str(i)++re.sub('\W','',dt)
+		acct=start+1+randrange(1,10,1)
+		start=acct
 		#Randomly generates customer name
 		name = fake.name() 
 		tmp=gen_data.create_name()
@@ -286,13 +294,16 @@ with open('uber_cust.csv','w') as f1:
 		CC_NO=gen_data.cc_number()
                                 
 		#Extract CC_Number from the tuple returned by CC_Number...Tuple contains CC Number and Type
-		while CC_list.count(CC_NO[1][0]) > 0: 
-			CC_NO=gen_data.cc_number()
-								
+		#while CC_list.count(CC_NO[1][0]) > 0: 
+		CC_TRANS=CC_NO[1][0]
+		
+		dt = str(datetime.now())
+		clean=re.sub('\W','',dt)
+		printCC=str(CC_TRANS[-4:])+str(clean[-12:-3])+str(randrange(1111,9999,randrange(1,10,1)))
+		#str(CC_TRANS[-4:])+str(clean[-12:-2])+str(randrange(1111,9999,randrange(1,10,1)))
 		#Add CC_Number to control list to prevent duplicates
-		CC_list.extend(CC_NO[1][0])
 		#Add data elements to current csv row
-		row.extend([names[0],mdl[0],ssn[0],names[1],mdl[1],ssn[1],names[2],mdl[2],ssn[2],CC_NO[1][0],CC_NO[0],gen_data.create_company_name()+' '+tmp[1],\
+		row.extend([names[0],mdl[0],ssn[0],names[1],mdl[1],ssn[1],names[2],mdl[2],ssn[2],printCC,CC_NO[0],gen_data.create_company_name()+' '+tmp[1],\
 		gen_data.create_email(),gen_data.create_job_title()])
                                 
 		#Creates Current Address
@@ -352,7 +363,7 @@ with open('uber_cust.csv','w') as f1:
 		else: 
 			row.extend(['No',''])                                             
 		#DO NOT USE CUST STATUS BELOW - NOT INTEGRATED WITH CLOSED STATUS! Add additional data elements to current csv row
-		row.extend([zip,random.choice(Customer_Status),randrange(0,5,1)])
+		row.extend([zip,randrange(0,5,1)])
                                 
 		#Generates Segment ID then adds additional Segment data based on the selection to the current csv row
 		Segment_ID = randrange(0,5,1)%5
