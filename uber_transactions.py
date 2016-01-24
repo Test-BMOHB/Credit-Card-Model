@@ -329,20 +329,20 @@ with open('uber_trans.csv','w') as f1:
 			if(UseCase[i]=='27'):
 				gen_tran(Account_Holder_Type_Green,Merchant_Category_Green,['US'],['US'],Transaction_Type_Merchant_Credits_Green,Transaction_Type_Merchant_Debit_Green,3,-1,count,i,'Use Case 8 - Green')
 						
-			
 			#Use Case 9: Hotel room rentals at different hotels over the same time period 
-			
-			if(UseCase[i]=='25'):
-				gen_tran(Account_Holder_Type_Green,Merchant_Category_Green,['US'],['US'],Transaction_Type_Merchant_Credits_Red,Transaction_Type_Merchant_Debit_Red,3,-1,count,i,'Use Case 8 - Red')
-			#Yellow Risk
-			if(UseCase[i]=='26'):
-				gen_tran(Account_Holder_Type_Green,Merchant_Category_Green,['US'],['US'],Transaction_Type_Merchant_Credits_Yellow,Transaction_Type_Merchant_Debit_Yellow,3,-1,count,i,'Use Case 8 - Yellow')
-			#Green Risk
-			if(UseCase[i]=='27'):
-				gen_tran(Account_Holder_Type_Green,Merchant_Category_Green,['US'],['US'],Transaction_Type_Merchant_Credits_Green,Transaction_Type_Merchant_Debit_Green,3,-1,count,i,'Use Case 8 - Green')
 						
 			#Use Case 10: Multiple airline tickets for non-account holders
 			
 			#Use Case 11: Unusually large payments for accumulated balances
 			
 			#Use Case 12: Custom out of country scenario 
+			if(UseCase[i]=='37'):
+				gen_tran(Account_Holder_Type_Green,Merchant_Category_Green,Transaction_OutofCountryDistLoc_100,Transaction_OutofCountryDistLoc_100,Transaction_Type_Payments,Transaction_Type_Debit,3,-1,count,i,'Use Case Out of Country - US')
+			if(UseCase[i]=='38'):	
+				gen_tran(Account_Holder_Type_Green,Merchant_Category_Green,Transaction_OutofCountryDistLoc_95,Transaction_OutofCountryDistLoc_95,Transaction_Type_Payments,Transaction_Type_Debit,3,-1,count,i,'Use Case Out of Country - 95')
+			if(UseCase[i]=='39'):
+				gen_tran(Account_Holder_Type_Green,Merchant_Category_Green,Transaction_OutofCountryDistLoc_50,Transaction_OutofCountryDistLoc_50,Transaction_Type_Payments,Transaction_Type_Debit,3,-1,count,i,'Use Case Out of Country - 50')
+			if(UseCase[i]=='40'):
+				gen_tran(Account_Holder_Type_Green,Merchant_Category_Green,Transaction_OutofCountryDistLoc_40,Transaction_OutofCountryDistLoc_40,Transaction_Type_Payments,Transaction_Type_Debit,3,-1,count,i,'Use Case Out of Country - 40')
+			if(UseCase[i]=='41'):
+				gen_tran(Account_Holder_Type_Green,Merchant_Category_Green,Transaction_OutofCountryDistLoc_10,Transaction_OutofCountryDistLoc_10,Transaction_Type_Payments,Transaction_Type_Debit,3,-1,count,i,'Use Case Out of Country - 10')
