@@ -52,9 +52,9 @@ Transaction_Type_Debit_Payments_Green = ['Purchase', 'Interest Charge','Purchase
 Transaction_Type_Credits_10_41No19_21No25_27 = ['Cash Payment','Wire Payment','ACH Payment','ACH Payment','Paper Check','e-Check','Online Transfer','ATM Payment','Reversal','Award']
 Transaction_Type_Debit_10_41No19_21No25_27 = ['Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Fee','Interest Charge','Penalty','Refund']
 
-Account_Holder_Type_Red =['Account Holder','Account Holder','Account Holder','Account Holder','Account Holder','Account Holder', 'Non_Account_Holder','Non_Account_Holder','Non_Account_Holder','Non_Account_Holder']
-Account_Holder_Type_Yellow =['Account Holder','Account Holder','Account Holder','Account Holder','Account Holder','Account Holder', 'Non_Account_Holder','Non_Account_Holder']
-Account_Holder_Type_Green =['Account Holder','Account Holder','Account Holder','Account Holder','Account Holder','Account Holder', 'Non_Account_Holder']
+Account_Holder_Type_Red =['1111','1111','1111','1111','1111','1111', '2222','2222','2222','2222']
+Account_Holder_Type_Yellow =['1111','1111','1111','1111','1111','1111', '2222','2222']
+Account_Holder_Type_Green =['1111','1111','1111','1111','1111','1111', '2222']
 
 Payment_DistLoc_Red = ['BH', 'BB', 'BW', 'BG', 'CM', 'CG', 'HR', 'CW', 'CZ', 'TL', 'TP', 'SV', 'ET', 'GE', 'IN', 'IL', 'JM', 'KI', 'XK', 'LS', 'MK', 'MT', 'FM', 'ME', 'NA', 'NR', 'NZ', 'NU', 'PS', 'PL', 'QA', 'RW', 'RS', 'SG', 'SK', 'ZA', 'ES', 'TW', 'TC', 'AE', 'AG', 'AM', 'AU', 'AT', 'BT', 'BQ', 'CA', 'CV', 'CL', 'CX', 'CC', 'DK', 'DJ', 'EE', 'FO', 'FJ', 'DE', 'GL', 'VA', 'HK', 'IS', 'IT', 'LV', 'MU', 'NL', 'NF', 'OM', 'PR', 'AX', 'AS', 'BE', 'FK', 'FI', 'FR', 'GF', 'PF', 'GP', 'GU', 'HU', 'IE', 'LT', 'MQ', 'YT', 'NC', 'MP', 'NO', 'PN', 'PT', 'RE', 'BL', 'SH', 'MF', 'PM', 'SM', 'SI', 'SJ', 'SE', 'CH', 'TV', 'GB', 'US', 'VI', 'WF', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US']
 Payment_DistLoc_Yellow = ['BH', 'BB', 'BW', 'BG', 'CM', 'CG', 'HR', 'CW', 'CZ', 'TL', 'TP', 'SV', 'ET', 'GE', 'IN', 'IL', 'JM', 'KI', 'XK', 'LS', 'MK', 'MT', 'FM', 'ME', 'NA', 'NR', 'NZ', 'NU', 'PS', 'PL', 'QA', 'RW', 'RS', 'SG', 'SK', 'ZA', 'ES', 'TW', 'TC', 'AE', 'AG', 'AM', 'AU', 'AT', 'BT', 'BQ', 'CA', 'CV', 'CL', 'CX', 'CC', 'DK', 'DJ', 'EE', 'FO', 'FJ', 'DE', 'GL', 'VA', 'HK', 'IS', 'IT', 'LV', 'MU', 'NL', 'NF', 'OM', 'PR', 'AX', 'AS', 'BE', 'FK', 'FI', 'FR', 'GF', 'PF', 'GP', 'GU', 'HU', 'IE', 'LT', 'MQ', 'YT', 'NC', 'MP', 'NO', 'PN', 'PT', 'RE', 'BL', 'SH', 'MF', 'PM', 'SM', 'SI', 'SJ', 'SE', 'CH', 'TV', 'GB', 'US', 'VI', 'WF', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US', 'US']
@@ -118,7 +118,7 @@ ClsdFlags=[]
 count=0
 columns = defaultdict(list) # each value in each column is appended to a list
 
-with open('uber_cust_1K.csv') as f:
+with open('uber_cust.csv') as f:
     reader = csv.DictReader(f,delimiter='|') # read rows into a dictionary format
     for row in reader: # read a row as {column1: value1, column2: value2,...}
         for (k,v) in row.items(): # go over each column name and value 
@@ -171,7 +171,7 @@ def gen_tran(MCC_credits,MCC_debits,Tran_Country_Credits,Tran_Country_Debits,Tra
 				tranType=random.choice(Tran_Type_Credits_Ovpmt)
 				cr_dbt='C'
 				cat = random.choice(MCC_credits)
-				merch = 'Customer Payment'
+				merch = 'Payment'
 				row.append(merch)
 				row.append(cat)
 				row.append(python_merchant_cat.All_Merchant_Cat[cat])
@@ -225,10 +225,10 @@ with open('uber_trans.csv','w') as f1:
 	['POST_DATE'] +	['TRANSACTION_DATE'] + ['TRANSACTION_TYPE']+['CREDIT_DEBIT']+['CREDIT_LIMIT']+['AMOUNT']+['BALANCE']+\
 	['CREDITCARDNUMBER']+['CC_TYPE']+['USE_CASE']+['CUST_NAME']+['NUM_CCS']+['CUST_CITY']+['CUST_STATE']+['CUST_ZIP']+['CUST_COUNTRY'])
 	Cust_Count=len(CCs)
-	for i in range(Cust_Count):
-		#Use Case 1: Overpayments and Refunds to credit card balances 
-		#Red Risk
+	for i in range(Cust_Count):		
 		if(ClsdFlags[i]=='No'):
+			#Use Case 1: Threshold for overpayments
+			#Red Risk
 			if(UseCase[i]=='1'):
 				gen_tran(['1111'],Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_Ovpmt_Red,Transaction_Type_Debit_Ovpmt_Red,5,-3,count,i,'Use Case 1 - Red')
 			#Yellow Risk
@@ -237,21 +237,54 @@ with open('uber_trans.csv','w') as f1:
 			#Green Risk
 			if(UseCase[i]=='3'):
 				gen_tran(['1111'],Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_Ovpmt_Green,Transaction_Type_Debit_Ovpmt_Green,3,-1,count,i,'Use Case 1 - Green')
-			#Use Case 2: Method of payment to card balances 
-			#Red Risk 
 			
-			#generate_cc_data(Merchant_Category_Green,Country_Green,3,-1,800000,count,'Use Case 2 - Red')
+			
+			#Use Case 2: Threshold for refunds
+			#Red Risk
+			if(UseCase[i]=='4'):
+				gen_tran(['1111'],Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_Refund_Red,Transaction_Type_Debit_Refund_Red,5,-3,count,i,'Use Case 2 - Red')
 			#Yellow Risk
-				
-			#generate_cc_data(Merchant_Category_Green,Country_Green,3,-1,800000,count,'Use Case 2 - Yellow')
+			if(UseCase[i]=='5'):
+				gen_tran(['1111'],Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_Refund_Yellow,Transaction_Type_Debit_Refund_Yellow,4,-2,count,i,'Use Case 2 - Yellow')
 			#Green Risk
-			
-			#generate_cc_data(Merchant_Category_Green,Country_Green,3,-1,6800000,count,'Use Case 2 - Green')
+			if(UseCase[i]=='6'):
+				gen_tran(['1111'],Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_Refund_Green,Transaction_Type_Debit_Refund_Green,3,-1,count,i,'Use Case 2 - Green')
 				
-			#Use Case 3: Payment source is owned by non-account holder
-			
-			#Use Case 4: Payment is frequently made at a location that is materially distant from the account address 
-			
+			#Use Case 3: Method of payment to card balances 
+			#Red Risk
+			if(UseCase[i]=='7'):
+				gen_tran(['1111'],Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_Payments_Red,Transaction_Type_Debit_Payments_Red,3,-1,count,i,'Use Case 3 - Red')
+			#Yellow Risk
+			if(UseCase[i]=='8'):
+				gen_tran(['1111'],Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_Payments_Yellow,Transaction_Type_Debit_Payments_Yellow,3,-1,count,i,'Use Case 3 - Yellow')
+			#Green Risk
+			if(UseCase[i]=='9'):
+				gen_tran(['1111'],Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_Payments_Green,Transaction_Type_Debit_Payments_Green,3,-1,count,i,'Use Case 3 - Green')
+							
+							
+			#Use Case 4: Payment source is owned by non-account holder
+			#Red Risk
+			if(UseCase[i]=='10'):
+				gen_tran(Account_Holder_Type_Red,Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_10_41No19_21No25_27,Transaction_Type_Debit_10_41No19_21No25_27,4,-2,count,i,'Use Case 4 - Red')
+			#Yellow Risk
+			if(UseCase[i]=='11'):
+				gen_tran(Account_Holder_Type_Yellow,Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_10_41No19_21No25_27,Transaction_Type_Debit_10_41No19_21No25_27,4,-2,count,i,'Use Case 4 - Yellow')
+			#Green Risk
+			if(UseCase[i]=='12'):
+				gen_tran(Account_Holder_Type_Green,Merchant_Category_Green,['US'],['US'],Transaction_Type_Credits_10_41No19_21No25_27,Transaction_Type_Debit_10_41No19_21No25_27,3,-1,count,i,'Use Case 4 - Green')
+
+
+			#Use Case 5: Payment is frequently made at a location that is materially distant from the account address 
+			#Red Risk
+			if(UseCase[i]=='13'):
+				gen_tran(['1111'],Merchant_Category_Green,Payment_DistLoc_Red,['US'],Transaction_Type_Credits_10_41No19_21No25_27,Transaction_Type_Debit_10_41No19_21No25_27,3,-1,count,i,'Use Case 5 - Red')
+			#Yellow Risk
+			if(UseCase[i]=='14'):
+				gen_tran(['1111'],Merchant_Category_Green,Payment_DistLoc_Yellow,['US'],Transaction_Type_Credits_10_41No19_21No25_27,Transaction_Type_Debit_10_41No19_21No25_27,3,-1,count,i,'Use Case 5 - Yellow')
+			#Green Risk
+			if(UseCase[i]=='15'):
+				gen_tran(['1111'],Merchant_Category_Green,Payment_DistLoc_Green,['US'],Transaction_Type_Credits_10_41No19_21No25_27,Transaction_Type_Debit_10_41No19_21No25_27,3,-1,count,i,'Use Case 5 - Green')
+
 			#Use Case 5: Frequent or large transactions at high-risk countries 
 			
 			#Use Case 6: Usual ATM withdrawals for cash advance 
