@@ -118,7 +118,7 @@ ClsdFlags=[]
 count=0
 columns = defaultdict(list) # each value in each column is appended to a list
 
-with open('uber_cust.csv') as f:
+with open('uber_cust185.csv') as f:
     reader = csv.DictReader(f,delimiter='|') # read rows into a dictionary format
     for row in reader: # read a row as {column1: value1, column2: value2,...}
         for (k,v) in row.items(): # go over each column name and value 
