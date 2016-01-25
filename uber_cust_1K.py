@@ -215,7 +215,7 @@ Use_Case = [1,1,1,1,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
 fake = Faker()
 
 #Creates CSV
-with open('uber_cust_185M.csv','w') as f1:
+with open('uber_cust_1K.csv','w') as f1:
 	#Writer for CSV...Pipe delimited...Return for a new line
 	writer=csv.writer(f1, delimiter='|',lineterminator='\n',)
 	#Header Row
@@ -367,7 +367,7 @@ with open('uber_cust_185M.csv','w') as f1:
 		row.extend([zip,randrange(0,5,1)])
                                 
 		#Generates Segment ID then adds additional Segment data based on the selection to the current csv row
-		Segment_ID = randrange(0,5,1)%6
+		Segment_ID = randrange(0,5,1)%5
                                                 
 		if Segment_ID == 0:
 			row.extend([Model_ID[0],Seg_Model_Type[0],Seg_Model_Name[0],Seg_Model_Group[0],Seg_Model_Description[0],Seg_Model_Score[0]])
