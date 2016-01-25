@@ -215,7 +215,7 @@ Use_Case = [1,1,1,1,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
 fake = Faker()
 
 #Creates CSV
-with open('uber_cust_1M.csv','w') as f1:
+with open('uber_cust_185M.csv','w') as f1:
 	#Writer for CSV...Pipe delimited...Return for a new line
 	writer=csv.writer(f1, delimiter='|',lineterminator='\n',)
 	#Header Row
@@ -335,11 +335,12 @@ with open('uber_cust_1M.csv','w') as f1:
 
 		row.extend([addr[0],addr[1],zip,'US',addr2[0],addr2[1],zip2,'US',gen_data.create_birthday(min_age=2, max_age=85),PEP,SAR,Clsd])                            
 		#Start Generating related accounts from account list once 10,000 accounts are generated
-		if i > 10000: 
-			rel = random.choice(acct_list)*max((randrange(0,10000,1)-9999),0)
+		if i > 1000: 
+			rel = int(random.choice(acct_list))*max((randrange(0,1001,1)-999),0)
 			if rel <> 0: 
-				row.append(rel[0])
+				row.append(rel)
 				row.append(random.choice(Related_Type))
+				print rel
 			else:
 				row.append('')
 				row.append('')
@@ -366,7 +367,7 @@ with open('uber_cust_1M.csv','w') as f1:
 		row.extend([zip,randrange(0,5,1)])
                                 
 		#Generates Segment ID then adds additional Segment data based on the selection to the current csv row
-		Segment_ID = randrange(0,5,1)%5
+		Segment_ID = randrange(0,5,1)%6
                                                 
 		if Segment_ID == 0:
 			row.extend([Model_ID[0],Seg_Model_Type[0],Seg_Model_Name[0],Seg_Model_Group[0],Seg_Model_Description[0],Seg_Model_Score[0]])
@@ -398,7 +399,7 @@ with open('uber_cust_1M.csv','w') as f1:
                                 
 		#Randomly Generates customer net worth based on the above flag
 		if HighNetWorthFlag == 'Yes': 
-			row.append(max(max((randrange(0,100,1)-99),0)*randrange(1000000,25000000,1),randrange(1000000,5000000,1)))
+			row.append(max(max((randrange(0,101,1)-99),0)*randrange(1000000,25000000,1),randrange(1000000,5000000,1)))
 		else: 
 			flag=random.choice(LowNet)
 			if flag==0:
@@ -456,7 +457,7 @@ with open('uber_cust_1M.csv','w') as f1:
 				high_risk='Yes'
 				hr_rating=random.choice(refrating)
 				
-		row.extend([hr1,hr2,hr3,hr4,hr5,hr6,hr7,hr8,hr9,hr10,hr11,hr12,hr13,hr14,hr16,hr17,hr18,hr19,hr20,hr21,hr22,hr23,
+1		row.extend([hr1,hr2,hr3,hr4,hr5,hr6,hr7,hr8,hr9,hr10,hr11,hr12,hr13,hr14,hr16,hr17,hr18,hr19,hr20,hr21,hr22,hr23,
 		HighNetWorthFlag,high_risk,hr_rating,random.choice(Use_Case)])
 		#End the current row
 		writer.writerow(row)
