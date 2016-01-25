@@ -340,7 +340,6 @@ with open('uber_cust_185M.csv','w') as f1:
 			if rel <> 0: 
 				row.append(rel)
 				row.append(random.choice(Related_Type))
-				print rel
 			else:
 				row.append('')
 				row.append('')
