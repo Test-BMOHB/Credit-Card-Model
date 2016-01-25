@@ -8,7 +8,7 @@
 #          | 01192016  | Ivana D.  | Credit Card model,code, ref lists, etc...
 #			 01202016  | Jeff K.   | Comments, ref lists, etc...
 #-----------------------------------------------------------------------------*/
-#Reference data is located on the test-bmohb console gs://creditcardtransactionsv2
+#Reference data is located on the test-bmohb console gs://newccdatav3
 
 from random import randrange
 from random import random
