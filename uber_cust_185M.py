@@ -456,7 +456,7 @@ with open('uber_cust_185M.csv','w') as f1:
 				high_risk='Yes'
 				hr_rating=random.choice(refrating)
 				
-1		row.extend([hr1,hr2,hr3,hr4,hr5,hr6,hr7,hr8,hr9,hr10,hr11,hr12,hr13,hr14,hr16,hr17,hr18,hr19,hr20,hr21,hr22,hr23,
+		row.extend([hr1,hr2,hr3,hr4,hr5,hr6,hr7,hr8,hr9,hr10,hr11,hr12,hr13,hr14,hr16,hr17,hr18,hr19,hr20,hr21,hr22,hr23,
 		HighNetWorthFlag,high_risk,hr_rating,random.choice(Use_Case)])
 		#End the current row
 		writer.writerow(row)
