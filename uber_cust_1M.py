@@ -216,7 +216,7 @@ fake = Faker()
 
 #Creates CSV
 with open('uber_cust_1M.csv','w') as f1:
-	#Writer for CSV...Comma delimited...Return for a new line
+	#Writer for CSV...Pipe delimited...Return for a new line
 	writer=csv.writer(f1, delimiter='|',lineterminator='\n',)
 	#Header Row
 	writer.writerow(['ROWNUM']+['ACCOUNTID']+['ACCT_TYPE']+['NUM_CCS']+['NAME']+['M_NAME']+['SSN']+['AUTHORIZED_NAME2']+['M_NAME2']+['SSN2']+\
