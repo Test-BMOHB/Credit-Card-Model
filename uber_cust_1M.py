@@ -335,12 +335,11 @@ with open('uber_cust_1M.csv','w') as f1:
 
 		row.extend([addr[0],addr[1],zip,'US',addr2[0],addr2[1],zip2,'US',gen_data.create_birthday(min_age=2, max_age=85),PEP,SAR,Clsd])                            
 		#Start Generating related accounts from account list once 10,000 accounts are generated
-		if i > 1000: 
-			rel = int(random.choice(acct_list))*max((randrange(0,1001,1)-999),0)
+		if i > 10000: 
+			rel = int(random.choice(acct_list))*max((randrange(0,10001,1)-9999),0)
 			if rel <> 0: 
 				row.append(rel)
 				row.append(random.choice(Related_Type))
-				print rel
 			else:
 				row.append('')
 				row.append('')
@@ -457,7 +456,7 @@ with open('uber_cust_1M.csv','w') as f1:
 				high_risk='Yes'
 				hr_rating=random.choice(refrating)
 				
-1		row.extend([hr1,hr2,hr3,hr4,hr5,hr6,hr7,hr8,hr9,hr10,hr11,hr12,hr13,hr14,hr16,hr17,hr18,hr19,hr20,hr21,hr22,hr23,
+		row.extend([hr1,hr2,hr3,hr4,hr5,hr6,hr7,hr8,hr9,hr10,hr11,hr12,hr13,hr14,hr16,hr17,hr18,hr19,hr20,hr21,hr22,hr23,
 		HighNetWorthFlag,high_risk,hr_rating,random.choice(Use_Case)])
 		#End the current row
 		writer.writerow(row)
