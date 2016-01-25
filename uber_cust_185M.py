@@ -235,7 +235,7 @@ with open('uber_cust_185M.csv','w') as f1:
 	#Loop for number of accounts to generate
 	start=10786147
 	acct_list=[]
-	for i in range(100000):
+	for i in range(18500000):
 		#Initiate High Risk Flags
 		#Politically Exposed Person 
 		PEP='No'
