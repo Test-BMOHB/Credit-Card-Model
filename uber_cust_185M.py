@@ -367,7 +367,7 @@ with open('uber_cust_185M.csv','w') as f1:
 		row.extend([zip,randrange(0,5,1)])
                                 
 		#Generates Segment ID then adds additional Segment data based on the selection to the current csv row
-		Segment_ID = randrange(0,5,1)%6
+		Segment_ID = randrange(0,5,1)%5
                                                 
 		if Segment_ID == 0:
 			row.extend([Model_ID[0],Seg_Model_Type[0],Seg_Model_Name[0],Seg_Model_Group[0],Seg_Model_Description[0],Seg_Model_Score[0]])
