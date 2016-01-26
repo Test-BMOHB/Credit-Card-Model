@@ -4,24 +4,17 @@
 #Version#     : 5
 #Description  : Code that generates customer data
 #-----------------------------------------------------------------------------
-# History  | ddmmyyyy  |  User     |                Changes       
+# History  | ddmmyyyy  |  User     |                Changes
 #          | 01192016  | Ivana D.  | Credit Card model,code, ref lists, etc...
 #			 01202016  | Jeff K.   | Comments, ref lists, etc...
 #-----------------------------------------------------------------------------*/
 #Reference data is located on the test-bmohb console gs://newccdatav3
 
-from random import randrange
-from random import random
-from random import shuffle
+from random import randrange, random, shuffle
+from datetime import datetime
 from faker import Faker
 from barnum import gen_data
-import csv
-import NAICS 
-import random 
-import geo_data
-import zips
-from datetime import datetime
-import re
+import csv, NAICS, random, geo_data, zips, re
 
 #Dictionary for client whose net worth is over $500K
 HighNetWorth = ['Yes','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No','No']
@@ -32,7 +25,7 @@ Party_Type = ['Person','Non-Person']
 #Dictionary for a BMO customer
 Party_Relation = ['Customer','Non-Customer']
 #Dictionary for random Yes/No Flag
-Yes_No = ['Yes','No','No','No','No','No','No','No','No','No','No','No','No'] 
+Yes_No = ['Yes','No','No','No','No','No','No','No','No','No','No','No','No']
 #Dictionary for random Yes/No Consent
 Yes_No_Consent = ['Yes','No','No','No','No']
 #Dictionary for equal Yes/No Flag
@@ -236,15 +229,21 @@ with open('uber_cust_185M.csv','w') as f1:
 	start=10786147
 	acct_list=[]
 	#JS - Update code 1/26/2016
-	#JS - Create list of SSNs up to 20M and use that to pull from
-	liSSNMaster=[]
-	for i in xrange(20000000):
-		liSSNMaster.append(''.join(str(random.randint(0,9)) for _ in xrange(9)))
-	#JS - Only create as many records as the SSN list has available
-	#JS - Use xrange instead of range to minimize memory allocation
-	for i in xrange(len(liSSNMaster)):
+ 	#JS - Create list of SSNs up to 20M and use that to pull from
+        liSSNMaster=[]
+        for i in xrange(30000000):
+                liSSNMaster.append(''.join(str(random.randint(0,9)) for _ in xrange(9)))
+        #JS - Only create as many records as the SSN list has available
+ 	#JS - Use xrange instead of range to minimize memory allocation
+ 	liSSNMaster = list(set(liSSNMaster))
+ 	if len(liSSNMaster) < 18500000:
+                liSSNMaster=[]
+                for i in xrange(50000000):
+                        liSSNMaster.append(''.join(str(random.randint(0,9)) for _ in xrange(9)))
+                liSSNMaster = list(set(liSSNMaster))
+ 	for i in xrange(18500000):
 		#Initiate High Risk Flags
-		#Politically Exposed Person 
+		#Politically Exposed Person
 		PEP='No'
 		#Customer with a Suspicous Activity Report
 		SAR='No'
@@ -264,20 +263,22 @@ with open('uber_cust_185M.csv','w') as f1:
 		#Random number generator for account number
 		#acct = randrange(100000,100000000,1)
 		#Random choice for number of credit cards per account number
-		No_CCs = random.choice(Number_CC)			
-		#while acct_list.count(acct) > 0: 
+		No_CCs = random.choice(Number_CC)
+		#while acct_list.count(acct) > 0:
 		#	acct = randrange(100000,100000000,1)
 		#dt = str(datetime.now())
 		#acct=str(i)++re.sub('\W','',dt)
 		acct=start+1+randrange(1,10,1)
 		start=acct
 		#Randomly generates customer name
-		name = fake.name() 
+		name = fake.name()
 		tmp=gen_data.create_name()
 		#Adds account number to account dictionary
 		acct_list.extend([acct])
 		#Creates a new row and adds data elements
-		row = [i]+[acct]+[random.choice(Acct_Type)]+[No_CCs]+[name]+[tmp[0]]+[(str(randrange(101,1000,1))+str(randrange(10,100,1))+str(randrange(1000,10000,1)))]
+##      JS - Main Account Holder SSN as current index in master SSN list	
+##		row = [i]+[acct]+[random.choice(Acct_Type)]+[No_CCs]+[name]+[tmp[0]]+[(str(randrange(101,1000,1))+str(randrange(10,100,1))+str(randrange(1000,10000,1)))]
+		row = [i]+[acct]+[random.choice(Acct_Type)]+[No_CCs]+[name]+[tmp[0]]+[liSSNMaster[i]]
 		#Dictionary for names list set to blank
 		names=[]
 		#Dictionary for Social Security Number list set to blank
@@ -285,27 +286,31 @@ with open('uber_cust_185M.csv','w') as f1:
 		#Generates Name and SSN for Credit Users
         #Middle Name to reduce name dups
 		mdl=[]
-		for j in range(No_CCs-1):		
+		for j in range(No_CCs-1):
 			names.insert(j,fake.name())
 			tmp2=gen_data.create_name()
 			mdl.insert(j,tmp2[0])
-			#JS - Pull from SSN Master list
-			#ssn.insert(j,(str(randrange(101,1000,1))+str(randrange(10,100,1))+str(randrange(1000,10000,1))))
-			ssn.inset(j,liSSNMaster[i])
-						
+##      JS - Pull from SSN Master list
+ 			#ssn.insert(j,(str(randrange(101,1000,1))+str(randrange(10,100,1))+str(randrange(1000,10000,1))))
+                        randInt = randrange(1,len(liSSNMaster),1)
+			if randInt != i:
+                                ssn.insert(j,liSSNMaster[randInt])
+                        else:
+                                ssn.insert(j,liSSNMaster[randInt - 1])
+
 		#Name and SSN is set to blank if less than 4 customers on an account
-						
-		for k in range(4-No_CCs):			
+
+		for k in range(4-No_CCs):
 			names.insert(No_CCs+k,'')
 			ssn.insert(No_CCs+k,'')
 			mdl.insert(No_CCs,'')
 		#Sets CC_NO to a random credit card number
 		CC_NO=gen_data.cc_number()
-                                
+
 		#Extract CC_Number from the tuple returned by CC_Number...Tuple contains CC Number and Type
-		#while CC_list.count(CC_NO[1][0]) > 0: 
+		#while CC_list.count(CC_NO[1][0]) > 0:
 		CC_TRANS=CC_NO[1][0]
-		
+
 		dt = str(datetime.now())
 		clean=re.sub('\W','',dt)
 		printCC=str(CC_TRANS[-4:])+str(clean[-12:-3])+str(randrange(1111,9999,randrange(1,10,1)))
@@ -314,25 +319,25 @@ with open('uber_cust_185M.csv','w') as f1:
 		#Add data elements to current csv row
 		row.extend([names[0],mdl[0],ssn[0],names[1],mdl[1],ssn[1],names[2],mdl[2],ssn[2],printCC,CC_NO[0],gen_data.create_company_name()+' '+tmp[1],\
 		gen_data.create_email(),gen_data.create_job_title()])
-                                
+
 		#Creates Current Address
 		zip=random.choice(zips.zip)
 		addr=geo_data.create_city_state_zip[zip]
 		#Creates Previous address
 		zip2=random.choice(zips.zip)
 		addr2=geo_data.create_city_state_zip[zip2]
-                                                                
+
 		#Add additional data elements to current csv row
 		lrg_cash_ex=random.choice(Yes_No)
-		
-		#Condition for SARs and Demarketed Clients 
+
+		#Condition for SARs and Demarketed Clients
 		if(Clsd=='Yes'):
 			#1% of closed accounts are demarketed but never had a SAR filed
 			if (max((randrange(0,101,1)-99),0)==1 and SAR=='No'):
 				demarket='Yes'
 				dem_date=gen_data.create_date(past=True)
 			if (max((randrange(0,11,1)-9),0)==1 and demarket=='No'):
-				#10% of closed accounts have SARs 
+				#10% of closed accounts have SARs
 				SAR='Yes'
 				#90% of closed accounts with SARs are demarketed
 				if(max((randrange(0,11,1)-9),0)==0):
@@ -342,11 +347,11 @@ with open('uber_cust_185M.csv','w') as f1:
 		if (max((randrange(0,101,1)-99),0)==1):
 			PEP='Yes'
 
-		row.extend([addr[0],addr[1],zip,'US',addr2[0],addr2[1],zip2,'US',gen_data.create_birthday(min_age=2, max_age=85),PEP,SAR,Clsd])                            
+		row.extend([addr[0],addr[1],zip,'US',addr2[0],addr2[1],zip2,'US',gen_data.create_birthday(min_age=2, max_age=85),PEP,SAR,Clsd])
 		#Start Generating related accounts from account list once 10,000 accounts are generated
-		if i > 10000: 
+		if i > 10000:
 			rel = int(random.choice(acct_list))*max((randrange(0,10001,1)-9999),0)
-			if rel <> 0: 
+			if rel <> 0:
 				row.append(rel)
 				row.append(random.choice(Related_Type))
 			else:
@@ -355,43 +360,43 @@ with open('uber_cust_185M.csv','w') as f1:
 		else:
 			row.append('')
 			row.append('')
-                                                                
+
 		#Randomly generates account start date
 		party_start=gen_data.create_date(past=True)
 		#Randomly selects consent option for sharing info
-		Consent_Share = random.choice(Yes_No_Consent)  
-		
+		Consent_Share = random.choice(Yes_No_Consent)
+
 		#Add additional data elements to current csv row
-		
-		
+
+
 		row.extend([random.choice(Party_Type),random.choice(Party_Relation),party_start,gen_data.create_date(past=True),\
 		lrg_cash_ex,demarket,dem_date,randrange(0,100,1),random.choice(Official_Lang)])
 		#Add data element preferred methond of contact for yes to share info...if not then blank to current row
 		if Consent_Share == 'Yes':
 			row.extend(['Yes',random.choice(Preffered_Channel)])
-		else: 
-			row.extend(['No',''])                                             
+		else:
+			row.extend(['No',''])
 		#DO NOT USE CUST STATUS BELOW - NOT INTEGRATED WITH CLOSED STATUS! Add additional data elements to current csv row
 		row.extend([zip,randrange(0,5,1)])
-                                
+
 		#Generates Segment ID then adds additional Segment data based on the selection to the current csv row
 		Segment_ID = randrange(0,5,1)%5
-                                                
+
 		if Segment_ID == 0:
 			row.extend([Model_ID[0],Seg_Model_Type[0],Seg_Model_Name[0],Seg_Model_Group[0],Seg_Model_Description[0],Seg_Model_Score[0]])
-                                                
+
 		if Segment_ID == 1:
 			row.extend([Model_ID[1],Seg_Model_Type[1],Seg_Model_Name[1],Seg_Model_Group[1],Seg_Model_Description[1],Seg_Model_Score[1]])
-															
+
 		if Segment_ID == 2:
 			row.extend([Model_ID[2],Seg_Model_Type[2],Seg_Model_Name[2],Seg_Model_Group[2],Seg_Model_Description[2],Seg_Model_Score[2]])
-                                                                
+
 		if Segment_ID == 3:
 			row.extend([Model_ID[3],Seg_Model_Type[3],Seg_Model_Name[3],Seg_Model_Group[3],Seg_Model_Description[3],Seg_Model_Score[3]])
-                        	                                        
+
 		if Segment_ID == 4:
 			row.extend([Model_ID[4],Seg_Model_Type[4],Seg_Model_Name[4],Seg_Model_Group[4],Seg_Model_Description[4],Seg_Model_Score[4]])
-                                                                                
+
 		#Add additional data elements to current csv row
 		hr0=random.choice(Arms_Manufacturer)
 		hr01=random.choice(Auction)
@@ -399,24 +404,24 @@ with open('uber_cust_185M.csv','w') as f1:
 		hr03=random.choice(Casino_Gambling)
 		hr04=random.choice(Channel_Onboarding)
 		hr05=random.choice(Channel_Ongoing_Transactions)
-		
+
 		row.extend([hr0,hr01,hr02,hr03,hr04,hr05])
-                                
+
 		#Randomly select whther customer has a High Net Worth
 		HighNetWorthFlag = random.choice(HighNetWorth)
-                                
+
 		#Randomly Generates customer net worth based on the above flag
-		if HighNetWorthFlag == 'Yes': 
+		if HighNetWorthFlag == 'Yes':
 			row.append(max(max((randrange(0,101,1)-99),0)*randrange(1000000,25000000,1),randrange(1000000,5000000,1)))
-		else: 
+		else:
 			flag=random.choice(LowNet)
 			if flag==0:
 				row.append(randrange(-250000,600000,1))
-			else: 
+			else:
 				if flag==1:
 					row.append(randrange(149000,151000,1))
 				else:
-					row.append(randrange(40000,50000,1))                           
+					row.append(randrange(40000,50000,1))
 		#Add data elements to current csv row
 		hr1=random.choice(Complex_HI_Vehicle)
 		hr2=random.choice(Dealer_Precious_Metal)
@@ -441,8 +446,8 @@ with open('uber_cust_185M.csv','w') as f1:
 		hr21=random.choice(Stock_Market_Listing)
 		hr22=random.choice(Third_Party_Payment_Processor)
 		hr23=random.choice(Transacting_Provider)
-		
-		
+
+
 		refrating=['1','1','1','2','3','4','2','4','5','5','5','5','5','5','5','5','5','5','5','5']
 		if(PEP=='Yes' or SAR=='Yes' or lrg_cash_ex=='Yes' or demarket=='Yes' or hr0=='Yes'
 		or hr01=='Yes' or hr02=='Yes' or hr03=='Yes' or hr1=='Yes' or hr2=='Yes' or hr3=='Yes' or hr4=='Yes' or
@@ -450,7 +455,7 @@ with open('uber_cust_185M.csv','w') as f1:
 		hr16=='Yes' or hr17=='Yes' or hr18=='Yes' or hr22=='Yes' or hr23=='Yes' or HighNetWorthFlag=='Yes'):
 			high_risk='Yes'
 			hr_rating=random.choice(refrating)
-			
+
 		if(SAR=='No' and high_risk=='No'):
 			if(max((randrange(0,101,1)-99),0)==1):
 				high_risk='Yes'
@@ -459,12 +464,12 @@ with open('uber_cust_185M.csv','w') as f1:
 			if(max((randrange(0,101,1)-99),0)==1):
 				high_risk='Yes'
 				hr_rating=random.choice(refrating)
-		
+
 		if(high_risk=='No'):
 			if(max((randrange(0,101,1)-99),0)==1):
 				high_risk='Yes'
 				hr_rating=random.choice(refrating)
-				
+
 		row.extend([hr1,hr2,hr3,hr4,hr5,hr6,hr7,hr8,hr9,hr10,hr11,hr12,hr13,hr14,hr16,hr17,hr18,hr19,hr20,hr21,hr22,hr23,
 		HighNetWorthFlag,high_risk,hr_rating,random.choice(Use_Case)])
 		#End the current row
