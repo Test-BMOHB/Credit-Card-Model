@@ -235,7 +235,14 @@ with open('uber_cust_185M.csv','w') as f1:
 	#Loop for number of accounts to generate
 	start=10786147
 	acct_list=[]
-	for i in range(18500000):
+	#JS - Update code 1/26/2016
+	#JS - Create list of SSNs up to 20M and use that to pull from
+	liSSNMaster=[]
+	for i in xrange(20000000):
+		liSSNMaster.append(''.join(str(random.randint(0,9)) for _ in xrange(9)))
+	#JS - Only create as many records as the SSN list has available
+	#JS - Use xrange instead of range to minimize memory allocation
+	for i in xrange(len(liSSNMaster)):
 		#Initiate High Risk Flags
 		#Politically Exposed Person 
 		PEP='No'
@@ -282,7 +289,9 @@ with open('uber_cust_185M.csv','w') as f1:
 			names.insert(j,fake.name())
 			tmp2=gen_data.create_name()
 			mdl.insert(j,tmp2[0])
-			ssn.insert(j,(str(randrange(101,1000,1))+str(randrange(10,100,1))+str(randrange(1000,10000,1))))
+			#JS - Pull from SSN Master list
+			#ssn.insert(j,(str(randrange(101,1000,1))+str(randrange(10,100,1))+str(randrange(1000,10000,1))))
+			ssn.inset(j,liSSNMaster[i])
 						
 		#Name and SSN is set to blank if less than 4 customers on an account
 						
