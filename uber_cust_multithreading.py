@@ -15,7 +15,7 @@ from datetime import datetime
 from faker import Faker
 from barnum import gen_data
 from multiprocessing import Pool
-import csv, NAICS, random, geo_data, zips, re
+import csv, NAICS, random, geo_data, zips, re, time
 liSSNMaster = []
 
 def createCusts(N):
@@ -414,7 +414,7 @@ def createSSNs(N):
 
 def createFile(liCust):
         #Creates CSV
-        with open('uber_cust.csv','w') as f1:
+        with open('uber_cust_TEST.csv','w') as f1:
                 #Writer for CSV...Pipe delimited...Return for a new line
                 writer=csv.writer(f1, delimiter='|',lineterminator='\n',)
                 #Header Row
@@ -437,13 +437,19 @@ def createFile(liCust):
 #JS - Update code 1/26/2016
 #JS - Create list of SSNs up to 30M and use that to pull from
 #JS - Multi-Thread SSN creation
+startT = time.time()
 numUniSSNs = 30000000
 pool = Pool(processes=10)
 results = pool.map(createSSNs, (numUniSSNs/10,numUniSSNs/10,numUniSSNs/10,numUniSSNs/10,numUniSSNs/10,numUniSSNs/10,numUniSSNs/10,numUniSSNs/10,numUniSSNs/10,numUniSSNs/10))
 liSSNMaster = results[0] + results[1] + results[2] + results[3] + results[4] + results[5] + results[6] + results[7] + results[8] + results[9]
 liSSNMaster = list(set(liSSNMaster))
+endT = time.time()
+totT = endT - startT
+totT = ("{0:.1f}".format(round(totT,2)))
+print "It took " + str(totT) + " seconds to create " + str(len(liSSNMaster)) + " SSNs"
 #JS - Only create as many records as the SSN list has available
 #JS - Use xrange instead of range to minimize memory allocation
+startT = time.time()
 numCusts = 18500000
 if len(liSSNMaster) < numCusts:
         liSSNMaster=[]
@@ -454,4 +460,11 @@ if len(liSSNMaster) < numCusts:
 pool2 = Pool(processes=10)
 custResults = pool2.map(createCusts, (numCusts/10,numCusts/10,numCusts/10,numCusts/10,numCusts/10,numCusts/10,numCusts/10,numCusts/10,numCusts/10,numCusts/10))
 liCust = custResults[0] + custResults[1] + custResults[2] + custResults[3] + custResults[4] + custResults[5] + custResults[6] + custResults[7] + custResults[8] + custResults[9]
+for index,cust in enumerate(liCust):
+	cust[0] = index
+endT = time.time()
+totT = endT - startT
+totT = ("{0:.1f}".format(round(totT,2)))
+print "It took " + str(totT) + " seconds to create " + str(len(liCust)) + " customer records"
 createFile(liCust)
+print "File created"
