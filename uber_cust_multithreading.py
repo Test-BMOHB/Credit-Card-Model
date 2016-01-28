@@ -1,12 +1,14 @@
-#Developer    : Ivana Donevska/Jeff Kamin
-#Date         : 2016-01-20
+#Developer    : Ivana Donevska/Jeff Kamin/Justin Suelflow
+#Date         : 2016-01-28
 #Program Name : Customer DataGenerator
-#Version#     : 5
+#Version#     : 6
 #Description  : Code that generates customer data
 #-----------------------------------------------------------------------------
 # History  | ddmmyyyy  |  User     |                Changes
 #          | 01192016  | Ivana D.  | Credit Card model,code, ref lists, etc...
-#			 01202016  | Jeff K.   | Comments, ref lists, etc...
+#	     01202016  | Jeff K.   | Comments, ref lists, etc...
+#	     01272016  | Justin S. | Dedup SSNs
+#	     01282016  | Justin S. | multi-threading, creating functions
 #-----------------------------------------------------------------------------*/
 #Reference data is located on the test-bmohb console gs://newccdatav3
 
@@ -414,7 +416,7 @@ def createSSNs(N):
 
 def createFile(liCust):
         #Creates CSV
-        with open('uber_cust_TEST.csv','w') as f1:
+        with open('uber_cust.csv','w') as f1:
                 #Writer for CSV...Pipe delimited...Return for a new line
                 writer=csv.writer(f1, delimiter='|',lineterminator='\n',)
                 #Header Row
