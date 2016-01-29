@@ -26,21 +26,21 @@ fake = Faker()
 #Distinct List of Payments, Credits and Debits 
 Transaction_Type_Payments= ['Cash Payment','Wire Payment','ACH Payment','Paper Check', 'e-Check Check','Online Transfer','ATM Payment']
 Transaction_Type_Credits = ['Payment','Reversal','Award']
-Transaction_Type_Debit = ['Purchase','Fee','Interest Charge','Penalty','Refund']
+Transaction_Type_Debit = ['Purchase','Fee','Interest Charge','Penalty']
 
 Transaction_Type_Credits_Ovpmt_Red = ['Cash Payment','Wire Payment','ACH Payment','ACH Payment','Paper Check','e-Check','Online Transfer','ATM Payment','Reversal','Award']
-Transaction_Type_Debit_Ovpmt_Red = ['Purchase','Fee','Interest Charge','Penalty','Refund']
+Transaction_Type_Debit_Ovpmt_Red = ['Purchase','Fee','Interest Charge','Penalty']
 Transaction_Type_Credits_Ovpmt_Yellow = ['Cash Payment','Wire Payment','ACH Payment','ACH Payment','Paper Check','e-Check','Online Transfer','ATM Payment','Reversal','Award']
-Transaction_Type_Debit_Ovpmt_Yellow = ['Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Fee','Interest Charge','Penalty','Refund']
+Transaction_Type_Debit_Ovpmt_Yellow = ['Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Fee','Interest Charge','Penalty']
 Transaction_Type_Credits_Ovpmt_Green = ['Cash Payment','Wire Payment','ACH Payment','ACH Payment','Paper Check','e-Check','Online Transfer','ATM Payment','Reversal','Award']
-Transaction_Type_Debit_Ovpmt_Green = ['Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Fee','Interest Charge','Penalty','Refund']
+Transaction_Type_Debit_Ovpmt_Green = ['Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Fee','Interest Charge','Penalty']
 
-Transaction_Type_Credits_Refund_Red = ['Cash Payment','Wire Payment','ACH Payment','ACH Payment','Paper Check','e-Check','Online Transfer','ATM Payment','Reversal','Award']
-Transaction_Type_Debit_Refund_Red = ['Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Cash Payment','Wire Payment','ACH Payment','ACH Payment','Paper Check','e-Check','Online Transfer','ATM Payment','Reversal','Award']
-Transaction_Type_Credits_Refund_Yellow = ['Cash Payment','Wire Payment','ACH Payment','ACH Payment','Paper Check','e-Check','Online Transfer','ATM Payment','Reversal','Award']
-Transaction_Type_Debit_Refund_Yellow = ['Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Cash Payment','Wire Payment','ACH Payment','ACH Payment','Paper Check','e-Check','Online Transfer','ATM Payment','Reversal','Award']
-Transaction_Type_Credits_Refund_Green = ['Cash Payment','Wire Payment','ACH Payment','ACH Payment','Paper Check','e-Check','Online Transfer','ATM Payment','Reversal','Award']
-Transaction_Type_Debit_Refund_Green = ['Refund','Refund','Refund','Refund','Refund','Refund','Cash Payment','Wire Payment','ACH Payment','ACH Payment','Paper Check','e-Check','Online Transfer','ATM Payment','Reversal','Award']
+Transaction_Type_Credits_Refund_Red = ['Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Cash Payment','Wire Payment','ACH Payment','ACH Payment','Paper Check','e-Check','Online Transfer','ATM Payment','Reversal','Award']
+Transaction_Type_Debit_Refund_Red = ['Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Fee','Interest Charge','Penalty']
+Transaction_Type_Credits_Refund_Yellow = ['Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Refund','Cash Payment','Wire Payment','ACH Payment','ACH Payment','Paper Check','e-Check','Online Transfer','ATM Payment','Reversal','Award']
+Transaction_Type_Debit_Refund_Yellow = ['Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Fee','Interest Charge','Penalty']
+Transaction_Type_Credits_Refund_Green = ['Refund','Refund','Refund','Refund','Refund','Refund','Cash Payment','Wire Payment','ACH Payment','ACH Payment','Paper Check','e-Check','Online Transfer','ATM Payment','Reversal','Award']
+Transaction_Type_Debit_Refund_Green = ['Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Purchase','Fee','Interest Charge','Penalty']
 
 Transaction_Type_Credits_Payments_Red =['Cash Payment','Wire Payment','ACH Payment','ACH Payment''Cash Payment','Wire Payment','ACH Payment','ACH Payment']
 Transaction_Type_Debit_Payments_Red = ['Purchase', 'Interest Charge','Purchase', 'Interest Charge']
@@ -128,7 +128,7 @@ ClsdFlags=[]
 count=0
 columns = defaultdict(list) # each value in each column is appended to a list
 
-with open('uber_cust_185M.csv') as f:
+with open('uber_cust.csv') as f:
     reader = csv.DictReader(f,delimiter='|') # read rows into a dictionary format
     for row in reader: # read a row as {column1: value1, column2: value2,...}
         for (k,v) in row.items(): # go over each column name and value 
@@ -156,59 +156,98 @@ def gen_tran(MCC_credits,MCC_debits,Tran_Country_Credits,Tran_Country_Debits,Tra
 		#local Amt variable to calculate customer total usage
 		usedAmt = 0
 		tmpAmt = 0
+		Balance = limit
 		maxDate= startDate
 		NoTrans = randrange(100,150,1)
 		desc=''
+		flag=0
+		maxCheckin=''
+		maxBook=''
 		#loop to generate NoTrans transactions per customer, we can add logic for probabilities of # transactions if neccessary random number generator to avoid the constant value
 		for k in range(NoTrans):
+			dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 			cr_dbt='D'
 			tranType = ''
 			country=[]
 			cat_desc=''
-			tmpAmt = max((randrange(1,Upper_Limit,1)+Delta),0)*randrange(1,limit,100)
+			flag=0
+			#if(Balance>0 and (Balance<limit or Balance==limit)):
+			if(Balance>0 and Balance<=limit):
+				tmpAmt = max((randrange(1,Upper_Limit,1)+Delta),0)*randrange(1,Balance+1,1)
+				flag=1
 			tdelta = timedelta(days=randrange(1,4,1))
-			row = [str(count)] + [acct] 
-			maxCheckin=''
-			if tmpAmt == 0:
-				tmpAmt=random.randrange(1,limit,1)
-				tmpAmt=tmpAmt*(-1)
-				tranType=random.choice(Tran_Type_C)
-				cr_dbt='C'
-				cat = random.choice(MCC_credits)
-				merch = 'Payment'
-				if(tranType=='Merchant Credit'):
-					cat=random.choice(Merchant_Category_Green)
-				cat_desc=python_merchant_cat.All_Merchant_Cat[cat]
-				row.append(merch)
-				row.append(cat)
-				row.append(cat_desc)
-				country=random.choice(Tran_Country_Credits)
-			else: 
+			row = [str(count)+'_'+dt] + [acct] 
+			#print 'BALANCE: '+str(Balance)+' LIMIT:' + str(limit)
+			#print 'Flag: '+str(flag)
+			if tmpAmt == 0 and flag==1:
+				#print '1'
+				tmpAmt=random.randrange(1,Balance+1,1)
 				tranType = random.choice(Tran_Type_D)
 				cat = random.choice(MCC_debits)
 				cat_desc=python_merchant_cat.All_Merchant_Cat[cat]
+				Balance = Balance - tmpAmt
 				merch=gen_data.create_company_name() 
 				row.append(merch)
 				row.append(cat)
 				row.append(cat_desc)
 				country=random.choice(Tran_Country_Debits)
-				
-			tmp=usedAmt + tmpAmt 
-			usedAmt=tmp
+			else: 
+					if tmpAmt > 0 and flag==1:	
+						#print '2'
+						cr_dbt='C'
+						tranType=random.choice(Tran_Type_C)
+						cat = random.choice(MCC_credits)
+						cat_desc=python_merchant_cat.All_Merchant_Cat[cat]
+						Balance = Balance + tmpAmt
+						merch = 'Payment'
+						if(tranType=='Merchant Credit'):
+							cat=random.choice(Merchant_Category_Green)
+						row.append(merch)
+						row.append(cat)
+						row.append(cat_desc)
+						country=random.choice(Tran_Country_Credits)
+			if Balance > limit and flag==0:
+				#print '3'
+				tmpAmt=random.randrange(1,Balance-limit+1,1)
+				tranType = random.choice(Tran_Type_D)
+				cat = random.choice(MCC_debits)
+				cat_desc=python_merchant_cat.All_Merchant_Cat[cat]
+				Balance = Balance - tmpAmt
+				merch=gen_data.create_company_name() 
+				row.append(merch)
+				row.append(cat)
+				row.append(cat_desc)
+				country=random.choice(Tran_Country_Debits)
+			else:
+				if ((Balance < 0 or Balance==0)and flag==0):
+					#print '4'
+					cr_dbt='C'
+					tranType=random.choice(Tran_Type_C)
+					cat = random.choice(MCC_credits)
+					cat_desc=python_merchant_cat.All_Merchant_Cat[cat]
+					tmpAmt = random.randrange(1,limit/2,1)
+					Balance = Balance + tmpAmt
+					merch = 'Payment'
+					if(tranType=='Merchant Credit'):
+						cat=random.choice(Merchant_Category_Green)
+					row.append(merch)
+					row.append(cat)
+					row.append(cat_desc)
+					country=random.choice(Tran_Country_Credits)
 			#add current amount to client total account usage
 			#date posted
 			date1 = maxDate+tdelta
 			maxDate = date1
 			#date of transaction a day later
 			date2 = date1-timedelta(days=1)
-			row.extend([country,date1,date2,tranType,cr_dbt,limit,tmpAmt,usedAmt,CCs[j],
+			row.extend([country,date1,date2,tranType,cr_dbt,limit,tmpAmt,Balance,CCs[j],
 			CCTypes[j],usecase,Holders[j],CCsCount[j],Cities[j],States[j],ZIPs[j],Countries[j]])
 			count = count + 1
 			checkin=''
 			checkout=''
 			transDetail=''
 			
-			if((cat_desc=='Hotels/Motels/Inns/Resorts' or cat_desc=='Hotels, Motels, and Resorts') and (i=='28' or i=='29')):
+			if((cat_desc=='Hotels/Motels/Inns/Resorts' or cat_desc=='Hotels, Motels, and Resorts') and (UseCase[j]=='28' or UseCase[j]=='29')):
 				if (maxCheckin == ''):
 					checkin=maxDate+timedelta(days=randrange(365,389,1))
 					checkout=checkin+timedelta(days=randrange(4,11,1))
@@ -216,7 +255,7 @@ def gen_tran(MCC_credits,MCC_debits,Tran_Country_Credits,Tran_Country_Debits,Tra
 					tmp2=gen_data.create_name()
 					addr=gen_data.create_city_state_zip()
 					hotel=tmp2[1]+' Hotels; '+'Address: '+addr[1]+' '+addr[2]+', '+addr[0]
-					row.append('Checkin: '+str(checkin)+';Checkout: '+str(checkout)+';Hotel: '+hotel)
+					transDetail='Checkin: '+str(checkin)+';Checkout: '+str(checkout)+';Hotel: '+hotel
 				else:
 					checkin=maxCheckin + timedelta(days=randrange(2,5,1))
 					checkout=checkin+timedelta(days=randrange(4,11,1))
@@ -224,45 +263,42 @@ def gen_tran(MCC_credits,MCC_debits,Tran_Country_Credits,Tran_Country_Debits,Tra
 					tmp2=gen_data.create_name()
 					addr=gen_data.create_city_state_zip()
 					hotel=tmp2[1]+' Hotels; '+'Address: '+addr[1]+' '+addr[2]+', '+addr[0]
-					row.append('Checkin: '+str(checkin)+';Checkout: '+str(checkout)+';Hotel: '+hotel)
-			if((cat_desc=='Hotels/Motels/Inns/Resorts' or cat_desc=='Hotels, Motels, and Resorts') and i=='30'):
+					transDetail='Checkin: '+str(checkin)+';Checkout: '+str(checkout)+';Hotel: '+hotel
+			if((cat_desc=='Hotels/Motels/Inns/Resorts' or cat_desc=='Hotels, Motels, and Resorts') and UseCase[j]=='30'):
 				checkin=maxDate+timedelta(days=randrange(30,200,1))
 				checkout=checkin+timedelta(days=randrange(4,11,1))
 				tmp2=gen_data.create_name()
 				addr=gen_data.create_city_state_zip()
 				hotel=tmp2[1]+' Hotels; '+'Address: '+addr[1]+' '+addr[2]+', '+addr[0]
-				row.append('Checkin: '+str(checkin)+';Checkout: '+str(checkout)+';Hotel: '+hotel)
+				transDetail='Checkin: '+str(checkin)+';Checkout: '+str(checkout)+';Hotel: '+hotel
 				
-			maxBook=''
-			if(cat_desc=='Airlines' and (i=='31' or i=='32')):
+			if(cat_desc=='Airlines' and (UseCase[j]=='31' or UseCase[j]=='32')):
 				if (maxBook == ''):
 					booking=maxDate+timedelta(days=randrange(1,15,1))
 					maxBook=booking
 					tmp2=gen_data.create_name()
 					addr=gen_data.create_city_state_zip()
-					itin='Date Booked: '+booking+'Name Booked: '+tmp2+'Address: '+addr[1]+' '+addr[2]+', '+addr[0]+'Source :'+random.choice(Airport_Code)+'Destination:'+random.choice(Airport_Code)
-					row.append(itin)
+					transDetail='Date Booked: '+str(booking)+'Name Booked: '+tmp2[0]+tmp2[1]+'Address: '+addr[1]+' '+addr[2]+', '+addr[0]+'Source :'+random.choice(Airport_Code)+'Destination:'+random.choice(Airport_Code)
 				else:
 					booking=maxBook + timedelta(days=randrange(1,15,1))
 					maxBook=booking
 					tmp2=gen_data.create_name()
 					addr=gen_data.create_city_state_zip()
-					itin='Date Booked: '+booking+'Name Booked: '+tmp2+'Address: '+addr[1]+' '+addr[2]+', '+addr[0]+'Source :'+random.choice(Airport_Code)+'Destination:'+random.choice(Airport_Code)
-					row.append(itin)
-			if(cat_desc=='Airlines' and i=='33'):
+					transDetail='Date Booked: '+str(booking)+'Name Booked: '+ tmp2[0] + tmp2[1] + 'Address: '+ addr[1] + ' ' + addr[2]+', '+addr[0]+'Source :'+random.choice(Airport_Code)+'Destination:'+random.choice(Airport_Code)
+			if(cat_desc=='Airlines' and UseCase[j]=='33'):
 				booking=maxDate + timedelta(days=randrange(1,15,1))
 				tmp2=gen_data.create_name()
 				addr=gen_data.create_city_state_zip()
-				itin='Date Booked: '+booking+'Name Booked: '+tmp2+'Address: '+addr[1]+' '+addr[2]+', '+addr[0]+'Source :'+random.choice(Airport_Code)+'Destination:'+random.choice(Airport_Code)
-				row.append(itin)				
+				transDetail='Date Booked: '+str(booking)+'Name Booked: '+ tmp2[0] + tmp2[1] + 'Address: '+addr[1]+' '+addr[2]+', '+addr[0]+'Source :'+random.choice(Airport_Code)+'Destination:'+random.choice(Airport_Code)
+			row.append(transDetail)
 			writer.writerow(row)
 			#post generating all transactions, check account balance - if overpaid - refund $ and add a refund transaction 
-		if usedAmt < limit * (-1):
-			row = [str(count)]+ [acct]+['Uber Bank']+['0000']+['Refund to Customer from Bank']+[random.choice(Tran_Country_Debits)]
+		if Balance > limit:
+			row = [str(count)+'_'+dt]+ [acct]+['Uber Bank']+['0000']+['Refund to Customer from Bank']+[random.choice(Tran_Country_Debits)]
 			date1=maxDate+timedelta(days=90)
 			date2=date1-timedelta(days=1)
-			row.extend([date1, date2, 'Refund','D',limit,abs(limit-abs(usedAmt))*(-1),0,CCs[j],CCTypes[j],
-			usecase,Holders[j],CCsCount[j],Cities[j],States[j],ZIPs[j],Countries[j]])
+			row.extend([date1, date2, 'Refund','D',limit,Balance-limit,limit,CCs[j],CCTypes[j],
+			usecase,Holders[j],CCsCount[j],Cities[j],States[j],ZIPs[j],Countries[j],''])
 			count = count + 1
 			usedAmt = 0
 			maxDate= datetime(0001,01,01)
@@ -271,9 +307,9 @@ def gen_tran(MCC_credits,MCC_debits,Tran_Country_Credits,Tran_Country_Debits,Tra
 			maxDate = date1
 			#date of transaction a day later
 			date2 = date1-timedelta(days=1)
-			row = [str(count)]+ [acct]+['Customer Payment']+['1111']+['Customer Payment']+[random.choice(Tran_Country_Credits)]
-			row.extend([date1, date2, random.choice(Tran_Type_C),'C',limit,abs(limit-abs(usedAmt))*(-1),0,CCs[j],CCTypes[j],usecase,
-			Holders[j],CCsCount[j],Cities[j],States[j],ZIPs[j],Countries[j]])
+			row = [str(count)+'_'+dt]+[acct]+['Customer Payment']+['1111']+['Customer Payment']+[random.choice(Tran_Country_Credits)]
+			row.extend([date1, date2, random.choice(Tran_Type_C),'C',limit,limit-Balance,limit,CCs[j],CCTypes[j],usecase,
+			Holders[j],CCsCount[j],Cities[j],States[j],ZIPs[j],Countries[j],''])
 			count = count + 1
 			usedAmt = 0
 		writer.writerow(row)
