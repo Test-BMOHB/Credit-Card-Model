@@ -13,7 +13,7 @@
 #	  | 01272016  | Justin S. | Update SSN2, SSN3 and SSN4 logic with unique values
 #	  | 01282016  | Justin S. | multi-threading, creating functions
 #	  | 01282016  | Jeff K.   | multi-threading bug fixes
-#	  | 01292016  | Ivana D.  | multi-threading bug fixes, odd # cust logic
+#	  | 01292016  | Ivana D.  | multi-threading odd number bug identification
 #	  | 02012016  | Ivana D.  | Code review for multithreading and comment updates 
 #-----------------------------------------------------------------------------*/
 #Reference data is located on the test-bmohb console gs://newccdatav3
