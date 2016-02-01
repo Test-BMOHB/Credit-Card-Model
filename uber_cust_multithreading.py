@@ -235,7 +235,7 @@ def createCusts(N):
 		#Adds account number to account dictionary
 		acct_list.extend([acct])
 		#Creates a new row and adds data elements
-##      JS - Main Account Holder SSN as current index in master SSN list
+##      JS - Main Account Holder SSN as current index in master SSN list	
 ##		row = [i]+[acct]+[random.choice(Acct_Type)]+[No_CCs]+[name]+[tmp[0]]+[(str(randrange(101,1000,1))+str(randrange(10,100,1))+str(randrange(1000,10000,1)))]
 		row = [i]+[acct]+[random.choice(Acct_Type)]+[No_CCs]+[name]+[tmp[0]]+[liSSNMaster[i]]
 		#Dictionary for names list set to blank
