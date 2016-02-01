@@ -235,7 +235,7 @@ def createCusts(N):
 		#Adds account number to account dictionary
 		acct_list.extend([acct])
 		#Creates a new row and adds data elements
-##      JS - Main Account Holder SSN as current index in master SSN list	
+##      JS - Main Account Holder SSN as current index in master SSN list
 ##		row = [i]+[acct]+[random.choice(Acct_Type)]+[No_CCs]+[name]+[tmp[0]]+[(str(randrange(101,1000,1))+str(randrange(10,100,1))+str(randrange(1000,10000,1)))]
 		row = [i]+[acct]+[random.choice(Acct_Type)]+[No_CCs]+[name]+[tmp[0]]+[liSSNMaster[i]]
 		#Dictionary for names list set to blank
@@ -440,9 +440,11 @@ def createFile(liCust):
 #JS - Create list of SSNs up to 30M and use that to pull from
 #JS - Multi-Thread SSN creation
 startT = time.time()
-numUniSSNs = 30000000
-pool = Pool(processes=10)
-results = pool.map(createSSNs, (numUniSSNs/10,numUniSSNs/10,numUniSSNs/10,numUniSSNs/10,numUniSSNs/10,numUniSSNs/10,numUniSSNs/10,numUniSSNs/10,numUniSSNs/10,numUniSSNs/10))
+numUniSSNs = 300
+proc = 10
+remainder = numUniSSNs % proc
+pool = Pool(processes=proc)
+results = pool.map(createSSNs, (numUniSSNs/10,numUniSSNs/10,numUniSSNs/10,numUniSSNs/10,numUniSSNs/10,numUniSSNs/10,numUniSSNs/10,numUniSSNs/10,numUniSSNs/10,((numUniSSNs/10) + remainder)))
 liSSNMaster = results[0] + results[1] + results[2] + results[3] + results[4] + results[5] + results[6] + results[7] + results[8] + results[9]
 liSSNMaster = list(set(liSSNMaster))
 endT = time.time()
@@ -452,15 +454,17 @@ print "It took " + str(totT) + " seconds to create " + str(len(liSSNMaster)) + "
 #JS - Only create as many records as the SSN list has available
 #JS - Use xrange instead of range to minimize memory allocation
 startT = time.time()
-numCusts = 18500000
+numCusts = 101
 if len(liSSNMaster) < numCusts:
         liSSNMaster=[]
         numUniSSNs = numUniSSNs + numCusts
-        results = pool.map(createSSNs, (numUniSSNs/10,numUniSSNs/10,numUniSSNs/10,numUniSSNs/10,numUniSSNs/10,numUniSSNs/10,numUniSSNs/10,numUniSSNs/10,numUniSSNs/10,numUniSSNs/10))
+        remainder = numUniSSNs % proc
+        results = pool.map(createSSNs, (numUniSSNs/10,numUniSSNs/10,numUniSSNs/10,numUniSSNs/10,numUniSSNs/10,numUniSSNs/10,numUniSSNs/10,numUniSSNs/10,numUniSSNs/10,((numUniSSNs/10) + remainder)))
         liSSNMaster = results[0] + results[1] + results[2] + results[3] + results[4] + results[5] + results[6] + results[7] + results[8] + results[9]
         liSSNMaster = list(set(liSSNMaster))
-pool2 = Pool(processes=10)
-custResults = pool2.map(createCusts, (numCusts/10,numCusts/10,numCusts/10,numCusts/10,numCusts/10,numCusts/10,numCusts/10,numCusts/10,numCusts/10,numCusts/10))
+pool2 = Pool(processes=proc)
+remainder = numCusts % proc
+custResults = pool2.map(createCusts, (numCusts/10,numCusts/10,numCusts/10,numCusts/10,numCusts/10,numCusts/10,numCusts/10,numCusts/10,numCusts/10,((numCusts/10) + remainder)))
 liCust = custResults[0] + custResults[1] + custResults[2] + custResults[3] + custResults[4] + custResults[5] + custResults[6] + custResults[7] + custResults[8] + custResults[9]
 for index,cust in enumerate(liCust):
 	cust[0] = index
