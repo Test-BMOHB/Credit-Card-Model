@@ -1,4 +1,4 @@
-#Developer    : Ivana Donevska/Jeff Kamin
+#Developer    : Ivana Donevska
 #Date         : 2016-01-12
 #Program Name : Credit Card Transactions Generator
 #Version#     : 1
@@ -6,9 +6,10 @@
 #-----------------------------------------------------------------------------
 # History  | ddmmyyyy  |  User     |                Changes
 #          | 01202016  | Ivana D.  | Transactions Model, code, Use cases implementation, cc logic and lists
-#		   | 01222016  | Jeff  K.  | File parsing logic, credit card logic, ref lists
+#		   | 01222016  | Jeff  K.  | File parsing logic, ref lists
+#          | 02022016  | Ivana D.  | Code review and comments
 #-----------------------------------------------------------------------------*/
-#Reference data for python_account_ID, python_merchant_cat, python_CC is located on the test-bmohb console gs://credit_card_transactions
+#Reference data for python_account_ID, python_merchant_cat, python_CC is located on the test-bmohb console gs://newccdatav3
 from random import randrange, random, shuffle
 from faker import Faker
 from barnum import gen_data
@@ -30,6 +31,7 @@ High_Risk_Countries_Green = ['AF', 'AO', 'AZ', 'BD', 'BY', 'BZ', 'BO', 'MM', 'KH
 High_Risk_Countries_Yellow = ['AF', 'AO', 'AZ', 'BD', 'BY', 'BZ', 'BO', 'MM', 'KH', 'KM', 'CD', 'CI', 'CU', 'GN', 'GW', 'GY', 'HT', 'ID', 'IR', 'IQ', 'KZ', 'KE', 'KP', 'LA', 'LB', 'LR', 'LY', 'NG', 'PK', 'PG', 'PY', 'SL', 'SX', 'SO', 'SD', 'SY', 'TH', 'TR', 'VE', 'VN', 'YE', 'ZW', 'AL', 'DZ', 'AD', 'AI', 'AR', 'AW', 'BS', 'BJ', 'BM', 'BA', 'BR', 'VG', 'BN', 'BF', 'BI', 'KY', 'CF', 'TD', 'CN', 'CO', 'CK', 'CR', 'CY', 'DM', 'DO', 'EC', 'EG', 'GQ', 'ER', 'GA', 'GM', 'GH', 'GI', 'GR', 'GD', 'GT', 'GG', 'HN', 'IM', 'JP', 'JE', 'JO', 'KR', 'KW', 'KG', 'LI', 'LU', 'MO', 'MG', 'MW', 'MY', 'MV', 'ML', 'MH', 'MR', 'MX', 'MD', 'MC', 'MN', 'MS', 'MA', 'MZ', 'NP', 'NI', 'NE', 'PW', 'PA', 'PE', 'PH', 'RO', 'RU', 'KN', 'LC', 'VC', 'WS', 'ST', 'SA', 'SN', 'SC', 'SB', 'SS', 'LK', 'SR', 'SZ', 'TJ', 'TZ', 'TG', 'TO', 'TT', 'TN', 'TM', 'UG', 'UA', 'UY', 'UZ', 'VU', 'EH', 'ZM'] + ['BH','BB','BW','BG','CM','CG','HR','CW','CZ','TL','TP','SV','ET','GE','IN','IL','JM','KI','XK','LS','MK','MT','FM','ME','NA','NR','NZ','NU','PS','PL','QA','RW','RS','SG','SK','ZA','ES','TW','TC','AE','AG','AM','AU','AT','BT','BQ','CA','CV','CL','CX','CC','DK','DJ','EE','FO','FJ','DE','GL','VA','HK','IS','IT','LV','MU','NL','NF','OM','PR','AX','AS','BE','FK','FI','FR','GF','PF','GP','GU','HU','IE','LT','MQ','YT','NC','MP','NO','PN','PT','RE','BL','SH','MF','PM','SM','SI','SJ','SE','CH','TV','GB','VI','WF'] * 2 + ['US'] * 99
 High_Risk_Countries_Red = ['AF', 'AO', 'AZ', 'BD', 'BY', 'BZ', 'BO', 'MM', 'KH', 'KM', 'CD', 'CI', 'CU', 'GN', 'GW', 'GY', 'HT', 'ID', 'IR', 'IQ', 'KZ', 'KE', 'KP', 'LA', 'LB', 'LR', 'LY', 'NG', 'PK', 'PG', 'PY', 'SL', 'SX', 'SO', 'SD', 'SY', 'TH', 'TR', 'VE', 'VN', 'YE', 'ZW', 'AL', 'DZ', 'AD', 'AI', 'AR', 'AW', 'BS', 'BJ', 'BM', 'BA', 'BR', 'VG', 'BN', 'BF', 'BI', 'KY', 'CF', 'TD', 'CN', 'CO', 'CK', 'CR', 'CY', 'DM', 'DO', 'EC', 'EG', 'GQ', 'ER', 'GA', 'GM', 'GH', 'GI', 'GR', 'GD', 'GT', 'GG', 'HN', 'IM', 'JP', 'JE', 'JO', 'KR', 'KW', 'KG', 'LI', 'LU', 'MO', 'MG', 'MW', 'MY', 'MV', 'ML', 'MH', 'MR', 'MX', 'MD', 'MC', 'MN', 'MS', 'MA', 'MZ', 'NP', 'NI', 'NE', 'PW', 'PA', 'PE', 'PH', 'RO', 'RU', 'KN', 'LC', 'VC', 'WS', 'ST', 'SA', 'SN', 'SC', 'SB', 'SS', 'LK', 'SR', 'SZ', 'TJ', 'TZ', 'TG', 'TO', 'TT', 'TN', 'TM', 'UG', 'UA', 'UY', 'UZ', 'VU', 'EH', 'ZM', 'BH', 'BB', 'BW', 'BG', 'CM', 'CG', 'HR', 'CW', 'CZ', 'TL', 'TP', 'SV', 'ET', 'GE', 'IN', 'IL', 'JM', 'KI', 'XK', 'LS', 'MK', 'MT', 'FM', 'ME', 'NA', 'NR', 'NZ', 'NU', 'PS', 'PL', 'QA', 'RW', 'RS', 'SG', 'SK', 'ZA', 'ES', 'TW', 'TC', 'AE', 'AG', 'AM', 'AU', 'AT', 'BT', 'BQ', 'CA', 'CV', 'CL', 'CX', 'CC', 'DK', 'DJ', 'EE', 'FO', 'FJ', 'DE', 'GL', 'VA', 'HK', 'IS', 'IT', 'LV', 'MU', 'NL', 'NF', 'OM', 'PR', 'AX', 'AS', 'BE', 'FK', 'FI', 'FR', 'GF', 'PF', 'GP', 'GU', 'HU', 'IE', 'LT', 'MQ', 'YT', 'NC', 'MP', 'NO', 'PN', 'PT', 'RE', 'BL', 'SH', 'MF', 'PM', 'SM', 'SI', 'SJ', 'SE', 'CH', 'TV', 'GB', 'US', 'VI', 'WF']
 Airport_Code =['0AK', '16A', '1G4', '2A3', '2A9', '3A5', '3T7', '3W2', '6R7', '74S', 'A61', 'A85', 'ABE', 'ABI', 'ABQ', 'ABR', 'ABY', 'ACB', 'ACK', 'ACT', 'ACV', 'ACY', 'ADK', 'ADQ', 'AEX', 'AFM', 'AGC', 'AGN', 'AGS', 'AHN', 'AIA', 'AID', 'AIY', 'AIZ', 'AKN', 'AKP', 'AKW', 'ALB', 'ALM', 'ALN', 'ALO', 'ALS', 'ALW', 'AMA', 'ANB', 'ANC', 'AND', 'ANI', 'AOO', 'APF', 'APN', 'AQH', 'AQT', 'ART', 'ASE', 'ASN', 'AST', 'ATK', 'ATL', 'ATW', 'ATY', 'AUG', 'AUK', 'AUS', 'AVL', 'AVP', 'AWI', 'AXN', 'AZO', 'BAF', 'BAK', 'BCE', 'BDE', 'BDL', 'BDR', 'BED', 'BEH', 'BET', 'BFD', 'BFF', 'BFI', 'BFL', 'BGM', 'BGR', 'BHB', 'BHM', 'BID', 'BIG', 'BIL', 'BIS', 'BJI', 'BKL', 'BKW', 'BKX', 'BLI', 'BLM', 'BLV', 'BMG', 'BMI', 'BNA', 'BOI', 'BOS', 'BPK', 'BPT', 'BQK', 'BQN', 'BRD', 'BRL', 'BRO', 'BRW', 'BTI', 'BTL', 'BTM', 'BTR', 'BTV', 'BUF', 'BUR', 'BVK', 'BWG', 'BWI', 'BZN', 'CAE', 'CAK', 'CCR', 'CDB', 'CDC', 'CDV', 'CDW', 'CEC', 'CEF', 'CEZ', 'CFK', 'CGA', 'CGF', 'CGI', 'CGX', 'CHA', 'CHO', 'CHS', 'CIC', 'CID', 'CIU', 'CKB', 'CLE', 'CLL', 'CLM', 'CLT', 'CMH', 'CMI', 'CMX', 'CNM', 'CNY', 'COD', 'COE', 'COS', 'COU', 'CPR', 'CPX', 'CRP', 'CRQ', 'CRW', 'CSG', 'CVG', 'CVO', 'CVX', 'CWA', 'CWI', 'CYS', 'D76', 'DAB', 'DAL', 'DAN', 'DAY', 'DBQ', 'DCA', 'DDC', 'DDH', 'DEC', 'DEN', 'DET', 'DFW', 'DHN', 'DIK', 'DLG', 'DLH', 'DNV', 'DRO', 'DRT', 'DSM', 'DTW', 'DUJ', 'DUT', 'DUY', 'DVL', 'DVT', 'DXR', 'EAR', 'EAT', 'EAU', 'EEK', 'EEN', 'EFD', 'EFK', 'EGE', 'EKM', 'EKO', 'ELI', 'ELM', 'ELO', 'ELP', 'ELY', 'ENA', 'ENM', 'ENW', 'ERI', 'ESC', 'ESF', 'EUG', 'EVV', 'EWB', 'EWN', 'EWR', 'EWU', 'EYW', 'FAI', 'FAQ', 'FAR', 'FAT', 'FAY', 'FHR', 'FHU', 'FKL', 'FLG', 'FLL', 'FLO', 'FMN', 'FNL', 'FNT', 'FOD', 'FOE', 'FRG', 'FRM', 'FSD', 'FSM', 'FTW', 'FWA', 'FYU', 'FYV', 'GAL', 'GAM', 'GBD', 'GBH', 'GCC', 'GCK', 'GCN', 'GED', 'GEG', 'GFK', 'GFL', 'GGG', 'GGV', 'GGW', 'GJT', 'GKN', 'GLD', 'GLH', 'GLR', 'GLS', 'GNV', 'GON', 'GPI', 'GPT', 'GPZ', 'GRB', 'GRI', 'GRK', 'GRO', 'GRR', 'GSN', 'GSO', 'GSP', 'GST', 'GTF', 'GTR', 'GUC', 'GUM', 'GUP', 'GYH', 'GYR', 'GYY', 'HDN', 'HFD', 'HGR', 'HIB', 'HII', 'HKS', 'HKY', 'HLA', 'HLN', 'HND', 'HNH', 'HNL', 'HNM', 'HNS', 'HOB', 'HOM', 'HON', 'HOT', 'HOU', 'HPB', 'HPN', 'HRL', 'HRO', 'HSL', 'HSV', 'HTS', 'HUF', 'HUT', 'HVN', 'HXD', 'HYA', 'HYL', 'HYS', 'IAD', 'IAH', 'IAN', 'ICT', 'IDA', 'IFP', 'IGM', 'IIK', 'ILE', 'ILG', 'ILI', 'ILL', 'ILM', 'IMT', 'IND', 'INL', 'INT', 'IPL', 'IPT', 'IRK', 'ISN', 'ISO', 'ISP', 'ITH', 'ITO', 'IWA', 'IWD', 'IXD', 'IYK', 'JAC', 'JAN', 'JAX', 'JBR', 'JEF', 'JFK', 'JHW', 'JLN', 'JMS', 'JNU', 'JRB', 'JST', 'JVL', 'JXN', 'KAE', 'KAL', 'KDK', 'KEB', 'KKA', 'KLG', 'KOA', 'KSM', 'KTB', 'KTN', 'KVC', 'KVL', 'KWT', 'LAA', 'LAF', 'LAL', 'LAN', 'LAR', 'LAS', 'LAW', 'LAX', 'LBB', 'LBE', 'LBF', 'LBL', 'LBX', 'LCH', 'LCK', 'LEB', 'LEX', 'LFT', 'LGA', 'LGB', 'LHD', 'LIH', 'LIT', 'LMT', 'LNK', 'LNS', 'LNY', 'LPR', 'LRD', 'LRU', 'LSE', 'LUK', 'LWB', 'LWS', 'LYH', 'MAF', 'MAZ', 'MBA', 'MBL', 'MBS', 'MCC', 'MCE', 'MCG', 'MCI', 'MCK', 'MCN', 'MCO', 'MCW', 'MDH', 'MDM', 'MDT', 'MDW', 'MDY', 'MEI', 'MEM', 'MFD', 'MFE', 'MFR', 'MGM', 'MGW', 'MHE', 'MHK', 'MHT', 'MIA', 'MIE', 'MIV', 'MJX', 'MKC', 'MKE', 'MKG', 'MKK', 'MKL', 'MKT', 'MLB', 'MLI', 'MLL', 'MLU', 'MMH', 'MMU', 'MMV', 'MNM', 'MOB', 'MOD', 'MOT', 'MOU', 'MPV', 'MQI', 'MQJ', 'MQY', 'MRI', 'MRY', 'MSL', 'MSN', 'MSO', 'MSP', 'MSS', 'MSV', 'MSY', 'MTH', 'MTJ', 'MTM', 'MTO', 'MUE', 'MVL', 'MVN', 'MVY', 'MWA', 'MWH', 'MYR', 'MZJ', 'N93', 'NEW', 'NQA', 'NUL', 'OAJ', 'OAK', 'OCF', 'OFK', 'OGD', 'OGG', 'OGS', 'OKC', 'OLM', 'OMA', 'OME', 'ONP', 'ONT', 'OOK', 'OQU', 'ORD', 'ORF', 'ORH', 'ORI', 'ORS', 'ORV', 'OSH', 'OSU', 'OTG', 'OTH', 'OTM', 'OTZ', 'OWB', 'OXC', 'OXR', 'PAE', 'PAH', 'PBI', 'PCW', 'PDT', 'PDX', 'PFN', 'PGA', 'PGD', 'PGM', 'PGV', 'PHF', 'PHL', 'PHO', 'PHX', 'PIA', 'PIB', 'PIE', 'PIH', 'PIR', 'PIT', 'PKB', 'PLB', 'PLK', 'PLN', 'PMD', 'PNC', 'PNS', 'POU', 'PPC', 'PPG', 'PQI', 'PQL', 'PRB', 'PRC', 'PSC', 'PSE', 'PSG', 'PSM', 'PSP', 'PTH', 'PTK', 'PUB', 'PUW', 'PVC', 'PVD', 'PVU', 'PWM', 'PWT', 'RAP', 'RDD', 'RDG', 'RDM', 'RDU', 'RFD', 'RHI', 'RIC', 'RIW', 'RKD', 'RKS', 'RME', 'RMG', 'RNO', 'ROA', 'ROC', 'ROW', 'RSH', 'RST', 'RSW', 'RUT', 'RWI', 'SAF', 'SAN', 'SAT', 'SAV', 'SAW', 'SBA', 'SBD', 'SBN', 'SBP', 'SBY', 'SCC', 'SCK', 'SCM', 'SDF', 'SDP', 'SDY', 'SEA', 'SFB', 'SFO', 'SFZ', 'SGF', 'SGH', 'SGJ', 'SGU', 'SGY', 'SHD', 'SHG', 'SHH', 'SHR', 'SHV', 'SIG', 'SIT', 'SJC', 'SJT', 'SJU', 'SKX', 'SLC', 'SLE', 'SLK', 'SLN', 'SMF', 'SMX', 'SNA', 'SNP', 'SOP', 'SOV', 'SOW', 'SPI', 'SPS', 'SQI', 'SRQ', 'SRR', 'STC', 'STJ', 'STL', 'STP', 'STS', 'STT', 'STX', 'SUN', 'SUS', 'SUX', 'SVA', 'SVC', 'SWF', 'SWO', 'SYR', 'T44', 'TAL', 'TBN', 'TCL', 'TEB', 'TEX', 'TIX', 'TLH', 'TLT', 'TNI', 'TOG', 'TOL', 'TPA', 'TPL', 'TRI', 'TTN', 'TUL', 'TUP', 'TUS', 'TVC', 'TVF', 'TVL', 'TVR', 'TWF', 'TXK', 'TYR', 'TYS', 'UCA', 'UIN', 'UNK', 'UNV', 'UOX', 'UUU', 'VAK', 'VCT', 'VCV', 'VDZ', 'VGT', 'VIS', 'VLD', 'VPS', 'VPZ', 'VQQ', 'VQS', 'VRB', 'WBB', 'WDG', 'WLK', 'WNA', 'WRG', 'WRL', 'WST', 'WTK', 'WWD', 'WYS', 'X44', 'X95', 'XNA', 'YAK', 'YKM', 'YKN', 'YNG', 'YUM', 'Z08', 'Z09']
+
 #Lists for Cust details
 CCs=[]
 ACCTs=[]
@@ -68,22 +70,24 @@ ClsdFlags=columns['CLOSEDACCOUNT']
 
 def gen_tran(MCC_credits,MCC_debits,Tran_Country_Credits,Tran_Country_Debits,Tran_Type_C,Tran_Type_D,Upper_Limit,Delta,count,j,usecase):
     liTrans = []
-    #6)Create a loop for each account and generate account from the customer account_id file 
+    #Initiate start date for transactions 
     startDate=date(2015,01,01)
+	#Pick out account based on counter
     acct=ACCTs[j]
-    #7)Set customer credit limit - skew to clients with $1000-$25000 and 10% with $25K - $50K
+    #Set customer credit limit - skew to clients with $1000-$25000 and 10% with $25K - $50K
     limit = max(max((randrange(1,101,1)-99),0)* randrange(25000,50000,1000),randrange(1000,25000,1000))
     #local Amt variable to calculate customer total usage
     usedAmt = 0
     tmpAmt = 0
     Balance = limit
     maxDate= startDate
+	#Random number generator for transactions per customer
     NoTrans = randrange(100,150,1)
     desc=''
     flag=0
     maxCheckin=''
     maxBook=''
-    #loop to generate NoTrans transactions per customer, we can add logic for probabilities of # transactions if neccessary random number generator to avoid the constant value
+    #loop to generate NoTrans transactions per customer
     for k in range(NoTrans):
         dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         cr_dbt='D'
@@ -91,14 +95,15 @@ def gen_tran(MCC_credits,MCC_debits,Tran_Country_Credits,Tran_Country_Debits,Tra
         country=[]
         cat_desc=''
         flag=0
-        #if(Balance>0 and (Balance<limit or Balance==limit)):
-        if(Balance>0 and Balance<=limit):
+        #If Balance is within the credit limit, generate credits/debits 
+        if(Balance>0 and Balance<=limit*1.2):
+			#Probability of credits (tmpAmt>0) and debits (tmpAmt==0) is driven by parameters Upper_Limit and Delta
             tmpAmt = max((randrange(1,Upper_Limit,1)+Delta),0)*randrange(1,Balance+1,1)
             flag=1
+		#Define time delta for next transaction
         tdelta = timedelta(days=randrange(1,4,1))
         row = [str(count)+'_'+dt] + [acct]
-        #print 'BALANCE: '+str(Balance)+' LIMIT:' + str(limit)
-        #print 'Flag: '+str(flag)
+        #If we have credit or debit within balance
         if tmpAmt == 0 and flag==1:
             #print '1'
             tmpAmt=random.randrange(1,Balance+1,1)
@@ -126,6 +131,7 @@ def gen_tran(MCC_credits,MCC_debits,Tran_Country_Credits,Tran_Country_Debits,Tra
                 row.append(cat)
                 row.append(cat_desc)
                 country=random.choice(Tran_Country_Credits)
+		#If we need to make a payment or get credit then assign codes
         if Balance > limit and flag==0:
             #print '3'
             tmpAmt=random.randrange(1,Balance-limit+1,1)
@@ -154,7 +160,7 @@ def gen_tran(MCC_credits,MCC_debits,Tran_Country_Credits,Tran_Country_Debits,Tra
                 row.append(cat)
                 row.append(cat_desc)
                 country=random.choice(Tran_Country_Credits)
-        #add current amount to client total account usage
+
         #date posted
         date1 = maxDate+tdelta
         maxDate = date1
@@ -166,6 +172,7 @@ def gen_tran(MCC_credits,MCC_debits,Tran_Country_Credits,Tran_Country_Debits,Tra
         checkin=''
         checkout=''
         transDetail=''
+		#Add details or Hotel Transactions 
         if((cat_desc=='Hotels/Motels/Inns/Resorts' or cat_desc=='Hotels, Motels, and Resorts') and (UseCase[j]=='28' or UseCase[j]=='29')):
             if (maxCheckin == ''):
                 checkin=maxDate+timedelta(days=randrange(365,389,1))
@@ -173,44 +180,45 @@ def gen_tran(MCC_credits,MCC_debits,Tran_Country_Credits,Tran_Country_Debits,Tra
                 maxCheckin=checkin
                 tmp2=gen_data.create_name()
                 addr=gen_data.create_city_state_zip()
-                hotel=tmp2[1]+' Hotels; '+'Address: '+addr[1]+' '+addr[2]+', '+addr[0]
-                transDetail='Checkin: '+str(checkin)+';Checkout: '+str(checkout)+';Hotel: '+hotel
+                hotel=tmp2[1]+' Hotels; '+'; Address: '+addr[1]+' '+addr[2]+', '+addr[0]
+                transDetail='Checkin: '+str(checkin)+'; Checkout: '+str(checkout)+'; Hotel: '+hotel
             else:
                 checkin=maxCheckin + timedelta(days=randrange(2,5,1))
                 checkout=checkin+timedelta(days=randrange(4,11,1))
                 maxCheckin=checkin
                 tmp2=gen_data.create_name()
                 addr=gen_data.create_city_state_zip()
-                hotel=tmp2[1]+' Hotels; '+'Address: '+addr[1]+' '+addr[2]+', '+addr[0]
-                transDetail='Checkin: '+str(checkin)+';Checkout: '+str(checkout)+';Hotel: '+hotel
+                hotel=tmp2[1]+' Hotels; '+'; Address: '+addr[1]+' '+addr[2]+', '+addr[0]
+                transDetail='Checkin: '+str(checkin)+'; Checkout: '+str(checkout)+'; Hotel: '+hotel
         if((cat_desc=='Hotels/Motels/Inns/Resorts' or cat_desc=='Hotels, Motels, and Resorts') and UseCase[j]=='30'):
             checkin=maxDate+timedelta(days=randrange(30,200,1))
             checkout=checkin+timedelta(days=randrange(4,11,1))
             tmp2=gen_data.create_name()
             addr=gen_data.create_city_state_zip()
-            hotel=tmp2[1]+' Hotels; '+'Address: '+addr[1]+' '+addr[2]+', '+addr[0]
-            transDetail='Checkin: '+str(checkin)+';Checkout: '+str(checkout)+';Hotel: '+hotel
+            hotel=tmp2[1]+' Hotels; '+'; Address: '+addr[1]+' '+addr[2]+', '+addr[0]
+            transDetail='Checkin: '+str(checkin)+'; Checkout: '+str(checkout)+'; Hotel: '+hotel
+		#Add details or Airline Transactions 
         if(cat_desc=='Airlines' and (UseCase[j]=='31' or UseCase[j]=='32')):
             if (maxBook == ''):
                 booking=maxDate+timedelta(days=randrange(1,15,1))
                 maxBook=booking
                 tmp2=gen_data.create_name()
                 addr=gen_data.create_city_state_zip()
-                transDetail='Date Booked: '+str(booking)+'Name Booked: '+tmp2[0]+tmp2[1]+'Address: '+addr[1]+' '+addr[2]+', '+addr[0]+'Source :'+random.choice(Airport_Code)+'Destination:'+random.choice(Airport_Code)
+                transDetail='Date Booked: '+str(booking)+'; Name Booked: '+tmp2[0]+tmp2[1]+'; Address: '+addr[1]+' '+addr[2]+', '+addr[0]+'; Source :'+random.choice(Airport_Code)+'; Destination:'+random.choice(Airport_Code)
             else:
                 booking=maxBook + timedelta(days=randrange(1,15,1))
                 maxBook=booking
                 tmp2=gen_data.create_name()
                 addr=gen_data.create_city_state_zip()
-                transDetail='Date Booked: '+str(booking)+'Name Booked: '+ tmp2[0] + tmp2[1] + 'Address: '+ addr[1] + ' ' + addr[2]+', '+addr[0]+'Source :'+random.choice(Airport_Code)+'Destination:'+random.choice(Airport_Code)
+                transDetail='Date Booked: '+str(booking)+'; Name Booked: '+ tmp2[0] + tmp2[1] + '; Address: '+ addr[1] + ' ' + addr[2]+', '+addr[0]+'; Source :'+random.choice(Airport_Code)+'; Destination:'+random.choice(Airport_Code)
         if(cat_desc=='Airlines' and UseCase[j]=='33'):
             booking=maxDate + timedelta(days=randrange(1,15,1))
             tmp2=gen_data.create_name()
             addr=gen_data.create_city_state_zip()
-            transDetail='Date Booked: '+str(booking)+'Name Booked: '+ tmp2[0] + tmp2[1] + 'Address: '+addr[1]+' '+addr[2]+', '+addr[0]+'Source :'+random.choice(Airport_Code)+'Destination:'+random.choice(Airport_Code)
+            transDetail='Date Booked: '+str(booking)+'; Name Booked: '+ tmp2[0] + tmp2[1] + '; Address: '+addr[1]+' '+addr[2]+', '+addr[0]+'; Source :'+random.choice(Airport_Code)+'; Destination:'+random.choice(Airport_Code)
         row.append(transDetail)
         liTrans.append(row)
-        #post generating all transactions, check account balance - if overpaid - refund $ and add a refund transaction
+    #post generating all transactions, check account balance - if overpaid - refund $ and add a refund transaction
     if Balance > limit:
         row = [str(count)+'_'+dt]+ [acct]+['Uber Bank']+['0000']+['Refund to Customer from Bank']+[random.choice(Tran_Country_Debits)]
         date1=maxDate+timedelta(days=90)
@@ -380,10 +388,12 @@ def createCSV(ccount, remainder, lenI, iterator):
 
 with open('uber_trans_multithreading_101.csv','w') as f1:
     writer=csv.writer(f1, delimiter='|',lineterminator='\n',)
+	#File header
     writer.writerow(['ROWNUM']+['ACCOUNTID']+['MERCHANT_NAME']+['MERCHANT_CATEGORY_CODE']+['MERCHANT_CATEGORY_DESC']+['MERCHANT_COUNTRY']+\
             ['POST_DATE'] +	['TRANSACTION_DATE'] + ['TRANSACTION_TYPE']+['CREDIT_DEBIT']+['CREDIT_LIMIT']+['AMOUNT']+['BALANCE']+\
             ['CREDITCARDNUMBER']+['CC_TYPE']+['USE_CASE']+['CUST_NAME']+['NUM_CCS']+['CUST_CITY']+['CUST_STATE']+['CUST_ZIP']+['CUST_COUNTRY']+['TRANS_DETAIL'])
     Cust_Count=len(CCs)
+	#Define number of processes then multithread
     proc = 16
     iterator = xrange(proc)
     remainder = Cust_Count % proc
