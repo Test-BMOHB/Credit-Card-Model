@@ -278,13 +278,13 @@ def createCSV(ccount, remainder, lenI, iterator):
             #Use Case 2: Method of payment to card balances
             #Red Risk
             if(UseCase[i]=='7'):
-                liTrans.extend(gen_tran(['1111'],Merchant_Category.Green,['US'],['US'],Transaction_Type.Credits_Payments,Transaction_Type.Debit_Payments_Red,3,-1,count,i,'Use Case 2 - Red'))
+                liTrans.extend(gen_tran(['1111'],Merchant_Category.Green,['US'],['US'],Transaction_Type.Credits_Payments_Red,Transaction_Type.Debit_Payments_Red,3,-1,count,i,'Use Case 2 - Red'))
             #Yellow Risk
             if(UseCase[i]=='8'):
-                liTrans.extend(gen_tran(['1111'],Merchant_Category.Green,['US'],['US'],Transaction_Type.Credits_Payments,Transaction_Type.Debit_Payments_Yellow,3,-1,count,i,'Use Case 2 - Yellow'))
+                liTrans.extend(gen_tran(['1111'],Merchant_Category.Green,['US'],['US'],Transaction_Type.Credits_Payments_Yellow,Transaction_Type.Debit_Payments_Yellow,3,-1,count,i,'Use Case 2 - Yellow'))
             #Green Risk
             if(UseCase[i]=='9'):
-                liTrans.extend(gen_tran(['1111'],Merchant_Category.Green,['US'],['US'],Transaction_Type.Credits_Payments,Transaction_Type.Debit_Payments_Green,3,-1,count,i,'Use Case 2 - Green'))
+                liTrans.extend(gen_tran(['1111'],Merchant_Category.Green,['US'],['US'],Transaction_Type.Credits_Payments_Green,Transaction_Type.Debit_Payments_Green,3,-1,count,i,'Use Case 2 - Green'))
             #Use Case 3: Payment source is owned by non-account holder
             #Red Risk
             if(UseCase[i]=='10'):
