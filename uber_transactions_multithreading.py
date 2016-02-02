@@ -5,8 +5,8 @@
 #Description  : Logic for credit card transactions, and use cases based on the Wolfsberg principles
 #-----------------------------------------------------------------------------
 # History  | ddmmyyyy  |  User     |                Changes
-#          | 01202016  | Ivana D.  | Transactions Model, code, Use cases implementation, cc logic and lists
-#		   | 01222016  | Jeff  K.  | File parsing logic, ref lists
+#          | 01202016  | Ivana D.  | Transactions Model, code, Use cases implementation and gen_tran function
+#		   | 01222016  | Jeff  K.  | File parsing logic, credit card business logic validation, ref lists
 #          | 02022016  | Ivana D.  | Code review and comments
 #-----------------------------------------------------------------------------*/
 #Reference data for python_account_ID, python_merchant_cat, python_CC is located on the test-bmohb console gs://newccdatav3
@@ -21,12 +21,12 @@ import csv, re, random, python_merchant_cat, Airlines, Country, Hotels, Merchant
 
 fake = Faker()
 #Distinct List of Payments, Credits and Debits
-Account_Holder_Type_Red = ['2222'] * 4 + ['1111'] * 6
-Account_Holder_Type_Yellow = ['2222'] * 2 + ['1111'] * 6
+Account_Holder_Type_Red = ['2222'] * 5 + ['1111'] * 5
+Account_Holder_Type_Yellow = ['2222'] * 3 + ['1111'] * 5
 Account_Holder_Type_Green = ['2222'] + ['1111'] * 6
 Payment_DistLoc_Red = ['BH', 'BB', 'BW', 'BG', 'CM', 'CG', 'HR', 'CW', 'CZ', 'TL', 'TP', 'SV', 'ET', 'GE', 'IN', 'IL', 'JM', 'KI', 'XK', 'LS', 'MK', 'MT', 'FM', 'ME', 'NA', 'NR', 'NZ', 'NU', 'PS', 'PL', 'QA', 'RW', 'RS', 'SG', 'SK', 'ZA', 'ES', 'TW', 'TC', 'AE', 'AG', 'AM', 'AU', 'AT', 'BT', 'BQ', 'CA', 'CV', 'CL', 'CX', 'CC', 'DK', 'DJ', 'EE', 'FO', 'FJ', 'DE', 'GL', 'VA', 'HK', 'IS', 'IT', 'LV', 'MU', 'NL', 'NF', 'OM', 'PR', 'AX', 'AS', 'BE', 'FK', 'FI', 'FR', 'GF', 'PF', 'GP', 'GU', 'HU', 'IE', 'LT', 'MQ', 'YT', 'NC', 'MP', 'NO', 'PN', 'PT', 'RE', 'BL', 'SH', 'MF', 'PM', 'SM', 'SI', 'SJ', 'SE', 'CH', 'TV', 'GB', 'VI', 'WF'] + ['US'] * 98
 Payment_DistLoc_Yellow = ['BH', 'BB', 'BW', 'BG', 'CM', 'CG', 'HR', 'CW', 'CZ', 'TL', 'TP', 'SV', 'ET', 'GE', 'IN', 'IL', 'JM', 'KI', 'XK', 'LS', 'MK', 'MT', 'FM', 'ME', 'NA', 'NR', 'NZ', 'NU', 'PS', 'PL', 'QA', 'RW', 'RS', 'SG', 'SK', 'ZA', 'ES', 'TW', 'TC', 'AE', 'AG', 'AM', 'AU', 'AT', 'BT', 'BQ', 'CA', 'CV', 'CL', 'CX', 'CC', 'DK', 'DJ', 'EE', 'FO', 'FJ', 'DE', 'GL', 'VA', 'HK', 'IS', 'IT', 'LV', 'MU', 'NL', 'NF', 'OM', 'PR', 'AX', 'AS', 'BE', 'FK', 'FI', 'FR', 'GF', 'PF', 'GP', 'GU', 'HU', 'IE', 'LT', 'MQ', 'YT', 'NC', 'MP', 'NO', 'PN', 'PT', 'RE', 'BL', 'SH', 'MF', 'PM', 'SM', 'SI', 'SJ', 'SE', 'CH', 'TV', 'GB', 'VI', 'WF'] + ['US'] * 119
-Payment_DistLoc_Green = ['BH', 'BB', 'BW', 'BG', 'CM', 'CG', 'HR', 'CW', 'CZ', 'TL', 'TP', 'SV', 'ET', 'GE', 'IN', 'IL', 'JM', 'KI', 'XK', 'LS', 'MK', 'MT', 'FM', 'ME', 'NA', 'NR', 'NZ', 'NU', 'PS', 'PL', 'QA', 'RW', 'RS', 'SG', 'SK', 'ZA', 'ES', 'TW', 'TC', 'AE', 'AG', 'AM', 'AU', 'AT', 'BT', 'BQ', 'CA', 'CV', 'CL', 'CX', 'CC', 'DK', 'DJ', 'EE', 'FO', 'FJ', 'DE', 'GL', 'VA', 'HK', 'IS', 'IT', 'LV', 'MU', 'NL', 'NF', 'OM', 'PR', 'AX', 'AS', 'BE', 'FK', 'FI', 'FR', 'GF', 'PF', 'GP', 'GU', 'HU', 'IE', 'LT', 'MQ', 'YT', 'NC', 'MP', 'NO', 'PN', 'PT', 'RE', 'BL', 'SH', 'MF', 'PM', 'SM', 'SI', 'SJ', 'SE', 'CH', 'TV', 'GB', 'VI', 'WF'] + ['US'] * 183
+Payment_DistLoc_Green = ['CA', 'CV', 'CL', 'CX', 'CC', 'DK', 'DJ', 'EE', 'FO', 'FJ', 'DE', 'GL', 'VA', 'HK', 'IS', 'IT', 'LV', 'MU', 'NL', 'NF', 'OM', 'PR', 'AX', 'AS', 'BE', 'FK', 'FI', 'FR', 'GF', 'PF', 'GP', 'GU', 'HU', 'IE', 'LT', 'MQ', 'YT', 'NC', 'MP', 'NO', 'PN', 'PT', 'RE', 'BL', 'SH', 'MF', 'PM', 'SM', 'SI', 'SJ', 'SE', 'CH', 'TV', 'GB', 'VI', 'WF'] + ['US'] * 183
 High_Risk_Countries_Green = ['AF', 'AO', 'AZ', 'BD', 'BY', 'BZ', 'BO', 'MM', 'KH', 'KM', 'CD', 'CI', 'CU', 'GN', 'GW', 'GY', 'HT', 'ID', 'IR', 'IQ', 'KZ', 'KE', 'KP', 'LA', 'LB', 'LR', 'LY', 'NG', 'PK', 'PG', 'PY', 'SL', 'SX', 'SO', 'SD', 'SY', 'TH', 'TR', 'VE', 'VN', 'YE', 'ZW', 'AL', 'DZ', 'AD', 'AI', 'AR', 'AW', 'BS', 'BJ', 'BM', 'BA', 'BR', 'VG', 'BN', 'BF', 'BI', 'KY', 'CF', 'TD', 'CN', 'CO', 'CK', 'CR', 'CY', 'DM', 'DO', 'EC', 'EG', 'GQ', 'ER', 'GA', 'GM', 'GH', 'GI', 'GR', 'GD', 'GT', 'GG', 'HN', 'IM', 'JP', 'JE', 'JO', 'KR', 'KW', 'KG', 'LI', 'LU', 'MO', 'MG', 'MW', 'MY', 'MV', 'ML', 'MH', 'MR', 'MX', 'MD', 'MC', 'MN', 'MS', 'MA', 'MZ', 'NP', 'NI', 'NE', 'PW', 'PA', 'PE', 'PH', 'RO', 'RU', 'KN', 'LC', 'VC', 'WS', 'ST', 'SA', 'SN', 'SC', 'SB', 'SS', 'LK', 'SR', 'SZ', 'TJ', 'TZ', 'TG', 'TO', 'TT', 'TN', 'TM', 'UG', 'UA', 'UY', 'UZ', 'VU', 'EH', 'ZM'] + ['BH','BB','BW','BG','CM','CG','HR','CW','CZ','TL','TP','SV','ET','GE','IN','IL','JM','KI','XK','LS','MK','MT','FM','ME','NA','NR','NZ','NU','PS','PL','QA','RW','RS','SG','SK','ZA','ES','TW','TC','AE','AG','AM','AU','AT','BT','BQ','CA','CV','CL','CX','CC','DK','DJ','EE','FO','FJ','DE','GL','VA','HK','IS','IT','LV','MU','NL','NF','OM','PR','AX','AS','BE','FK','FI','FR','GF','PF','GP','GU','HU','IE','LT','MQ','YT','NC','MP','NO','PN','PT','RE','BL','SH','MF','PM','SM','SI','SJ','SE','CH','TV','GB', 'VI','WF'] * 4 + ['US'] * 295
 High_Risk_Countries_Yellow = ['AF', 'AO', 'AZ', 'BD', 'BY', 'BZ', 'BO', 'MM', 'KH', 'KM', 'CD', 'CI', 'CU', 'GN', 'GW', 'GY', 'HT', 'ID', 'IR', 'IQ', 'KZ', 'KE', 'KP', 'LA', 'LB', 'LR', 'LY', 'NG', 'PK', 'PG', 'PY', 'SL', 'SX', 'SO', 'SD', 'SY', 'TH', 'TR', 'VE', 'VN', 'YE', 'ZW', 'AL', 'DZ', 'AD', 'AI', 'AR', 'AW', 'BS', 'BJ', 'BM', 'BA', 'BR', 'VG', 'BN', 'BF', 'BI', 'KY', 'CF', 'TD', 'CN', 'CO', 'CK', 'CR', 'CY', 'DM', 'DO', 'EC', 'EG', 'GQ', 'ER', 'GA', 'GM', 'GH', 'GI', 'GR', 'GD', 'GT', 'GG', 'HN', 'IM', 'JP', 'JE', 'JO', 'KR', 'KW', 'KG', 'LI', 'LU', 'MO', 'MG', 'MW', 'MY', 'MV', 'ML', 'MH', 'MR', 'MX', 'MD', 'MC', 'MN', 'MS', 'MA', 'MZ', 'NP', 'NI', 'NE', 'PW', 'PA', 'PE', 'PH', 'RO', 'RU', 'KN', 'LC', 'VC', 'WS', 'ST', 'SA', 'SN', 'SC', 'SB', 'SS', 'LK', 'SR', 'SZ', 'TJ', 'TZ', 'TG', 'TO', 'TT', 'TN', 'TM', 'UG', 'UA', 'UY', 'UZ', 'VU', 'EH', 'ZM'] + ['BH','BB','BW','BG','CM','CG','HR','CW','CZ','TL','TP','SV','ET','GE','IN','IL','JM','KI','XK','LS','MK','MT','FM','ME','NA','NR','NZ','NU','PS','PL','QA','RW','RS','SG','SK','ZA','ES','TW','TC','AE','AG','AM','AU','AT','BT','BQ','CA','CV','CL','CX','CC','DK','DJ','EE','FO','FJ','DE','GL','VA','HK','IS','IT','LV','MU','NL','NF','OM','PR','AX','AS','BE','FK','FI','FR','GF','PF','GP','GU','HU','IE','LT','MQ','YT','NC','MP','NO','PN','PT','RE','BL','SH','MF','PM','SM','SI','SJ','SE','CH','TV','GB','VI','WF'] * 2 + ['US'] * 99
 High_Risk_Countries_Red = ['AF', 'AO', 'AZ', 'BD', 'BY', 'BZ', 'BO', 'MM', 'KH', 'KM', 'CD', 'CI', 'CU', 'GN', 'GW', 'GY', 'HT', 'ID', 'IR', 'IQ', 'KZ', 'KE', 'KP', 'LA', 'LB', 'LR', 'LY', 'NG', 'PK', 'PG', 'PY', 'SL', 'SX', 'SO', 'SD', 'SY', 'TH', 'TR', 'VE', 'VN', 'YE', 'ZW', 'AL', 'DZ', 'AD', 'AI', 'AR', 'AW', 'BS', 'BJ', 'BM', 'BA', 'BR', 'VG', 'BN', 'BF', 'BI', 'KY', 'CF', 'TD', 'CN', 'CO', 'CK', 'CR', 'CY', 'DM', 'DO', 'EC', 'EG', 'GQ', 'ER', 'GA', 'GM', 'GH', 'GI', 'GR', 'GD', 'GT', 'GG', 'HN', 'IM', 'JP', 'JE', 'JO', 'KR', 'KW', 'KG', 'LI', 'LU', 'MO', 'MG', 'MW', 'MY', 'MV', 'ML', 'MH', 'MR', 'MX', 'MD', 'MC', 'MN', 'MS', 'MA', 'MZ', 'NP', 'NI', 'NE', 'PW', 'PA', 'PE', 'PH', 'RO', 'RU', 'KN', 'LC', 'VC', 'WS', 'ST', 'SA', 'SN', 'SC', 'SB', 'SS', 'LK', 'SR', 'SZ', 'TJ', 'TZ', 'TG', 'TO', 'TT', 'TN', 'TM', 'UG', 'UA', 'UY', 'UZ', 'VU', 'EH', 'ZM', 'BH', 'BB', 'BW', 'BG', 'CM', 'CG', 'HR', 'CW', 'CZ', 'TL', 'TP', 'SV', 'ET', 'GE', 'IN', 'IL', 'JM', 'KI', 'XK', 'LS', 'MK', 'MT', 'FM', 'ME', 'NA', 'NR', 'NZ', 'NU', 'PS', 'PL', 'QA', 'RW', 'RS', 'SG', 'SK', 'ZA', 'ES', 'TW', 'TC', 'AE', 'AG', 'AM', 'AU', 'AT', 'BT', 'BQ', 'CA', 'CV', 'CL', 'CX', 'CC', 'DK', 'DJ', 'EE', 'FO', 'FJ', 'DE', 'GL', 'VA', 'HK', 'IS', 'IT', 'LV', 'MU', 'NL', 'NF', 'OM', 'PR', 'AX', 'AS', 'BE', 'FK', 'FI', 'FR', 'GF', 'PF', 'GP', 'GU', 'HU', 'IE', 'LT', 'MQ', 'YT', 'NC', 'MP', 'NO', 'PN', 'PT', 'RE', 'BL', 'SH', 'MF', 'PM', 'SM', 'SI', 'SJ', 'SE', 'CH', 'TV', 'GB', 'US', 'VI', 'WF']
@@ -127,6 +127,7 @@ def gen_tran(MCC_credits,MCC_debits,Tran_Country_Credits,Tran_Country_Debits,Tra
                 merch = 'Payment'
                 if(tranType=='Merchant Credit'):
                         cat=random.choice(Merchant_Category.Green)
+						cat_desc=python_merchant_cat.All_Merchant_Cat[cat]
                 row.append(merch)
                 row.append(cat)
                 row.append(cat_desc)
@@ -156,6 +157,7 @@ def gen_tran(MCC_credits,MCC_debits,Tran_Country_Credits,Tran_Country_Debits,Tra
                 merch = 'Payment'
                 if(tranType=='Merchant Credit'):
                         cat=random.choice(Merchant_Category.Green)
+						cat_desc=python_merchant_cat.All_Merchant_Cat[cat]
                 row.append(merch)
                 row.append(cat)
                 row.append(cat_desc)
@@ -256,23 +258,23 @@ def createCSV(ccount, remainder, lenI, iterator):
             #Use Case 1.0: Threshold for overpayments
             #Red Risk
             if(UseCase[i]=='1'):
-                liTrans.extend(gen_tran(['1111'],Merchant_Category.Green,['US'],['US'],Transaction_Type.Credits_Ovpmt_Refund,Transaction_Type.Debit_Ovpmt_Red,5,-3,count,i,'Use Case 1.0 - Red'))
+                liTrans.extend(gen_tran(['1111'],Merchant_Category.Green,['US'],['US'],Transaction_Type.Credits_Ovpmt_Refund,Transaction_Type.Debit_Ovpmt_Red,3,-1,count,i,'Use Case 1.0 - Red'))
             #Yellow Risk
             if(UseCase[i]=='2'):
                 liTrans.extend(gen_tran(['1111'],Merchant_Category.Green,['US'],['US'],Transaction_Type.Credits_Ovpmt_Refund,Transaction_Type.Debit_Ovpmt_Yellow,4,-2,count,i,'Use Case 1.0 - Yellow'))
             #Green Risk
             if(UseCase[i]=='3'):
-                liTrans.extend(gen_tran(['1111'],Merchant_Category.Green,['US'],['US'],Transaction_Type.Credits_Ovpmt_Refund,Transaction_Type.Debit_Ovpmt_Green,3,-1,count,i,'Use Case 1.0 - Green'))
+                liTrans.extend(gen_tran(['1111'],Merchant_Category.Green,['US'],['US'],Transaction_Type.Credits_Ovpmt_Refund,Transaction_Type.Debit_Ovpmt_Green,5,-3,count,i,'Use Case 1.0 - Green'))
             #Use Case 1.1: Threshold for refunds
             #Red Risk
             if(UseCase[i]=='4'):
-                liTrans.extend(gen_tran(['1111'],Merchant_Category.Green,['US'],['US'],Transaction_Type.Credits_Ovpmt_Refund,Transaction_Type.Debit_Refund_Red,5,-3,count,i,'Use Case 1.1 - Red'))
+                liTrans.extend(gen_tran(['1111'],Merchant_Category.Green,['US'],['US'],Transaction_Type.Credits_Refund_Red,Transaction_Type.Debit_Refund_Red,5,-3,count,i,'Use Case 1.1 - Red'))
             #Yellow Risk
             if(UseCase[i]=='5'):
-                liTrans.extend(gen_tran(['1111'],Merchant_Category.Green,['US'],['US'],Transaction_Type.Credits_Ovpmt_Refund,Transaction_Type.Debit_Refund_Yellow,4,-2,count,i,'Use Case 1.1 - Yellow'))
+                liTrans.extend(gen_tran(['1111'],Merchant_Category.Green,['US'],['US'],Transaction_Type.Credits_Refund_Yellow,Transaction_Type.Debit_Refund_Yellow,4,-2,count,i,'Use Case 1.1 - Yellow'))
             #Green Risk
             if(UseCase[i]=='6'):
-                liTrans.extend(gen_tran(['1111'],Merchant_Category.Green,['US'],['US'],Transaction_Type.Credits_Ovpmt_Refund,Transaction_Type.Debit_Refund_Green,3,-1,count,i,'Use Case 1.1 - Green'))
+                liTrans.extend(gen_tran(['1111'],Merchant_Category.Green,['US'],['US'],Transaction_Type.Credits_Refund_Green,Transaction_Type.Debit_Refund_Green,3,-1,count,i,'Use Case 1.1 - Green'))
             #Use Case 2: Method of payment to card balances
             #Red Risk
             if(UseCase[i]=='7'):
@@ -286,13 +288,13 @@ def createCSV(ccount, remainder, lenI, iterator):
             #Use Case 3: Payment source is owned by non-account holder
             #Red Risk
             if(UseCase[i]=='10'):
-                liTrans.extend(gen_tran(Account_Holder_Type_Red,Merchant_Category.Green,['US'],['US'],Transaction_Type.Credits_Ovpmt_Refund,Transaction_Type.Debit_10_41No19_21No25_27,4,-2,count,i,'Use Case 3 - Red'))
+                liTrans.extend(gen_tran(Account_Holder_Type_Red,Merchant_Category.Green,['US'],['US'],Transaction_Type.Credits_10_41No19_21No25_27,Transaction_Type.Debit_10_41No19_21No25_27,4,-2,count,i,'Use Case 3 - Red'))
             #Yellow Risk
             if(UseCase[i]=='11'):
-                liTrans.extend(gen_tran(Account_Holder_Type_Yellow,Merchant_Category.Green,['US'],['US'],Transaction_Type.Credits_Ovpmt_Refund,Transaction_Type.Debit_10_41No19_21No25_27,4,-2,count,i,'Use Case 3 - Yellow'))
+                liTrans.extend(gen_tran(Account_Holder_Type_Yellow,Merchant_Category.Green,['US'],['US'],Transaction_Type.Credits_10_41No19_21No25_27,Transaction_Type.Debit_10_41No19_21No25_27,4,-2,count,i,'Use Case 3 - Yellow'))
             #Green Risk
             if(UseCase[i]=='12'):
-                liTrans.extend(gen_tran(Account_Holder_Type_Green,Merchant_Category.Green,['US'],['US'],Transaction_Type.Credits_Ovpmt_Refund,Transaction_Type.Debit_10_41No19_21No25_27,3,-1,count,i,'Use Case 3 - Green'))
+                liTrans.extend(gen_tran(Account_Holder_Type_Green,Merchant_Category.Green,['US'],['US'],Transaction_Type.Credits_10_41No19_21No25_27,Transaction_Type.Debit_10_41No19_21No25_27,3,-1,count,i,'Use Case 3 - Green'))
             #Use Case 4: Payment is frequently made at a location that is materially distant from the account address
             #Red Risk
             if(UseCase[i]=='13'):
