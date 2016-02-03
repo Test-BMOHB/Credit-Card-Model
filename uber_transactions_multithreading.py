@@ -125,14 +125,14 @@ def gen_tran(MCC_credits,MCC_debits,Tran_Country_Credits,Tran_Country_Debits,Tra
                 cat_desc=python_merchant_cat.All_Merchant_Cat[cat]
                 Balance = Balance + tmpAmt
                 merch = ''
-		cat =''
-		cat_desc=''
+				cat =''
+				cat_desc=''
                 if(tranType=='Merchant Credit'):
                         cat=random.choice(Merchant_Category.Green)
-			cat_desc=python_merchant_cat.All_Merchant_Cat[cat]
-		if(tranType=='Refund'):
+						cat_desc=python_merchant_cat.All_Merchant_Cat[cat]
+				if(tranType=='Refund'):
                         cat='0000'
-			cat_desc=python_merchant_cat.All_Merchant_Cat[cat]
+						cat_desc=python_merchant_cat.All_Merchant_Cat[cat]
                 row.append(merch)
                 row.append(cat)
                 row.append(cat_desc)
@@ -158,7 +158,7 @@ def gen_tran(MCC_credits,MCC_debits,Tran_Country_Credits,Tran_Country_Debits,Tra
                 tmpAmt = random.randrange(1,limit/2,1)
                 Balance = Balance + tmpAmt
                 merch = ''
-		cat = '1111'
+				cat = '1111'
                 cat_desc=python_merchant_cat.All_Merchant_Cat[cat]
                 row.append(merch)
                 row.append(cat)
@@ -270,10 +270,10 @@ def createCSV(ccount, remainder, lenI, iterator):
             #Use Case 1.1: Threshold for refunds
             #Red Risk
             if(UseCase[i]=='4'):
-                liTrans.extend(gen_tran(['1111'],Merchant_Category.Green,['US'],['US'],Transaction_Type.Credits_Refund_Red,Transaction_Type.Debit_Refund_Red,5,-3,count,i,'Use Case 1.1 - Red'))
+                liTrans.extend(gen_tran(['1111'],Merchant_Category.Green,['US'],['US'],Transaction_Type.Credits_Refund_Red,Transaction_Type.Debit_Refund_Red,3,-1,count,i,'Use Case 1.1 - Red'))
             #Yellow Risk
             if(UseCase[i]=='5'):
-                liTrans.extend(gen_tran(['1111'],Merchant_Category.Green,['US'],['US'],Transaction_Type.Credits_Refund_Yellow,Transaction_Type.Debit_Refund_Yellow,4,-2,count,i,'Use Case 1.1 - Yellow'))
+                liTrans.extend(gen_tran(['1111'],Merchant_Category.Green,['US'],['US'],Transaction_Type.Credits_Refund_Yellow,Transaction_Type.Debit_Refund_Yellow,3,-1,count,i,'Use Case 1.1 - Yellow'))
             #Green Risk
             if(UseCase[i]=='6'):
                 liTrans.extend(gen_tran(['1111'],Merchant_Category.Green,['US'],['US'],Transaction_Type.Credits_Refund_Green,Transaction_Type.Debit_Refund_Green,3,-1,count,i,'Use Case 1.1 - Green'))
