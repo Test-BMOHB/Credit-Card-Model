@@ -1,8 +1,8 @@
 Debit_ATM_Green = ['Interest'] + ['Cash Advance - ATM'] * 2 + ['Purchase'] * 19
 Debit_ATM_Yellow = ['Interest'] + ['Cash Advance - ATM'] * 5 + ['Purchase'] * 19
 Debit_ATM_Red = ['Interest'] + ['Cash Advance - ATM'] * 7 + ['Purchase'] * 10
-Merchant_Credits_Green = ['Merchant Credit'] + ['ACH Payment','Paper Check'] * 9
-Merchant_Credits_Yellow = ['Merchant Credit'] + ['ACH Payment','Paper Check'] * 3
+Merchant_Credits_Green = ['ACH Payment','Paper Check'] * 18
+Merchant_Credits_Yellow = ['Merchant Credit'] + ['ACH Payment','Paper Check'] *11
 Merchant_Credits_Red = ['Merchant Credit','ACH Payment','Paper Check']
 Payments= ['Cash Payment','Wire Payment','ACH Payment','Paper Check','e-Check Check','Online Transfer','ATM Payment']
 Credits = ['Payment','Reversal','Award']
