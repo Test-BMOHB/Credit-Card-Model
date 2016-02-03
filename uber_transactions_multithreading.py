@@ -127,7 +127,7 @@ def gen_tran(MCC_credits,MCC_debits,Tran_Country_Credits,Tran_Country_Debits,Tra
                 merch = 'Payment'
                 if(tranType=='Merchant Credit'):
                         cat=random.choice(Merchant_Category.Green)
-			cat_desc=python_merchant_cat.All_Merchant_Cat[cat]
+						cat_desc=python_merchant_cat.All_Merchant_Cat[cat]
                 row.append(merch)
                 row.append(cat)
                 row.append(cat_desc)
@@ -149,15 +149,12 @@ def gen_tran(MCC_credits,MCC_debits,Tran_Country_Credits,Tran_Country_Debits,Tra
             if ((Balance < 0 or Balance==0)and flag==0):
                 #print '4'
                 cr_dbt='C'
-                tranType=random.choice(Tran_Type_C)
-                cat = random.choice(MCC_credits)
-                cat_desc=python_merchant_cat.All_Merchant_Cat[cat]
+                tranType='Payment'
                 tmpAmt = random.randrange(1,limit/2,1)
                 Balance = Balance + tmpAmt
                 merch = 'Payment'
-                if(tranType=='Merchant Credit'):
-                        cat=random.choice(Merchant_Category.Green)
-			cat_desc=python_merchant_cat.All_Merchant_Cat[cat]
+				cat = '1111'
+                cat_desc=python_merchant_cat.All_Merchant_Cat[cat]
                 row.append(merch)
                 row.append(cat)
                 row.append(cat_desc)
@@ -236,7 +233,7 @@ def gen_tran(MCC_credits,MCC_debits,Tran_Country_Credits,Tran_Country_Debits,Tra
         #date of transaction a day later
         date2 = date1-timedelta(days=1)
         row = [str(count)+'_'+dt]+[acct]+['Customer Payment']+['1111']+['Customer Payment']+[random.choice(Tran_Country_Credits)]
-        row.extend([date1, date2, random.choice(Tran_Type_C),'C',limit,limit-Balance,limit,CCs[j],CCTypes[j],usecase,
+        row.extend([date1, date2, 'Payment','C',limit,limit-Balance,limit,CCs[j],CCTypes[j],usecase,
         Holders[j],CCsCount[j],Cities[j],States[j],ZIPs[j],Countries[j],''])
         count = count + 1
         usedAmt = 0
