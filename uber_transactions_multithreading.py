@@ -225,7 +225,7 @@ def gen_tran(MCC_credits,MCC_debits,Tran_Country_Credits,Tran_Country_Debits,Tra
         row = [str(count)+'_'+dt]+ [acct]+['Uber Bank']+['0000']+['Refund to Customer from Bank']+[random.choice(Tran_Country_Debits)]
         date1=maxDate+timedelta(days=90)
         date2=date1-timedelta(days=1)
-        row.extend([date1, date2, 'Refund','D',limit,Balance-limit,limit,CCs[j],CCTypes[j],
+        row.extend([date1, date2, 'Credit Balance Refund','D',limit,Balance-limit,limit,CCs[j],CCTypes[j],
         usecase,Holders[j],CCsCount[j],Cities[j],States[j],ZIPs[j],Countries[j],''])
         count = count + 1
         usedAmt = 0
