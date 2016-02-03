@@ -121,18 +121,16 @@ def gen_tran(MCC_credits,MCC_debits,Tran_Country_Credits,Tran_Country_Debits,Tra
                 #print '2'
                 cr_dbt='C'
                 tranType=random.choice(Tran_Type_C)
-                cat = random.choice(MCC_credits)
-                cat_desc=python_merchant_cat.All_Merchant_Cat[cat]
                 Balance = Balance + tmpAmt
-                merch = ''
-		cat =''
-		cat_desc=''
+				merch=''
+                cat = random.choice(MCC_credits)
+				cat_desc=python_merchant_cat.All_Merchant_Cat[cat]
                 if(tranType=='Merchant Credit'):
                         cat=random.choice(Merchant_Category.Green)
-			cat_desc=python_merchant_cat.All_Merchant_Cat[cat]
-		if(tranType=='Refund'):
+						cat_desc=python_merchant_cat.All_Merchant_Cat[cat]
+				if(tranType=='Refund'):
                         cat='0000'
-			cat_desc=python_merchant_cat.All_Merchant_Cat[cat]
+						cat_desc=python_merchant_cat.All_Merchant_Cat[cat]
                 row.append(merch)
                 row.append(cat)
                 row.append(cat_desc)
@@ -158,7 +156,7 @@ def gen_tran(MCC_credits,MCC_debits,Tran_Country_Credits,Tran_Country_Debits,Tra
                 tmpAmt = random.randrange(1,limit/2,1)
                 Balance = Balance + tmpAmt
                 merch = ''
-		cat = '1111'
+				cat = '1111'
                 cat_desc=python_merchant_cat.All_Merchant_Cat[cat]
                 row.append(merch)
                 row.append(cat)
