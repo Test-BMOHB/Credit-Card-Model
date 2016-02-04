@@ -959,5 +959,5 @@ All_Merchant_Cat = {'742':'Veterinary Services','0000':'Refund to Customer from 
 '9399':'Government Services (Not Elsewhere Classified)',
 '9402':'Postal Services   Government Only',
 '9405':'U.S. Federal Government Agencies or Departments',
-'9950':'Intra Company Purchases',
+'9950':'Intra Company Purchases'
 };
