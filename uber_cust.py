@@ -1,4 +1,4 @@
-#Developer    : Ivana Donevska/Jeff Kamin
+#Developer    : Ivana Donevska
 #Date         : 2016-01-20
 #Program Name : Customer DataGenerator
 #Version#     : 5
@@ -6,7 +6,8 @@
 #-----------------------------------------------------------------------------
 # History  | ddmmyyyy  |  User     |                Changes
 #          | 01192016  | Ivana D.  | Credit Card model,code, ref lists, etc...
-#			 01202016  | Jeff K.   | Comments, ref lists, etc...
+#	 01202016  | Jeff K.   | Comments, ref lists, etc...
+#	 01202016  | Justin S   | SSN distinct list
 #-----------------------------------------------------------------------------*/
 #Reference data is located on the test-bmohb console gs://newccdatav3
 
