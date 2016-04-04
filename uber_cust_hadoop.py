@@ -232,17 +232,17 @@ with open('uber_cust.csv','w') as f1:
 	#JS - Update code 1/26/2016
  	#JS - Create list of SSNs up to 20M and use that to pull from
         liSSNMaster=[]
-        for i in xrange(3000000):
+        for i in xrange(300000):
                 liSSNMaster.append(''.join(str(random.randint(0,9)) for _ in xrange(9)))
         #JS - Only create as many records as the SSN list has available
  	#JS - Use xrange instead of range to minimize memory allocation
  	liSSNMaster = list(set(liSSNMaster))
- 	if len(liSSNMaster) < 1850000:
+ 	if len(liSSNMaster) < 150000:
                 liSSNMaster=[]
-                for i in xrange(5000000):
+                for i in xrange(500000):
                         liSSNMaster.append(''.join(str(random.randint(0,9)) for _ in xrange(9)))
                 liSSNMaster = list(set(liSSNMaster))
- 	for i in xrange(1850000):
+ 	for i in xrange(150000):
 		#Initiate High Risk Flags
 		#Politically Exposed Person
 		PEP='No'
