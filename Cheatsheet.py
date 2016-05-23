@@ -5,3 +5,10 @@ Python Files using Barnum and Faker must in the folder containing the Barnum and
 For each new session deactivate python 2.6 and activate 2.7:
 deactivate
 source ./venv/bin/activate
+
+How to find cpu configuration
+lscpu
+
+
+How to find kill processes:
+  dmesg  | egrep -i -B100 'killed process'
