@@ -1,3 +1,4 @@
+
 #Developer    : Ivana Donevska
 #Date         : 2016-01-12
 #Program Name : Credit Card Transactions Generator
@@ -10,14 +11,17 @@
 #          | 02022016  | Ivana D.  | Code review and comments
 #-----------------------------------------------------------------------------*/
 #Reference data for python_account_ID, python_merchant_cat, python_CC is located on the test-bmohb console gs://newccdatav3
-from random import randrange, random, shuffle
+from random import randrange, random
 from faker import Faker
 from barnum import gen_data
 from datetime import date, timedelta, datetime
 from collections import defaultdict
 from multiprocessing import Pool
 from functools import partial
-import csv, re, random, python_merchant_cat, Airlines, Country, Hotels, Merchant_Category, Transaction_DistLoc, Transaction_Type, multiprocessing, multiprocessing.pool
+import csv
+
+from data import python_merchant_cat, Airlines, Country, Hotels, Merchant_Category, Transaction_DistLoc, Transaction_Type
+
 
 fake = Faker()
 #Distinct List of Payments, Credits and Debits
@@ -70,9 +74,9 @@ ClsdFlags=columns['CLOSEDACCOUNT']
 
 def gen_tran(MCC_credits,MCC_debits,Tran_Country_Credits,Tran_Country_Debits,Tran_Type_C,Tran_Type_D,Upper_Limit,Delta,count,j,usecase):
     liTrans = []
-    #Initiate start date for transactions 
+    #Initiate start date for transactions
     startDate=date(2015,01,01)
-	#Pick out account based on counter
+    #Pick out account based on counter
     acct=ACCTs[j]
     #Set customer credit limit - skew to clients with $1000-$25000 and 10% with $25K - $50K
     limit = max(max((randrange(1,101,1)-99),0)* randrange(25000,50000,1000),randrange(1000,25000,1000))
@@ -81,7 +85,7 @@ def gen_tran(MCC_credits,MCC_debits,Tran_Country_Credits,Tran_Country_Debits,Tra
     tmpAmt = 0
     Balance = limit
     maxDate= startDate
-	#Random number generator for transactions per customer
+    #Random number generator for transactions per customer
     NoTrans = randrange(100,150,1)
     desc=''
     flag=0
@@ -95,12 +99,12 @@ def gen_tran(MCC_credits,MCC_debits,Tran_Country_Credits,Tran_Country_Debits,Tra
         country=[]
         cat_desc=''
         flag=0
-        #If Balance is within the credit limit, generate credits/debits 
+        #If Balance is within the credit limit, generate credits/debits
         if(Balance>0 and Balance<=limit*1.2):
-			#Probability of credits (tmpAmt>0) and debits (tmpAmt==0) is driven by parameters Upper_Limit and Delta
+            #Probability of credits (tmpAmt>0) and debits (tmpAmt==0) is driven by parameters Upper_Limit and Delta
             tmpAmt = max((randrange(1,Upper_Limit,1)+Delta),0)*randrange(1,Balance+1,1)
             flag=1
-		#Define time delta for next transaction
+        #Define time delta for next transaction
         tdelta = timedelta(days=randrange(1,4,1))
         row = [str(count)+'_'+dt] + [acct]
         #If we have credit or debit within balance
@@ -122,21 +126,21 @@ def gen_tran(MCC_credits,MCC_debits,Tran_Country_Credits,Tran_Country_Debits,Tra
                 cr_dbt='C'
                 tranType=random.choice(Tran_Type_C)
                 Balance = Balance + tmpAmt
-				merch=''
+                merch=''
                 cat = random.choice(MCC_credits)
-				cat_desc=python_merchant_cat.All_Merchant_Cat[cat]
+                cat_desc=python_merchant_cat.All_Merchant_Cat[cat]
                 if(tranType=='Merchant Credit'):
-						merch=gen_data.create_company_name()
+                        merch=gen_data.create_company_name()
                         cat=random.choice(Merchant_Category.Green)
-						cat_desc=python_merchant_cat.All_Merchant_Cat[cat]
-				if(tranType=='Refund'):
+                        cat_desc=python_merchant_cat.All_Merchant_Cat[cat]
+                if(tranType=='Refund'):
                         cat='0000'
-						cat_desc=python_merchant_cat.All_Merchant_Cat[cat]
+                        cat_desc=python_merchant_cat.All_Merchant_Cat[cat]
                 row.append(merch)
                 row.append(cat)
                 row.append(cat_desc)
                 country=random.choice(Tran_Country_Credits)
-		#If we need to make a payment or get credit then assign codes
+        #If we need to make a payment or get credit then assign codes
         if Balance > limit and flag==0:
             #print '3'
             tmpAmt=random.randrange(1,Balance-limit+1,1)
@@ -157,7 +161,7 @@ def gen_tran(MCC_credits,MCC_debits,Tran_Country_Credits,Tran_Country_Debits,Tra
                 tmpAmt = random.randrange(1,limit/2,1)
                 Balance = Balance + tmpAmt
                 merch = ''
-				cat = '1111'
+                cat = '1111'
                 cat_desc=python_merchant_cat.All_Merchant_Cat[cat]
                 row.append(merch)
                 row.append(cat)
@@ -175,7 +179,7 @@ def gen_tran(MCC_credits,MCC_debits,Tran_Country_Credits,Tran_Country_Debits,Tra
         checkin=''
         checkout=''
         transDetail=''
-		#Add details or Hotel Transactions 
+        #Add details or Hotel Transactions
         if((cat_desc=='Hotels/Motels/Inns/Resorts' or cat_desc=='Hotels, Motels, and Resorts') and (UseCase[j]=='28' or UseCase[j]=='29')):
             if (maxCheckin == ''):
                 checkin=maxDate+timedelta(days=randrange(365,389,1))
@@ -200,7 +204,7 @@ def gen_tran(MCC_credits,MCC_debits,Tran_Country_Credits,Tran_Country_Debits,Tra
             addr=gen_data.create_city_state_zip()
             hotel=tmp2[1]+' Hotels; '+'; Address: '+addr[1]+' '+addr[2]+', '+addr[0]
             transDetail='Checkin: '+str(checkin)+'; Checkout: '+str(checkout)+'; Hotel: '+hotel
-		#Add details or Airline Transactions 
+        #Add details or Airline Transactions
         if(cat_desc=='Airlines' and (UseCase[j]=='31' or UseCase[j]=='32')):
             if (maxBook == ''):
                 booking=maxDate+timedelta(days=randrange(1,15,1))
@@ -253,7 +257,7 @@ def createCSV(ccount, remainder, lenI, iterator):
         if iterator < (lenI-1):
             x = xrange(iterator * ccount, (iterator+1) * ccount)
         else:
-            x = xrange(iterator * ccount, ((iterator * ccount) + (ccount+remainder))) 
+            x = xrange(iterator * ccount, ((iterator * ccount) + (ccount+remainder)))
     for i in x:
         if(ClsdFlags[i]=='No'):
             #Use Case 1.0: Threshold for overpayments
@@ -391,12 +395,12 @@ def createCSV(ccount, remainder, lenI, iterator):
 
 with open('uber_trans_multithreading_101.csv','w') as f1:
     writer=csv.writer(f1, delimiter='|',lineterminator='\n',)
-	#File header
+    #File header
     writer.writerow(['ROWNUM']+['ACCOUNTID']+['MERCHANT_NAME']+['MERCHANT_CATEGORY_CODE']+['MERCHANT_CATEGORY_DESC']+['MERCHANT_COUNTRY']+\
             ['POST_DATE'] +	['TRANSACTION_DATE'] + ['TRANSACTION_TYPE']+['CREDIT_DEBIT']+['CREDIT_LIMIT']+['AMOUNT']+['BALANCE']+\
             ['CREDITCARDNUMBER']+['CC_TYPE']+['USE_CASE']+['CUST_NAME']+['NUM_CCS']+['CUST_CITY']+['CUST_STATE']+['CUST_ZIP']+['CUST_COUNTRY']+['TRANS_DETAIL'])
     Cust_Count=len(CCs)
-	#Define number of processes then multithread
+    #Define number of processes then multithread
     proc = 16
     iterator = xrange(proc)
     remainder = Cust_Count % proc
